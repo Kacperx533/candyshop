@@ -2,61 +2,196 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>ADMIN | CANDYSHOP</title>
+  <title>ADMIN | Logowanie</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
   <style>
-    body { background: #050505; color: #fff; font-family: sans-serif; padding: 50px; }
-    .login-box { max-width: 400px; margin: 100px auto; text-align: center; background: #111; padding: 40px; border-radius: 20px; border: 1px solid #222; }
-    input { width: 100%; padding: 12px; margin: 10px 0; background: #222; border: 1px solid #333; color: #fff; }
-    .btn { width: 100%; padding: 12px; background: #ff00cc; border: none; color: #fff; font-weight: bold; cursor: pointer; }
-    #adminContent { display: none; }
-    .card { background: #111; padding: 20px; margin-bottom: 20px; border-radius: 10px; }
-    table { width: 100%; border-collapse: collapse; }
-    td, th { padding: 10px; border-bottom: 1px solid #222; text-align: left; }
+    :root {
+      --bg-color: #050505;
+      --card-glass: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --color-pink: #ff00cc;
+      --color-cyan: #00dbde;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg-color); color: #fff; font-family: 'Outfit', sans-serif; padding: 40px 5%; }
+
+    /* --- STYL LOGOWANIA --- */
+    #loginOverlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--bg-color); z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .login-box {
+      background: var(--card-glass); border: 1px solid var(--card-border);
+      padding: 40px; border-radius: 20px; text-align: center; width: 100%; max-width: 400px;
+      backdrop-filter: blur(20px);
+    }
+
+    /* --- STYL PANELU --- */
+    #adminContent { display: none; } /* Ukryty domyślnie */
+
+    h1 { font-size: 2.5rem; margin-bottom: 30px; font-weight: 900; background: linear-gradient(to right, #fff, var(--color-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h2 { margin-bottom: 20px; font-weight: 700; color: var(--color-cyan); text-transform: uppercase; }
+
+    .grid-admin { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .admin-card { background: var(--card-glass); border: 1px solid var(--card-border); border-radius: 20px; padding: 30px; backdrop-filter: blur(20px); }
+
+    input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); border-radius: 10px; color: #fff; font-family: inherit; }
+    
+    .btn { padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; width: 100%; margin-top: 10px; }
+    .btn-pink { background: var(--color-pink); color: white; }
+    .btn-pink:hover { box-shadow: 0 0 20px rgba(255, 0, 204, 0.4); transform: translateY(-2px); }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th { text-align: left; padding: 12px; border-bottom: 2px solid var(--card-border); color: #888; font-size: 0.8rem; }
+    td { padding: 12px; border-bottom: 1px solid var(--card-border); font-size: 0.9rem; }
+
+    .btn-del { background: #ff4d4d; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; }
+    .img-preview { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
+
+    .nav-back { margin-bottom: 20px; display: inline-block; color: #888; text-decoration: none; }
+    
+    @media (max-width: 1000px) { .grid-admin { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-  <div id="loginBox" class="login-box">
-    <h2>Logowanie Admina</h2>
-    <input type="password" id="pass" placeholder="Hasło...">
-    <button class="btn" onclick="login()">Zaloguj</button>
+
+  <div id="loginOverlay">
+    <div class="login-box">
+      <h2 style="color: #fff; margin-bottom: 10px;">Panel Admina</h2>
+      <p style="color: #888; margin-bottom: 20px;">Wpisz hasło dostępu</p>
+      <input type="password" id="adminPass" placeholder="Hasło...">
+      <button class="btn btn-pink" onclick="checkLogin()">Zaloguj</button>
+      <p id="errorMsg" style="color: #ff4d4d; margin-top: 10px; font-size: 0.8rem; display: none;">Błędne hasło!</p>
+    </div>
   </div>
 
   <div id="adminContent">
-    <h1>Panel Sterowania</h1>
-    <div class="card">
-      <h3>Dodaj Produkt</h3>
-      <input type="text" id="n" placeholder="Nazwa">
-      <input type="text" id="p" placeholder="Cena">
-      <input type="text" id="i" placeholder="Link do zdjęcia">
-      <button class="btn" onclick="add()">Dodaj</button>
+    <a href="index.html" class="nav-back">← WRÓĆ DO SKLEPU</a>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h1>Zarządzanie Sklepem</h1>
+      <button onclick="logout()" style="background:none; border:1px solid #444; color:#888; padding:5px 15px; border-radius:5px; cursor:pointer;">Wyloguj</button>
     </div>
-    <div class="card">
-      <h3>Zamówienia</h3>
-      <table id="oTable"></table>
+
+    <div class="grid-admin">
+      <div class="admin-card">
+        <h2>Dodaj Produkt</h2>
+        <input type="text" id="pName" placeholder="Nazwa">
+        <input type="text" id="pPrice" placeholder="Cena">
+        <label style="font-size: 0.7rem; color: #888;">Wybierz zdjęcie:</label>
+        <input type="file" id="pImageFile" accept="image/*">
+        <textarea id="pDesc" rows="2" placeholder="Opis..."></textarea>
+        <button class="btn btn-pink" onclick="addProduct()">Dodaj do sklepu</button>
+      </div>
+
+      <div class="admin-card">
+        <h2>Produkty</h2>
+        <table>
+          <thead><tr><th>Foto</th><th>Nazwa</th><th>Akcja</th></tr></thead>
+          <tbody id="productList"></tbody>
+        </table>
+      </div>
+
+      <div class="admin-card" style="grid-column: 1 / -1;">
+        <h2>Zamówienia</h2>
+        <table>
+          <thead><tr><th>Data</th><th>Klient</th><th>Produkt</th><th>Wiadomość</th><th>Akcja</th></tr></thead>
+          <tbody id="orderList"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
   <script>
-    const CORRECT_PASSWORD = "twojehaslo123"; 
-    function login() {
-      if(document.getElementById('pass').value === CORRECT_PASSWORD) {
-        document.getElementById('loginBox').style.display='none';
-        document.getElementById('adminContent').style.display='block';
-        render();
+    const CORRECT_PASSWORD = "Candyshopcapeksisi2026"; // <--- TUTAJ WPISZ SWOJE HASŁO
+
+    // Funkcja sprawdzająca logowanie
+    function checkLogin() {
+      const input = document.getElementById('adminPass').value;
+      if(input === CORRECT_PASSWORD) {
+        sessionStorage.setItem('adminIsLogged', 'true');
+        showAdminPanel();
+      } else {
+        document.getElementById('errorMsg').style.display = 'block';
       }
     }
-    function add() {
-      let ps = JSON.parse(localStorage.getItem('candyProducts')) || [];
-      ps.push({name: document.getElementById('n').value, price: document.getElementById('p').value, img: document.getElementById('i').value});
-      localStorage.setItem('candyProducts', JSON.stringify(ps));
+
+    function showAdminPanel() {
+      document.getElementById('loginOverlay').style.display = 'none';
+      document.getElementById('adminContent').style.display = 'block';
+      renderAll();
+    }
+
+    function logout() {
+      sessionStorage.removeItem('adminIsLogged');
       location.reload();
     }
-    function render() {
-      const os = JSON.parse(localStorage.getItem('candyOrders')) || [];
-      const table = document.getElementById('oTable');
-      table.innerHTML = "<tr><th>Klient</th><th>Produkt</th><th>Płatność</th></tr>";
-      os.forEach(o => {
-        table.innerHTML += `<tr><td>${o.customer}</td><td>${o.product}</td><td>${o.payment}</td></tr>`;
+
+    // Sprawdź przy starcie
+    window.onload = function() {
+      if(sessionStorage.getItem('adminIsLogged') === 'true') {
+        showAdminPanel();
+      }
+    };
+
+    // --- FUNKCJE SKLEPU ---
+    function addProduct() {
+      const name = document.getElementById('pName').value;
+      const price = document.getElementById('pPrice').value;
+      const desc = document.getElementById('pDesc').value;
+      const fileInput = document.getElementById('pImageFile');
+      const file = fileInput.files[0];
+
+      if(!name || !price) return alert("Wypełnij dane!");
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          saveProduct(name, price, e.target.result, desc);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        saveProduct(name, price, "https://via.placeholder.com/400", desc);
+      }
+    }
+
+    function saveProduct(name, price, img, desc) {
+      let products = JSON.parse(localStorage.getItem('candyProducts')) || [];
+      products.push({ name, price, img, desc });
+      localStorage.setItem('candyProducts', JSON.stringify(products));
+      alert("Dodano!");
+      renderAll();
+    }
+
+    function deleteProduct(index) {
+      let products = JSON.parse(localStorage.getItem('candyProducts')) || [];
+      products.splice(index, 1);
+      localStorage.setItem('candyProducts', JSON.stringify(products));
+      renderAll();
+    }
+
+    function deleteOrder(index) {
+      let orders = JSON.parse(localStorage.getItem('candyOrders')) || [];
+      orders.splice(index, 1);
+      localStorage.setItem('candyOrders', JSON.stringify(orders));
+      renderAll();
+    }
+
+    function renderAll() {
+      const pList = document.getElementById('productList');
+      const products = JSON.parse(localStorage.getItem('candyProducts')) || [];
+      pList.innerHTML = "";
+      products.forEach((p, i) => {
+        pList.innerHTML += `<tr><td><img src="${p.img}" class="img-preview"></td><td>${p.name}</td><td><button class="btn-del" onclick="deleteProduct(${i})">Usuń</button></td></tr>`;
+      });
+
+      const oList = document.getElementById('orderList');
+      const orders = JSON.parse(localStorage.getItem('candyOrders')) || [];
+      oList.innerHTML = "";
+      orders.forEach((o, i) => {
+        oList.innerHTML += `<tr><td>${o.date}</td><td>${o.customer}</td><td style="color:var(--color-cyan)">${o.product}</td><td>${o.message}</td><td><button class="btn-del" onclick="deleteOrder(${i})">Usuń</button></td></tr>`;
       });
     }
   </script>
