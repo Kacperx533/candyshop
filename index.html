@@ -25,102 +25,181 @@
       line-height: 1.6;
     }
 
-    /* Animowane tło */
+    /* Animowane tło w stylu Aurora */
     .bg-animation {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-      background: radial-gradient(circle at 0% 0%, #1a1a2e 0%, transparent 40%),
-                  radial-gradient(circle at 100% 100%, #16213e 0%, transparent 40%);
+      background: radial-gradient(circle at 10% 10%, #1a1a2e 0%, transparent 50%),
+                  radial-gradient(circle at 90% 90%, #16213e 0%, transparent 50%);
     }
 
     .blob {
-      position: absolute; width: 500px; height: 500px;
-      background: var(--pink); filter: blur(150px);
-      opacity: 0.15; border-radius: 50%; animation: move 20s infinite alternate;
+      position: absolute; width: 600px; height: 600px;
+      background: var(--pink); filter: blur(160px);
+      opacity: 0.12; border-radius: 50%; animation: move 25s infinite alternate;
     }
 
     @keyframes move {
-      from { transform: translate(-10%, -10%); }
-      to { transform: translate(20%, 20%); }
+      0% { transform: translate(-10%, -10%) scale(1); }
+      100% { transform: translate(30%, 20%) scale(1.2); }
     }
 
     /* Nawigacja */
     .header {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 20px 8%; position: sticky; top: 0; z-index: 1000;
-      background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(15px);
+      padding: 25px 8%; position: sticky; top: 0; z-index: 1000;
+      background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--glass-border);
     }
 
-    .logo { font-size: 1.8rem; font-weight: 900; letter-spacing: -1px; }
+    .logo { font-size: 1.8rem; font-weight: 900; letter-spacing: -1px; text-decoration: none; color: #fff; }
     .logo span { color: var(--pink); text-shadow: 0 0 15px var(--pink); }
 
     .nav a {
-      color: #888; text-decoration: none; margin-left: 30px;
-      font-weight: 500; font-size: 0.9rem; text-transform: uppercase;
-      transition: 0.3s;
+      color: #888; text-decoration: none; margin-left: 35px;
+      font-weight: 500; font-size: 0.85rem; text-transform: uppercase;
+      transition: 0.4s; letter-spacing: 1px;
     }
 
     .nav a:hover { color: #fff; text-shadow: 0 0 10px #fff; }
 
-    /* Hero Section */
+    /* Hero Section - Przesunięte w prawo (Side-by-side) */
     .hero {
-      padding: 120px 8% 60px; text-align: center;
-      display: flex; flex-direction: column; align-items: center;
+      padding: 100px 8%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end; /* Przesunięcie do prawej */
+      min-height: 80vh;
+      position: relative;
+    }
+
+    .hero-content {
+      max-width: 650px;
+      text-align: right; /* Tekst do prawej */
+      animation: fadeInUp 1.2s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .hero h1 {
-      font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; line-height: 1;
-      margin-bottom: 20px; background: linear-gradient(to right, #fff, var(--pink), var(--cyan));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      font-size: clamp(3.5rem, 9vw, 6.5rem);
+      font-weight: 900;
+      line-height: 0.9;
+      margin-bottom: 25px;
+      background: linear-gradient(to left, #fff, var(--pink), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 5px 15px rgba(255,0,204,0.2));
     }
 
-    .hero p { color: #888; max-width: 600px; font-size: 1.1rem; margin-bottom: 40px; }
+    .hero p { 
+      color: #aaa; 
+      font-size: 1.2rem; 
+      margin-bottom: 45px; 
+      margin-left: auto; /* Wyrównanie bloku tekstu do prawej */
+      max-width: 500px;
+    }
 
-    /* Grid Produktów */
-    .shop-section { padding: 40px 8% 100px; }
-    .section-title { margin-bottom: 40px; font-size: 2rem; font-weight: 700; display: flex; align-items: center; gap: 15px; }
-    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--glass-border); }
+    .cta-button {
+      padding: 18px 45px;
+      background: linear-gradient(90deg, var(--blue), var(--pink));
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 10px 30px rgba(255, 0, 204, 0.3);
+      transition: 0.4s;
+      display: inline-block;
+    }
+
+    .cta-button:hover {
+      transform: scale(1.05) translateY(-5px);
+      box-shadow: 0 15px 40px rgba(255, 0, 204, 0.5);
+    }
+
+    /* Sklep */
+    .shop-section { padding: 80px 8%; }
+    .section-title { 
+      margin-bottom: 50px; 
+      font-size: 2.2rem; 
+      font-weight: 900; 
+      display: flex; 
+      align-items: center; 
+      gap: 20px;
+    }
+    .section-title::before { content: ''; flex: 1; height: 1px; background: linear-gradient(to left, var(--glass-border), transparent); }
 
     .products-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 35px;
     }
 
     .product-card {
-      background: var(--glass); border: 1px solid var(--glass-border);
-      border-radius: 24px; padding: 12px; cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      position: relative; overflow: hidden;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 30px;
+      padding: 15px;
+      cursor: pointer;
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(5px);
     }
 
+    .product-card::before {
+      content: '';
+      position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      transition: 0.5s;
+    }
+
+    .product-card:hover::before { left: 100%; }
+
     .product-card:hover {
-      transform: translateY(-10px); border-color: var(--pink);
-      background: rgba(255, 255, 255, 0.05);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(255, 0, 204, 0.1);
+      transform: translateY(-15px) scale(1.02);
+      border-color: var(--pink);
+      background: rgba(255, 255, 255, 0.07);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.6);
     }
 
     .product-card img {
-      width: 100%; height: 260px; object-fit: cover;
-      border-radius: 18px; margin-bottom: 15px;
+      width: 100%; height: 280px; object-fit: cover;
+      border-radius: 22px; margin-bottom: 20px;
+      transition: 0.5s;
     }
 
-    .card-info { padding: 10px 15px 20px; text-align: left; }
-    .card-info h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 10px; color: #eee; }
+    .product-card:hover img { transform: scale(1.05); }
+
+    .card-info { padding: 0 10px 15px; }
+    .card-info h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; color: #fff; }
     
     .price-row { display: flex; justify-content: space-between; align-items: center; }
-    .price { font-size: 1.4rem; font-weight: 900; color: #fff; }
+    .price { font-size: 1.6rem; font-weight: 900; color: var(--cyan); }
     
     .badge {
-      background: rgba(255, 0, 204, 0.1); color: var(--pink);
-      padding: 4px 12px; border-radius: 50px; font-size: 0.7rem;
-      font-weight: 700; text-transform: uppercase; border: 1px solid var(--pink);
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      padding: 5px 15px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
     }
 
-    /* Footer */
-    footer { padding: 60px 8%; border-top: 1px solid var(--glass-border); text-align: center; color: #444; }
+    footer { padding: 80px 8%; border-top: 1px solid var(--glass-border); text-align: center; color: #555; font-size: 0.9rem; }
 
-    @media (max-width: 768px) {
-      .nav { display: none; }
-      .hero h1 { font-size: 3.5rem; }
+    @media (max-width: 900px) {
+      .hero { justify-content: center; text-align: center; }
+      .hero-content { text-align: center; }
+      .hero p { margin: 0 auto 40px; }
     }
   </style>
 </head>
@@ -128,26 +207,30 @@
   <div class="bg-animation"><div class="blob"></div></div>
 
   <header class="header">
-    <div class="logo">CANDY<span>SHOP</span></div>
+    <a href="index.html" class="logo">CANDY<span>SHOP</span></a>
     <nav class="nav">
-      <a href="index.html">Sklep</a>
-      <a href="admin.html">Panel Admina</a>
+      <a href="index.html">Marketplace</a>
+      <a href="admin.html">Dla Sprzedawców</a>
     </nav>
   </header>
 
   <section class="hero">
-    <h1>RARE DROPS</h1>
-    <p>Najrzadsze przedmioty "Steal a Brainrot" w najlepszych cenach. Wszystkie dostawy realizowane w mniej niż 20 minut.</p>
+    <div class="hero-content">
+      <div class="badge" style="background: var(--pink); border: none;">PROJEKT CAPEK & SISI</div>
+      <h1>ELITE<br>MARKET</h1>
+      <p>Najbardziej pożądane przedmioty cyfrowe. Sprawdzone oferty, błyskawiczna dostawa i pełne bezpieczeństwo.</p>
+      <a href="#sklep" class="cta-button">Odkryj Przedmioty</a>
+    </div>
   </section>
 
-  <main class="shop-section">
-    <h2 class="section-title">Dostępne Oferty</h2>
+  <main class="shop-section" id="sklep">
+    <h2 class="section-title">Gorące Oferty</h2>
     <div class="products-grid" id="grid">
       </div>
   </main>
 
   <footer>
-    &copy; 2026 CANDYSHOP Store. Wszystkie prawa zastrzeżone.
+    &copy; 2026 CANDYSHOP | Digital Goods Marketplace
   </footer>
 
   <script>
@@ -157,8 +240,8 @@
       
       if (items.length === 0) {
         grid.innerHTML = `
-          <div style="grid-column: 1/-1; text-align: center; padding: 100px; color: #444;">
-            <p>Obecnie brak przedmiotów w magazynie. Sprawdź później!</p>
+          <div style="grid-column: 1/-1; text-align: center; padding: 100px; color: #555;">
+            <p>Sklep jest obecnie pusty. Wróć za chwilę!</p>
           </div>`;
         return;
       }
@@ -167,13 +250,13 @@
       items.forEach((p, i) => {
         grid.innerHTML += `
           <div class="product-card" onclick="location.href='produkt.html?id=${i}'">
+            <span class="badge" style="border-color: var(--pink); color: var(--pink)">${p.rarity || 'Secret'}</span>
             <img src="${p.img}" alt="${p.name}">
             <div class="card-info">
-              <span class="badge">${p.rarity || 'Secret'}</span>
               <h3>${p.name}</h3>
               <div class="price-row">
                 <div class="price">${p.price}</div>
-                <div style="color: #00ff88; font-size: 0.8rem; font-weight: 500;">Dostępny</div>
+                <div style="color: #00ff88; font-size: 0.75rem; font-weight: 700;">LIVE STOCK</div>
               </div>
             </div>
           </div>`;
