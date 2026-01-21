@@ -2,164 +2,109 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>CANDY ADMIN | Zarządzanie</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CANDY ADMIN</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
   <style>
-    :root { --bg: #050505; --card: rgba(255,255,255,0.03); --pink: #ff00cc; --cyan: #00dbde; --border: rgba(255,255,255,0.1); }
+    :root { --bg: #050505; --card: rgba(255,255,255,0.03); --pink: #ff00cc; --border: rgba(255,255,255,0.1); }
     body { background: var(--bg); color: #fff; font-family: 'Outfit', sans-serif; padding: 20px; }
-    #loginOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; }
-    .box { background: var(--card); border: 1px solid var(--border); padding: 30px; border-radius: 20px; backdrop-filter: blur(20px); }
-    #adminContent { display: none; max-width: 1200px; margin: 0 auto; }
+    #loginOverlay { position: fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); z-index:99; display:flex; align-items:center; justify-content:center; }
     .grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
     .card { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 15px; }
     input, textarea { width: 100%; padding: 10px; margin-bottom: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; color: #fff; }
-    input[type="file"] { background: transparent; border: 1px dashed var(--border); cursor: pointer; }
-    .btn { padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; width: 100%; transition: 0.3s; }
-    .btn-pink { background: var(--pink); color: #fff; }
-    .btn-outline { background: transparent; border: 1px solid #444; color: #888; margin-top: 5px; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
-    th { text-align: left; padding: 10px; border-bottom: 2px solid var(--border); color: #888; }
-    td { padding: 10px; border-bottom: 1px solid var(--border); }
-    .img-p { width: 35px; height: 35px; border-radius: 5px; object-fit: cover; }
-    .preview-box { width: 100%; height: 150px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; }
-    .preview-box img { max-width: 100%; max-height: 100%; display: none; }
-    .stats { display: flex; gap: 15px; margin-bottom: 20px; }
-    .stat { flex: 1; background: var(--card); padding: 15px; border-radius: 10px; text-align: center; border: 1px solid var(--border); }
-    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+    .btn { padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; background: var(--pink); color: #fff; text-transform: uppercase; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.8rem; }
+    th, td { padding: 10px; border-bottom: 1px solid var(--border); text-align: left; }
+    .img-prev { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; background: #000; display: block; margin-bottom: 10px; border: 1px solid var(--border); }
   </style>
 </head>
 <body>
-  <div id="loginOverlay"><div class="box"><h2>ADMIN LOGIN</h2><input type="password" id="p" placeholder="Hasło"><button class="btn btn-pink" onclick="login()">Zaloguj</button></div></div>
+  <div id="loginOverlay"><div class="card"><h2>LOGIN</h2><input type="password" id="pass" placeholder="Hasło"><button class="btn" onclick="login()">Zaloguj</button></div></div>
   
-  <div id="adminContent">
-    <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
-      <h1>Zarządzanie Sklepem</h1>
-      <div><button class="btn btn-outline" style="width:auto;" onclick="logout()">Wyloguj</button></div>
-    </div>
-
+  <div id="adminContent" style="display:none; max-width: 1200px; margin: 0 auto;">
+    <h1 style="margin-bottom:20px;">Admin Panel</h1>
     <div class="grid">
       <div class="card">
         <h3 id="formT">Dodaj Produkt</h3>
         <input type="hidden" id="editIdx" value="-1">
         <input type="text" id="pN" placeholder="Nazwa">
         <input type="text" id="pP" placeholder="Cena">
+        <input type="text" id="pT" placeholder="Typ (np. Brainrot)">
+        <input type="text" id="pR" placeholder="Rarity (np. Secret)">
+        <input type="text" id="pDel" placeholder="Dostawa (np. ~20 min)">
         <textarea id="pD" placeholder="Opis..."></textarea>
-        
-        <label style="font-size: 0.7rem; color: var(--pink);">ZDJĘCIE PRZEDMIOTU:</label>
-        <div class="preview-box" id="pBox">
-          <span id="pText" style="color:#444; font-size: 0.8rem;">Podgląd zdjęcia</span>
-          <img id="pImgPreview" src="">
-        </div>
-        <input type="file" id="pFile" accept="image/*" onchange="previewFile()">
-        
-        <button class="btn btn-pink" onclick="save()">Zapisz Produkt</button>
+        <label style="font-size:0.7rem;">ZDJĘCIE:</label>
+        <img id="pPreview" class="img-prev" src="">
+        <input type="file" id="pFile" accept="image/*" onchange="convert()">
+        <button class="btn" onclick="save()">Zapisz Produkt</button>
       </div>
-
       <div class="card">
-        <h3>Lista Produktów</h3>
-        <table>
-          <thead><tr><th>Foto</th><th>Nazwa</th><th>Opcje</th></tr></thead>
-          <tbody id="pList"></tbody>
-        </table>
+        <h3>Produkty</h3>
+        <table id="pList"></table>
       </div>
-
-      <div class="card" style="grid-column: 1 / -1;">
+      <div class="card" style="grid-column: 1/-1;">
         <h3>Zamówienia</h3>
-        <table>
-          <thead><tr><th>Data</th><th>Klient</th><th>Produkt</th><th>Wiadomość</th><th>Akcja</th></tr></thead>
-          <tbody id="oList"></tbody>
-        </table>
+        <table id="oList"></table>
       </div>
     </div>
   </div>
 
   <script>
-    const PASS = "admin";
-    let currentBase64 = "";
-
-    function login() { if(document.getElementById('p').value === PASS) { sessionStorage.setItem('l', '1'); show(); } }
-    function logout() { sessionStorage.removeItem('l'); location.reload(); }
-    function show() { document.getElementById('loginOverlay').style.display='none'; document.getElementById('adminContent').style.display='block'; render(); }
-
-    // Podgląd i konwersja pliku na tekst (Base64)
-    function previewFile() {
-      const file = document.getElementById('pFile').files[0];
+    let currentImg = "";
+    function login() { if(document.getElementById('pass').value === "admin") { document.getElementById('loginOverlay').style.display='none'; document.getElementById('adminContent').style.display='block'; render(); } }
+    
+    function convert() {
       const reader = new FileReader();
-      reader.onloadend = function() {
-        currentBase64 = reader.result;
-        const img = document.getElementById('pImgPreview');
-        img.src = reader.result;
-        img.style.display = 'block';
-        document.getElementById('pText').style.display = 'none';
-      }
-      if (file) { reader.readAsDataURL(file); }
+      reader.onload = e => { currentImg = e.target.result; document.getElementById('pPreview').src = currentImg; };
+      reader.readAsDataURL(document.getElementById('pFile').files[0]);
     }
 
     function save() {
       const idx = document.getElementById('editIdx').value;
-      const name = document.getElementById('pN').value;
-      const price = document.getElementById('pP').value;
-      
-      if(!name || !price || (!currentBase64 && idx == -1)) return alert("Wypełnij dane i dodaj zdjęcie!");
-
       let items = JSON.parse(localStorage.getItem('candyProducts')) || [];
-      const productData = { 
-        name: name, 
-        price: price, 
-        desc: document.getElementById('pD').value, 
-        img: currentBase64 
+      const data = { 
+        name: document.getElementById('pN').value, price: document.getElementById('pP').value, 
+        type: document.getElementById('pT').value, rarity: document.getElementById('pR').value, 
+        delivery: document.getElementById('pDel').value, desc: document.getElementById('pD').value, 
+        img: currentImg || (idx != -1 ? items[idx].img : "") 
       };
-
-      if(idx == -1) items.push(productData); 
-      else {
-        // Jeśli edytujemy i nie wybrano nowego zdjęcia, zostawiamy stare
-        if(!currentBase64) productData.img = items[idx].img;
-        items[idx] = productData;
-      }
-
+      if(idx == -1) items.push(data); else items[idx] = data;
       localStorage.setItem('candyProducts', JSON.stringify(items));
       location.reload();
     }
 
+    function render() {
+      const ps = JSON.parse(localStorage.getItem('candyProducts')) || [];
+      let hP = "<tr><th>Foto</th><th>Nazwa</th><th>Opcje</th></tr>";
+      ps.forEach((p, i) => { hP += `<tr><td><img src="${p.img}" style="width:30px"></td><td>${p.name}</td><td><button onclick="edit(${i})">✏️</button><button onclick="del(${i},'p')">🗑️</button></td></tr>`; });
+      document.getElementById('pList').innerHTML = hP;
+
+      const os = JSON.parse(localStorage.getItem('candyOrders')) || [];
+      let hO = "<tr><th>Data</th><th>Klient</th><th>Produkt</th><th>Akcja</th></tr>";
+      os.forEach((o, i) => { hO += `<tr><td>${o.date}</td><td>${o.customer}</td><td>${o.product}</td><td><button onclick="del(${i},'o')">Usuń</button></td></tr>`; });
+      document.getElementById('oList').innerHTML = hO;
+    }
+
     function edit(i) {
       const items = JSON.parse(localStorage.getItem('candyProducts'));
+      const p = items[i];
       document.getElementById('editIdx').value = i;
-      document.getElementById('pN').value = items[i].name;
-      document.getElementById('pP').value = items[i].price;
-      document.getElementById('pD').value = items[i].desc;
-      // Pokazanie starego zdjęcia w podglądzie
-      const img = document.getElementById('pImgPreview');
-      img.src = items[i].img;
-      img.style.display = 'block';
-      document.getElementById('pText').style.display = 'none';
+      document.getElementById('pN').value = p.name;
+      document.getElementById('pP').value = p.price;
+      document.getElementById('pT').value = p.type || "";
+      document.getElementById('pR').value = p.rarity || "";
+      document.getElementById('pDel').value = p.delivery || "";
+      document.getElementById('pD').value = p.desc;
+      document.getElementById('pPreview').src = p.img;
       document.getElementById('formT').innerText = "Edytuj";
     }
 
-    function del(i, type) {
-      let k = type == 'p' ? 'candyProducts' : 'candyOrders';
+    function del(i, t) {
+      let k = t == 'p' ? 'candyProducts' : 'candyOrders';
       let items = JSON.parse(localStorage.getItem(k));
       items.splice(i, 1);
       localStorage.setItem(k, JSON.stringify(items));
       render();
     }
-
-    function render() {
-      const ps = JSON.parse(localStorage.getItem('candyProducts')) || [];
-      const os = JSON.parse(localStorage.getItem('candyOrders')) || [];
-      
-      let hP = ""; ps.forEach((p, i) => { 
-        hP += `<tr><td><img src="${p.img}" class="img-p"></td><td>${p.name}</td><td><button onclick="edit(${i})">✏️</button> <button onclick="del(${i}, 'p')">🗑️</button></td></tr>`; 
-      });
-      document.getElementById('pList').innerHTML = hP;
-
-      let hO = ""; os.forEach((o, i) => { 
-        hO += `<tr><td>${o.date}</td><td style="color:var(--pink)">${o.customer}</td><td>${o.product}</td><td>${o.message}</td><td><button onclick="del(${i}, 'o')">Usuń</button></td></tr>`; 
-      });
-      document.getElementById('oList').innerHTML = hO;
-    }
-
-    window.onload = () => { if(sessionStorage.getItem('l')) show(); };
   </script>
 </body>
 </html>
