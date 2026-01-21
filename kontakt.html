@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>CANDYSHOP | Kontakt</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #050505;
+      --card-glass: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --color-1: #ff00cc;
+      --color-2: #333399;
+      --transition: all 0.4s ease;
+    }
+    body { background: var(--bg-color); color: #fff; font-family: 'Outfit', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+    
+    .contact-container {
+      background: var(--card-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      padding: 40px;
+      border-radius: 30px;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    h1 { font-size: 2.5rem; margin-bottom: 10px; background: linear-gradient(135deg, #fff, var(--color-1)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    p { color: #888; margin-bottom: 30px; }
+
+    input, textarea {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 15px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      color: #fff;
+      font-family: inherit;
+    }
+
+    .send-btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(90deg, var(--color-2), var(--color-1));
+      color: #fff;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .send-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 0, 204, 0.3); }
+    
+    .back-link { display: block; margin-top: 20px; color: #555; text-decoration: none; font-size: 0.9rem; }
+    .back-link:hover { color: #fff; }
+  </style>
+</head>
+<body>
+
+<div class="contact-container">
+  <h1>Napisz do nas</h1>
+  <p>Złóż zamówienie lub zadaj pytanie</p>
+  
+  <input type="text" id="custName" placeholder="Twoja nazwa (np. Discord/Roblox ID)">
+  <input type="text" id="prodName" placeholder="Jaki produkt Cię interesuje?">
+  <textarea id="custMsg" rows="4" placeholder="Twoja wiadomość..."></textarea>
+  
+  <button class="send-btn" onclick="sendToAdmin()">Wyślij wiadomość</button>
+  
+  <a href="index.html" class="back-link">← Wróć do sklepu</a>
+</div>
+
+<script>
+  function sendToAdmin() {
+    const customer = document.getElementById('custName').value;
+    const product = document.getElementById('prodName').value;
+    const message = document.getElementById('custMsg').value;
+    const date = new Date().toLocaleString();
+
+    if(!customer || !message) {
+      return alert("Proszę podać przynajmniej nazwę i wiadomość!");
+    }
+
+    // Pobieramy obecne zamówienia
+    let orders = JSON.parse(localStorage.getItem('candyOrders')) || [];
+    
+    // Dodajemy nowe
+    orders.push({
+      date: date,
+      customer: customer,
+      product: product || "Zapytanie ogólne",
+      message: message
+    });
+
+    // Zapisujemy
+    localStorage.setItem('candyOrders', JSON.stringify(orders));
+
+    alert("Wiadomość została wysłana! Admin sprawdzi ją wkrótce.");
+    window.location.href = "index.html";
+  }
+</script>
+
+</body>
+</html>
