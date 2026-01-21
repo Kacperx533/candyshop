@@ -38,7 +38,7 @@
       padding: 15px 8%; position: sticky; top: 0; z-index: 1000;
       background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--card-border);
     }
-    .logo img { height: 150px; width: auto; transition: 0.3s; }
+    .logo img { height: 60px; width: auto; transition: 0.3s; }
     .nav a { color: #888; text-decoration: none; margin-left: 30px; font-weight: 500; font-size: 0.85rem; text-transform: uppercase; transition: 0.3s; }
     .nav a:hover { color: #fff; text-shadow: 0 0 10px var(--color-1); }
 
@@ -55,14 +55,13 @@
     }
     .glow-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 45px rgba(255, 0, 204, 0.5); }
 
-    /* POPRAWKA DLA OBRAZKA HERO - aby napisy były widoczne */
     .hero-image { flex: 1; display: flex; justify-content: center; }
     .hero-image img { 
       width: 100%; 
       max-width: 600px; 
       height: auto;
       border-radius: 20px;
-      object-fit: contain; /* Zmienione na contain, żeby nie ucinało napisów */
+      object-fit: contain;
       animation: floatImg 6s infinite ease-in-out; 
       filter: drop-shadow(0 0 30px rgba(255, 0, 204, 0.2)); 
     }
@@ -105,18 +104,17 @@
     <div style="display:none; font-weight:900; color:var(--color-1);">CANDYSHOP</div>
   </div>
   <nav class="nav">
-    <a href="#">Home</a>
+    <a href="index.html">Home</a>
     <a href="#oferta">Sklep</a>
-    <a href="admin.html">Panel</a>
+    <a href="kontakt.html">Kontakt</a> <a href="admin.html">Panel</a>
   </nav>
 </header>
 
 <section class="hero">
   <div class="hero-text reveal active">
     <h1>CANDY<br>SHOP</h1>
-    <p>🧩 Candy Shop – Twój Sklep z Breinrotami do Roblox 🧩
-
-Witaj w Candy Shop – najlepszym miejscu w sieci, gdzie każdy gracz „Steal a Breinrot” znajdzie swoje wymarzone Breinroty! Nasza strona jest stworzona, aby szybko, bezpiecznie i wygodnie kupić przedmioty, które pomogą Ci dominować w grze.</p>
+    <p>🧩 Candy Shop – Twój Sklep z Breinrotami do Roblox 🧩<br><br>
+    Witaj w Candy Shop – najlepszym miejscu w sieci dla graczy „Steal a Breinrot”. Kupuj szybko i bezpiecznie!</p>
     <a href="#oferta" class="glow-btn">Sprawdź Drop</a>
   </div>
   <div class="hero-image reveal active">
@@ -126,7 +124,8 @@ Witaj w Candy Shop – najlepszym miejscu w sieci, gdzie każdy gracz „Steal a
 
 <section id="oferta">
   <h2 class="section-title reveal">Nowości</h2>
-  <div class="products-grid" id="grid"></div>
+  <div class="products-grid" id="grid">
+    </div>
 </section>
 
 <footer>&copy; 2026 CANDYSHOP Store | Created by Capek & Sisi</footer>
@@ -144,17 +143,15 @@ Witaj w Candy Shop – najlepszym miejscu w sieci, gdzie każdy gracz „Steal a
     const grid = document.getElementById('grid');
     let items = JSON.parse(localStorage.getItem('candyProducts')) || [];
     
-    // Demo jeśli pusto
     if (items.length === 0) {
-      items = [
-      ];
-      localStorage.setItem('candyProducts', JSON.stringify(items));
+      grid.innerHTML = '<p style="text-align:center; color:#555; grid-column: 1/-1;">Brak produktów w sklepie. Dodaj je w panelu admina!</p>';
+      return;
     }
 
     grid.innerHTML = '';
     items.forEach((p, i) => {
       grid.innerHTML += `
-        <div class="product-card reveal" style="transition-delay: ${i * 100}ms" onclick="location.href='produkt.html?id=${i}'">
+        <div class="product-card reveal" style="transition-delay: ${i * 100}ms" onclick="location.href='kontakt.html?prod=${encodeURIComponent(p.name)}'">
           <img src="${p.img}" alt="${p.name}">
           <h3>${p.name}</h3>
           <p>${p.price}</p>
