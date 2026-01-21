@@ -53,7 +53,7 @@
     <nav class="nav"><a href="index.html">Home</a><a href="#oferta">Sklep</a><a href="kontakt.html">Kontakt</a><a href="admin.html">Panel</a></nav>
   </header>
   <section class="hero">
-    <div class="hero-text reveal active"><h1>CANDY<br>SHOP</h1><p>Twój Sklep z Breinrotami do Roblox. Szybko, bezpiecznie i tanio.</p><a href="#oferta" class="glow-btn">Sprawdź Drop</a></div>
+    <div class="hero-text reveal active"><h1>CANDY<br>SHOP</h1><p>Najlepsze przedmioty do Roblox "Steal a Breinrot". Kupuj szybko i bezpiecznie.</p><a href="#oferta" class="glow-btn">Sprawdź Drop</a></div>
     <div class="hero-image reveal active"><img src="images/Hero.png" alt="Hero"></div>
   </section>
   <section id="oferta"><h2 class="section-title reveal">Nowości</h2><div class="products-grid" id="grid"></div></section>
@@ -62,7 +62,7 @@
     function load() {
       const grid = document.getElementById('grid');
       const items = JSON.parse(localStorage.getItem('candyProducts')) || [];
-      grid.innerHTML = items.length === 0 ? '<p>Brak produktów.</p>' : '';
+      grid.innerHTML = items.length === 0 ? '<p style="grid-column: 1/-1; text-align:center; color:#555;">Brak produktów. Dodaj je w panelu admina!</p>' : '';
       items.forEach((p, i) => {
         grid.innerHTML += `<div class="product-card reveal" onclick="location.href='produkt.html?id=${i}'">
           <img src="${p.img}"><h3>${p.name}</h3><p>${p.price}</p></div>`;
@@ -76,4 +76,3 @@
   </script>
 </body>
 </html>
-
