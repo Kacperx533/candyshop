@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>ADMIN | Logowanie</title>
+  <title>ADMIN | Zaawansowany Panel Sterowania</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
   <style>
@@ -15,9 +15,9 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: var(--bg-color); color: #fff; font-family: 'Outfit', sans-serif; padding: 40px 5%; }
+    body { background: var(--bg-color); color: #fff; font-family: 'Outfit', sans-serif; padding: 20px; }
 
-    /* --- STYL LOGOWANIA --- */
+    /* --- LOGIN --- */
     #loginOverlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: var(--bg-color); z-index: 9999;
@@ -29,171 +29,230 @@
       backdrop-filter: blur(20px);
     }
 
-    /* --- STYL PANELU --- */
-    #adminContent { display: none; } /* Ukryty domyślnie */
+    /* --- LAYOUT --- */
+    #adminContent { display: none; max-width: 1200px; margin: 0 auto; }
+    .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+    .stat-card { background: var(--card-glass); border: 1px solid var(--card-border); padding: 20px; border-radius: 15px; text-align: center; }
+    .stat-card h3 { font-size: 0.8rem; color: #888; text-transform: uppercase; }
+    .stat-card p { font-size: 2rem; font-weight: 900; color: var(--color-cyan); }
 
-    h1 { font-size: 2.5rem; margin-bottom: 30px; font-weight: 900; background: linear-gradient(to right, #fff, var(--color-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    h2 { margin-bottom: 20px; font-weight: 700; color: var(--color-cyan); text-transform: uppercase; }
+    .grid-admin { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; }
+    .admin-card { background: var(--card-glass); border: 1px solid var(--card-border); border-radius: 20px; padding: 25px; backdrop-filter: blur(20px); }
 
-    .grid-admin { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-    .admin-card { background: var(--card-glass); border: 1px solid var(--card-border); border-radius: 20px; padding: 30px; backdrop-filter: blur(20px); }
+    h1 { font-size: 2rem; margin-bottom: 20px; font-weight: 900; background: linear-gradient(to right, #fff, var(--color-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h2 { margin-bottom: 15px; font-size: 1.2rem; color: var(--color-pink); }
 
-    input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); border-radius: 10px; color: #fff; font-family: inherit; }
+    input, textarea, select { 
+      width: 100%; padding: 12px; margin-bottom: 15px; 
+      background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); 
+      border-radius: 10px; color: #fff; font-family: inherit; 
+    }
     
-    .btn { padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; width: 100%; margin-top: 10px; }
+    .btn { padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; width: 100%; }
     .btn-pink { background: var(--color-pink); color: white; }
-    .btn-pink:hover { box-shadow: 0 0 20px rgba(255, 0, 204, 0.4); transform: translateY(-2px); }
+    .btn-pink:hover { box-shadow: 0 0 20px rgba(255, 0, 204, 0.4); }
+    .btn-outline { background: transparent; border: 1px solid #444; color: #888; margin-top: 10px; }
 
+    /* --- TABELE --- */
+    .table-container { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th { text-align: left; padding: 12px; border-bottom: 2px solid var(--card-border); color: #888; font-size: 0.8rem; }
-    td { padding: 12px; border-bottom: 1px solid var(--card-border); font-size: 0.9rem; }
+    th { text-align: left; padding: 12px; border-bottom: 2px solid var(--card-border); color: #888; font-size: 0.75rem; text-transform: uppercase; }
+    td { padding: 12px; border-bottom: 1px solid var(--card-border); font-size: 0.85rem; }
 
-    .btn-del { background: #ff4d4d; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; }
-    .img-preview { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
+    .img-preview { width: 40px; height: 40px; border-radius: 5px; object-fit: cover; }
+    .btn-del { color: #ff4d4d; background: none; border: none; cursor: pointer; font-weight: bold; }
+    .btn-edit { color: var(--color-cyan); background: none; border: none; cursor: pointer; font-weight: bold; margin-right: 10px; }
 
-    .nav-back { margin-bottom: 20px; display: inline-block; color: #888; text-decoration: none; }
-    
-    @media (max-width: 1000px) { .grid-admin { grid-template-columns: 1fr; } }
+    @media (max-width: 900px) { .grid-admin { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
   <div id="loginOverlay">
     <div class="login-box">
-      <h2 style="color: #fff; margin-bottom: 10px;">Panel Admina</h2>
-      <p style="color: #888; margin-bottom: 20px;">Wpisz hasło dostępu</p>
-      <input type="password" id="adminPass" placeholder="Hasło...">
+      <h1>CANDY ADMIN</h1>
+      <input type="password" id="adminPass" placeholder="Hasło dostępu">
       <button class="btn btn-pink" onclick="checkLogin()">Zaloguj</button>
-      <p id="errorMsg" style="color: #ff4d4d; margin-top: 10px; font-size: 0.8rem; display: none;">Błędne hasło!</p>
+      <p id="errorMsg" style="color: #ff4d4d; margin-top: 10px; display: none;">Błędne hasło!</p>
     </div>
   </div>
 
   <div id="adminContent">
-    <a href="index.html" class="nav-back">← WRÓĆ DO SKLEPU</a>
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <h1>Zarządzanie Sklepem</h1>
-      <button onclick="logout()" style="background:none; border:1px solid #444; color:#888; padding:5px 15px; border-radius:5px; cursor:pointer;">Wyloguj</button>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <a href="index.html" style="color: #888; text-decoration: none;">← SKLEP</a>
+      <button onclick="logout()" class="btn btn-outline" style="width: auto; margin: 0;">Wyloguj</button>
+    </div>
+
+    <h1>Panel Zarządzania</h1>
+
+    <div class="stats-bar">
+      <div class="stat-card"><h3>Produkty</h3><p id="stat-prods">0</p></div>
+      <div class="stat-card"><h3>Zamówienia</h3><p id="stat-orders">0</p></div>
     </div>
 
     <div class="grid-admin">
       <div class="admin-card">
-        <h2>Dodaj Produkt</h2>
-        <input type="text" id="pName" placeholder="Nazwa">
-        <input type="text" id="pPrice" placeholder="Cena">
-        <label style="font-size: 0.7rem; color: #888;">Wybierz zdjęcie:</label>
-        <input type="file" id="pImageFile" accept="image/*">
-        <textarea id="pDesc" rows="2" placeholder="Opis..."></textarea>
-        <button class="btn btn-pink" onclick="addProduct()">Dodaj do sklepu</button>
+        <h2 id="formTitle">Dodaj Produkt</h2>
+        <input type="hidden" id="editIndex" value="-1">
+        <input type="text" id="pName" placeholder="Nazwa przedmiotu">
+        <input type="text" id="pPrice" placeholder="Cena (np. 111.31 PLN)">
+        <textarea id="pDesc" rows="3" placeholder="Opis przedmiotu..."></textarea>
+        <label style="font-size: 0.7rem; color: #888;">URL Obrazka (lub wklej link):</label>
+        <input type="text" id="pImgUrl" placeholder="https://...">
+        <button class="btn btn-pink" id="saveBtn" onclick="handleSave()">Dodaj do bazy</button>
+        <button class="btn btn-outline" id="cancelBtn" style="display:none;" onclick="resetForm()">Anuluj edycję</button>
       </div>
 
       <div class="admin-card">
-        <h2>Produkty</h2>
-        <table>
-          <thead><tr><th>Foto</th><th>Nazwa</th><th>Akcja</th></tr></thead>
-          <tbody id="productList"></tbody>
-        </table>
+        <h2>Twoja Oferta</h2>
+        <div class="table-container">
+          <table>
+            <thead><tr><th>Foto</th><th>Nazwa</th><th>Cena</th><th>Akcja</th></tr></thead>
+            <tbody id="productList"></tbody>
+          </table>
+        </div>
       </div>
 
       <div class="admin-card" style="grid-column: 1 / -1;">
-        <h2>Zamówienia</h2>
-        <table>
-          <thead><tr><th>Data</th><th>Klient</th><th>Produkt</th><th>Wiadomość</th><th>Akcja</th></tr></thead>
-          <tbody id="orderList"></tbody>
-        </table>
+        <h2>Nowe Zgłoszenia / Wiadomości</h2>
+        <div class="table-container">
+          <table>
+            <thead><tr><th>Data</th><th>Klient</th><th>Produkt</th><th>Wiadomość</th><th>Akcja</th></tr></thead>
+            <tbody id="orderList"></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    const CORRECT_PASSWORD = "Candyshopcapeksisi2026"; // <--- TUTAJ WPISZ SWOJE HASŁO
+    const CORRECT_PASSWORD = "admin"; // <--- ZMIEŃ HASŁO TUTAJ
 
-    // Funkcja sprawdzająca logowanie
     function checkLogin() {
-      const input = document.getElementById('adminPass').value;
-      if(input === CORRECT_PASSWORD) {
-        sessionStorage.setItem('adminIsLogged', 'true');
-        showAdminPanel();
+      if(document.getElementById('adminPass').value === CORRECT_PASSWORD) {
+        sessionStorage.setItem('candyLogged', 'true');
+        showPanel();
       } else {
         document.getElementById('errorMsg').style.display = 'block';
       }
     }
 
-    function showAdminPanel() {
+    function showPanel() {
       document.getElementById('loginOverlay').style.display = 'none';
       document.getElementById('adminContent').style.display = 'block';
       renderAll();
     }
 
     function logout() {
-      sessionStorage.removeItem('adminIsLogged');
+      sessionStorage.removeItem('candyLogged');
       location.reload();
     }
 
-    // Sprawdź przy starcie
-    window.onload = function() {
-      if(sessionStorage.getItem('adminIsLogged') === 'true') {
-        showAdminPanel();
-      }
-    };
+    // --- LOGIKA BAZY DANYCH ---
 
-    // --- FUNKCJE SKLEPU ---
-    function addProduct() {
+    function handleSave() {
       const name = document.getElementById('pName').value;
       const price = document.getElementById('pPrice').value;
       const desc = document.getElementById('pDesc').value;
-      const fileInput = document.getElementById('pImageFile');
-      const file = fileInput.files[0];
+      const img = document.getElementById('pImgUrl').value || "https://via.placeholder.com/150";
+      const editIndex = parseInt(document.getElementById('editIndex').value);
 
-      if(!name || !price) return alert("Wypełnij dane!");
+      if(!name || !price) return alert("Nazwa i cena są wymagane!");
 
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          saveProduct(name, price, e.target.result, desc);
-        };
-        reader.readAsDataURL(file);
+      let products = JSON.parse(localStorage.getItem('candyProducts')) || [];
+
+      if(editIndex > -1) {
+        products[editIndex] = { name, price, desc, img }; // Edycja
       } else {
-        saveProduct(name, price, "https://via.placeholder.com/400", desc);
+        products.push({ name, price, desc, img }); // Nowy
       }
+
+      localStorage.setItem('candyProducts', JSON.stringify(products));
+      resetForm();
+      renderAll();
     }
 
-    function saveProduct(name, price, img, desc) {
-      let products = JSON.parse(localStorage.getItem('candyProducts')) || [];
-      products.push({ name, price, img, desc });
-      localStorage.setItem('candyProducts', JSON.stringify(products));
-      alert("Dodano!");
-      renderAll();
+    function editProduct(index) {
+      const products = JSON.parse(localStorage.getItem('candyProducts'));
+      const p = products[index];
+      
+      document.getElementById('pName').value = p.name;
+      document.getElementById('pPrice').value = p.price;
+      document.getElementById('pDesc').value = p.desc;
+      document.getElementById('pImgUrl').value = p.img;
+      document.getElementById('editIndex').value = index;
+      
+      document.getElementById('formTitle').innerText = "Edytuj Produkt";
+      document.getElementById('saveBtn').innerText = "Zaktualizuj";
+      document.getElementById('cancelBtn').style.display = "block";
+    }
+
+    function resetForm() {
+      document.getElementById('pName').value = "";
+      document.getElementById('pPrice').value = "";
+      document.getElementById('pDesc').value = "";
+      document.getElementById('pImgUrl').value = "";
+      document.getElementById('editIndex').value = "-1";
+      document.getElementById('formTitle').innerText = "Dodaj Produkt";
+      document.getElementById('saveBtn').innerText = "Dodaj do bazy";
+      document.getElementById('cancelBtn').style.display = "none";
     }
 
     function deleteProduct(index) {
-      let products = JSON.parse(localStorage.getItem('candyProducts')) || [];
-      products.splice(index, 1);
-      localStorage.setItem('candyProducts', JSON.stringify(products));
-      renderAll();
+      if(confirm("Usunąć ten produkt?")) {
+        let products = JSON.parse(localStorage.getItem('candyProducts'));
+        products.splice(index, 1);
+        localStorage.setItem('candyProducts', JSON.stringify(products));
+        renderAll();
+      }
     }
 
     function deleteOrder(index) {
-      let orders = JSON.parse(localStorage.getItem('candyOrders')) || [];
+      let orders = JSON.parse(localStorage.getItem('candyOrders'));
       orders.splice(index, 1);
       localStorage.setItem('candyOrders', JSON.stringify(orders));
       renderAll();
     }
 
     function renderAll() {
-      const pList = document.getElementById('productList');
+      // Produkty
       const products = JSON.parse(localStorage.getItem('candyProducts')) || [];
+      const pList = document.getElementById('productList');
       pList.innerHTML = "";
       products.forEach((p, i) => {
-        pList.innerHTML += `<tr><td><img src="${p.img}" class="img-preview"></td><td>${p.name}</td><td><button class="btn-del" onclick="deleteProduct(${i})">Usuń</button></td></tr>`;
+        pList.innerHTML += `<tr>
+          <td><img src="${p.img}" class="img-preview"></td>
+          <td>${p.name}</td>
+          <td>${p.price}</td>
+          <td>
+            <button class="btn-edit" onclick="editProduct(${i})">EDYCJA</button>
+            <button class="btn-del" onclick="deleteProduct(${i})">USUŃ</button>
+          </td>
+        </tr>`;
       });
 
-      const oList = document.getElementById('orderList');
+      // Zamówienia
       const orders = JSON.parse(localStorage.getItem('candyOrders')) || [];
+      const oList = document.getElementById('orderList');
       oList.innerHTML = "";
       orders.forEach((o, i) => {
-        oList.innerHTML += `<tr><td>${o.date}</td><td>${o.customer}</td><td style="color:var(--color-cyan)">${o.product}</td><td>${o.message}</td><td><button class="btn-del" onclick="deleteOrder(${i})">Usuń</button></td></tr>`;
+        oList.innerHTML += `<tr>
+          <td>${o.date}</td>
+          <td>${o.customer}</td>
+          <td style="color:var(--color-cyan)">${o.product}</td>
+          <td>${o.message}</td>
+          <td><button class="btn-del" onclick="deleteOrder(${i})">Usuń</button></td>
+        </tr>`;
       });
+
+      // Statystyki
+      document.getElementById('stat-prods').innerText = products.length;
+      document.getElementById('stat-orders').innerText = orders.length;
     }
+
+    window.onload = () => {
+      if(sessionStorage.getItem('candyLogged') === 'true') showPanel();
+    };
   </script>
 </body>
 </html>
