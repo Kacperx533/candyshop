@@ -2,32 +2,34 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>CANDYSHOP | Kontakt</title>
+  <title>Candyshop | Zamówienie</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
   <style>
-    body { background: #050505; color: #fff; font-family: 'Outfit', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 30px; width: 400px; }
-    input, textarea { width: 100%; padding: 15px; margin-bottom: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; }
-    .btn { width: 100%; padding: 15px; border: none; border-radius: 50px; background: linear-gradient(90deg, #333399, #ff00cc); color: white; font-weight: 900; cursor: pointer; }
+    body { background: #030303; color: #fff; font-family: 'Outfit', sans-serif; text-align: center; }
+    .header-area { padding: 30px 0; }
+    .logo-img { width: 150px; }
+    .form-box { max-width: 450px; margin: 20px auto; background: rgba(255,255,255,0.02); padding: 40px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05); }
+    input, textarea { width: 100%; padding: 15px; margin-bottom: 20px; background: #000; border: 1px solid #222; border-radius: 12px; color: #fff; }
+    .btn { width: 100%; padding: 18px; border: none; background: #ff00cc; color: #fff; font-weight: 900; border-radius: 15px; cursor: pointer; }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h2 style="text-align:center; margin-bottom:20px;">ZAMÓWIENIE</h2>
-    <input type="text" id="cust" placeholder="Twój Discord/Nick">
-    <input type="text" id="prod" placeholder="Produkt">
-    <textarea id="msg" rows="4" placeholder="Wiadomość..."></textarea>
+  <header class="header-area"><a href="index.html"><img src="images/logo.png" class="logo-img"></a></header>
+  <div class="form-box">
+    <h2>ZŁÓŻ ZAMÓWIENIE</h2><br>
+    <input type="text" id="c" placeholder="Discord / Nick">
+    <input type="text" id="p" placeholder="Produkt">
+    <textarea id="m" rows="5" placeholder="Wiadomość do admina..."></textarea>
     <button class="btn" onclick="send()">WYŚLIJ</button>
   </div>
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const pName = urlParams.get('prod');
-    if(pName) document.getElementById('prod').value = decodeURIComponent(pName);
-
+    const pName = new URLSearchParams(window.location.search).get('prod');
+    if(pName) document.getElementById('p').value = decodeURIComponent(pName);
     function send() {
       const orders = JSON.parse(localStorage.getItem('candyOrders')) || [];
-      orders.push({ date: new Date().toLocaleString(), customer: document.getElementById('cust').value, product: document.getElementById('prod').value, message: document.getElementById('msg').value });
+      orders.push({ date: new Date().toLocaleString(), customer: document.getElementById('c').value, product: document.getElementById('p').value, message: document.getElementById('m').value });
       localStorage.setItem('candyOrders', JSON.stringify(orders));
-      alert("Wysłano!"); window.location.href = "index.html";
+      alert("Zamówienie wysłane!"); window.location.href = "index.html";
     }
   </script>
 </body>
