@@ -2,75 +2,41 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>CANDYSHOP | Kup Swoje Breinroty</title>
+  <title>CANDYSHOP | Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-color: #050505;
-      --card-glass: rgba(255, 255, 255, 0.03);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --color-1: #ff00cc;
-      --color-2: #333399;
-      --color-3: #00dbde;
-      --transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #000; }
-    ::-webkit-scrollbar-thumb { background: linear-gradient(var(--color-2), var(--color-1)); border-radius: 10px; }
+    :root { --bg: #050505; --pink: #ff00cc; --blue: #333399; --card-border: rgba(255,255,255,0.08); }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background-color: var(--bg-color); color: #fff; font-family: 'Outfit', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
-    .background-blobs { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: #000; overflow: hidden; }
-    .blob { position: absolute; filter: blur(100px); opacity: 0.4; border-radius: 50%; }
-    .blob-1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: var(--color-2); }
-    .blob-2 { bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: var(--color-1); }
-    .header { display: flex; align-items: center; justify-content: space-between; padding: 15px 8%; position: sticky; top: 0; z-index: 1000; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--card-border); }
-    .logo img { height: 150px; width: auto; }
-    .nav a { color: #888; text-decoration: none; margin-left: 30px; font-weight: 500; font-size: 0.85rem; text-transform: uppercase; transition: 0.3s; }
-    .nav a:hover { color: #fff; text-shadow: 0 0 10px var(--color-1); }
-    .hero { min-height: 90vh; display: flex; align-items: center; justify-content: space-between; padding: 0 8%; gap: 50px; }
-    .hero-text h1 { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; background: linear-gradient(135deg, #fff, var(--color-1)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero-text p { color: #aaa; margin-bottom: 40px; font-size: 1.1rem; max-width: 450px; }
-    .glow-btn { padding: 18px 45px; border-radius: 50px; background: linear-gradient(90deg, var(--color-2), var(--color-1)); color: #fff; font-weight: bold; text-decoration: none; display: inline-block; transition: 0.4s; box-shadow: 0 10px 30px rgba(255, 0, 204, 0.3); }
-    .hero-image img { width: 100%; max-width: 500px; animation: floatImg 6s infinite ease-in-out; }
-    @keyframes floatImg { 0%,100% {transform: translateY(0);} 50% {transform: translateY(-20px);} }
-    #oferta { padding: 80px 8%; }
-    .section-title { text-align: center; margin-bottom: 60px; font-size: 3rem; font-weight: 900; }
-    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 35px; }
-    .product-card { background: var(--card-glass); border: 1px solid var(--card-border); border-radius: 25px; padding: 20px; cursor: pointer; transition: 0.4s; text-align: center; }
-    .product-card:hover { transform: translateY(-10px); border-color: var(--color-1); }
-    .product-card img { width: 100%; height: 250px; object-fit: cover; border-radius: 18px; margin-bottom: 15px; }
-    .product-card p { color: var(--color-3); font-weight: 900; font-size: 1.4rem; }
-    .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
-    .reveal.active { opacity: 1; transform: translateY(0); }
-    footer { padding: 50px; text-align: center; color: #444; border-top: 1px solid var(--card-border); }
+    body { background: var(--bg); color: #fff; font-family: 'Outfit', sans-serif; }
+    .header { padding: 20px 8%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); }
+    .nav a { color: #888; text-decoration: none; margin-left: 20px; font-size: 0.9rem; text-transform: uppercase; }
+    .hero { padding: 100px 8%; text-align: center; }
+    .hero h1 { font-size: 4rem; font-weight: 900; background: linear-gradient(to right, #fff, var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .products-grid { padding: 50px 8%; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; }
+    .product-card { background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); border-radius: 20px; padding: 15px; cursor: pointer; transition: 0.3s; text-align: center; }
+    .product-card:hover { transform: translateY(-10px); border-color: var(--pink); }
+    .product-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 15px; }
+    .product-card h3 { margin: 15px 0 5px; }
+    .product-card p { color: var(--pink); font-weight: 700; font-size: 1.2rem; }
   </style>
 </head>
 <body>
-  <div class="background-blobs"><div class="blob blob-1"></div><div class="blob blob-2"></div></div>
   <header class="header">
-    <div class="logo"><img src="images/logo.png" alt="CANDYSHOP"></div>
-    <nav class="nav"><a href="index.html">Home</a><a href="#oferta">Sklep</a><a href="kontakt.html">Kontakt</a><a href="admin.html">Panel</a></nav>
+    <div class="logo" style="font-weight:900; font-size:1.5rem;">CANDY<span style="color:var(--pink)">SHOP</span></div>
+    <nav class="nav"><a href="index.html">Sklep</a><a href="admin.html">Panel Admina</a></nav>
   </header>
-  <section class="hero">
-    <div class="hero-text reveal active"><h1>CANDY<br>SHOP</h1><p>Najlepsze przedmioty do Roblox "Steal a Breinrot". Kupuj szybko i bezpiecznie.</p><a href="#oferta" class="glow-btn">Sprawdź Drop</a></div>
-    <div class="hero-image reveal active"><img src="images/Hero.png" alt="Hero"></div>
-  </section>
-  <section id="oferta"><h2 class="section-title reveal">Nowości</h2><div class="products-grid" id="grid"></div></section>
-  <footer>&copy; 2026 CANDYSHOP Store | Created by Capek & Sisi</footer>
+  <section class="hero"><h1>Wybierz swój przedmiot</h1></section>
+  <div class="products-grid" id="grid"></div>
   <script>
     function load() {
       const grid = document.getElementById('grid');
       const items = JSON.parse(localStorage.getItem('candyProducts')) || [];
-      grid.innerHTML = items.length === 0 ? '<p style="grid-column: 1/-1; text-align:center; color:#555;">Brak produktów. Dodaj je w panelu admina!</p>' : '';
+      grid.innerHTML = items.length === 0 ? '<p style="color:#444">Brak produktów.</p>' : '';
       items.forEach((p, i) => {
-        grid.innerHTML += `<div class="product-card reveal" onclick="location.href='produkt.html?id=${i}'">
+        grid.innerHTML += `<div class="product-card" onclick="location.href='produkt.html?id=${i}'">
           <img src="${p.img}"><h3>${p.name}</h3><p>${p.price}</p></div>`;
       });
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
-      });
-      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     }
     window.onload = load;
   </script>
