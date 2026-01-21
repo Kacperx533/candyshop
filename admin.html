@@ -14,6 +14,7 @@
     .grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
     .card { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 15px; }
     input, textarea { width: 100%; padding: 10px; margin-bottom: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; color: #fff; }
+    input[type="file"] { background: transparent; border: 1px dashed var(--border); cursor: pointer; }
     .btn { padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; width: 100%; transition: 0.3s; }
     .btn-pink { background: var(--pink); color: #fff; }
     .btn-outline { background: transparent; border: 1px solid #444; color: #888; margin-top: 5px; }
@@ -21,21 +22,22 @@
     th { text-align: left; padding: 10px; border-bottom: 2px solid var(--border); color: #888; }
     td { padding: 10px; border-bottom: 1px solid var(--border); }
     .img-p { width: 35px; height: 35px; border-radius: 5px; object-fit: cover; }
+    .preview-box { width: 100%; height: 150px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; }
+    .preview-box img { max-width: 100%; max-height: 100%; display: none; }
     .stats { display: flex; gap: 15px; margin-bottom: 20px; }
     .stat { flex: 1; background: var(--card); padding: 15px; border-radius: 10px; text-align: center; border: 1px solid var(--border); }
-    .search-box { margin-bottom: 20px; width: 100%; }
     @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <div id="loginOverlay"><div class="box"><h2>ADMIN LOGIN</h2><input type="password" id="p" placeholder="Hasło"><button class="btn btn-pink" onclick="login()">Zaloguj</button></div></div>
+  
   <div id="adminContent">
     <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
       <h1>Zarządzanie Sklepem</h1>
-      <div><button class="btn btn-outline" style="width:auto;" onclick="exportData()">💾 Kopia</button><button class="btn btn-outline" style="width:auto;" onclick="logout()">Wyloguj</button></div>
+      <div><button class="btn btn-outline" style="width:auto;" onclick="logout()">Wyloguj</button></div>
     </div>
-    <div class="stats"><div class="stat"><small>Produkty</small><div id="s1" style="font-size:1.5rem; font-weight:900;">0</div></div><div class="stat"><small>Zamówienia</small><div id="s2" style="font-size:1.5rem; font-weight:900; color:var(--pink);">0</div></div></div>
-    <input type="text" class="search-box" id="search" placeholder="Szukaj zamówienia lub produktu..." onkeyup="render()">
+
     <div class="grid">
       <div class="card">
         <h3 id="formT">Dodaj Produkt</h3>
@@ -43,24 +45,79 @@
         <input type="text" id="pN" placeholder="Nazwa">
         <input type="text" id="pP" placeholder="Cena">
         <textarea id="pD" placeholder="Opis..."></textarea>
-        <input type="text" id="pI" placeholder="URL Zdjęcia">
-        <button class="btn btn-pink" onclick="save()">Zapisz</button>
+        
+        <label style="font-size: 0.7rem; color: var(--pink);">ZDJĘCIE PRZEDMIOTU:</label>
+        <div class="preview-box" id="pBox">
+          <span id="pText" style="color:#444; font-size: 0.8rem;">Podgląd zdjęcia</span>
+          <img id="pImgPreview" src="">
+        </div>
+        <input type="file" id="pFile" accept="image/*" onchange="previewFile()">
+        
+        <button class="btn btn-pink" onclick="save()">Zapisz Produkt</button>
       </div>
-      <div class="card"><h3>Lista Produktów</h3><div style="overflow-x:auto;"><table><thead><tr><th>Foto</th><th>Nazwa</th><th>Opcje</th></tr></thead><tbody id="pList"></tbody></table></div></div>
-      <div class="card" style="grid-column: 1 / -1;"><h3>Zamówienia</h3><div style="overflow-x:auto;"><table><thead><tr><th>Data</th><th>Klient</th><th>Produkt</th><th>Wiadomość</th><th>Akcja</th></tr></thead><tbody id="oList"></tbody></table></div></div>
+
+      <div class="card">
+        <h3>Lista Produktów</h3>
+        <table>
+          <thead><tr><th>Foto</th><th>Nazwa</th><th>Opcje</th></tr></thead>
+          <tbody id="pList"></tbody>
+        </table>
+      </div>
+
+      <div class="card" style="grid-column: 1 / -1;">
+        <h3>Zamówienia</h3>
+        <table>
+          <thead><tr><th>Data</th><th>Klient</th><th>Produkt</th><th>Wiadomość</th><th>Akcja</th></tr></thead>
+          <tbody id="oList"></tbody>
+        </table>
+      </div>
     </div>
   </div>
+
   <script>
-    const PASS = "admin"; // Hasło
+    const PASS = "admin";
+    let currentBase64 = "";
+
     function login() { if(document.getElementById('p').value === PASS) { sessionStorage.setItem('l', '1'); show(); } }
     function logout() { sessionStorage.removeItem('l'); location.reload(); }
     function show() { document.getElementById('loginOverlay').style.display='none'; document.getElementById('adminContent').style.display='block'; render(); }
-    
+
+    // Podgląd i konwersja pliku na tekst (Base64)
+    function previewFile() {
+      const file = document.getElementById('pFile').files[0];
+      const reader = new FileReader();
+      reader.onloadend = function() {
+        currentBase64 = reader.result;
+        const img = document.getElementById('pImgPreview');
+        img.src = reader.result;
+        img.style.display = 'block';
+        document.getElementById('pText').style.display = 'none';
+      }
+      if (file) { reader.readAsDataURL(file); }
+    }
+
     function save() {
       const idx = document.getElementById('editIdx').value;
-      const p = { name: document.getElementById('pN').value, price: document.getElementById('pP').value, desc: document.getElementById('pD').value, img: document.getElementById('pI').value };
+      const name = document.getElementById('pN').value;
+      const price = document.getElementById('pP').value;
+      
+      if(!name || !price || (!currentBase64 && idx == -1)) return alert("Wypełnij dane i dodaj zdjęcie!");
+
       let items = JSON.parse(localStorage.getItem('candyProducts')) || [];
-      if(idx == -1) items.push(p); else items[idx] = p;
+      const productData = { 
+        name: name, 
+        price: price, 
+        desc: document.getElementById('pD').value, 
+        img: currentBase64 
+      };
+
+      if(idx == -1) items.push(productData); 
+      else {
+        // Jeśli edytujemy i nie wybrano nowego zdjęcia, zostawiamy stare
+        if(!currentBase64) productData.img = items[idx].img;
+        items[idx] = productData;
+      }
+
       localStorage.setItem('candyProducts', JSON.stringify(items));
       location.reload();
     }
@@ -71,7 +128,11 @@
       document.getElementById('pN').value = items[i].name;
       document.getElementById('pP').value = items[i].price;
       document.getElementById('pD').value = items[i].desc;
-      document.getElementById('pI').value = items[i].img;
+      // Pokazanie starego zdjęcia w podglądzie
+      const img = document.getElementById('pImgPreview');
+      img.src = items[i].img;
+      img.style.display = 'block';
+      document.getElementById('pText').style.display = 'none';
       document.getElementById('formT').innerText = "Edytuj";
     }
 
@@ -83,25 +144,21 @@
       render();
     }
 
-    function exportData() {
-      const data = { p: localStorage.getItem('candyProducts'), o: localStorage.getItem('candyOrders') };
-      const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'backup.json'; a.click();
-    }
-
     function render() {
-      const q = document.getElementById('search').value.toLowerCase();
       const ps = JSON.parse(localStorage.getItem('candyProducts')) || [];
       const os = JSON.parse(localStorage.getItem('candyOrders')) || [];
-      document.getElementById('s1').innerText = ps.length;
-      document.getElementById('s2').innerText = os.length;
       
-      let hP = ""; ps.forEach((p, i) => { if(p.name.toLowerCase().includes(q)) hP += `<tr><td><img src="${p.img}" class="img-p"></td><td>${p.name}</td><td><button onclick="edit(${i})">✏️</button> <button onclick="del(${i}, 'p')">🗑️</button></td></tr>`; });
+      let hP = ""; ps.forEach((p, i) => { 
+        hP += `<tr><td><img src="${p.img}" class="img-p"></td><td>${p.name}</td><td><button onclick="edit(${i})">✏️</button> <button onclick="del(${i}, 'p')">🗑️</button></td></tr>`; 
+      });
       document.getElementById('pList').innerHTML = hP;
 
-      let hO = ""; os.forEach((o, i) => { if(o.customer.toLowerCase().includes(q) || o.product.toLowerCase().includes(q)) hO += `<tr><td>${o.date}</td><td style="color:var(--pink); cursor:pointer;" onclick="navigator.clipboard.writeText('${o.customer}')">📋 ${o.customer}</td><td>${o.product}</td><td>${o.message}</td><td><button onclick="del(${i}, 'o')">Usuń</button></td></tr>`; });
+      let hO = ""; os.forEach((o, i) => { 
+        hO += `<tr><td>${o.date}</td><td style="color:var(--pink)">${o.customer}</td><td>${o.product}</td><td>${o.message}</td><td><button onclick="del(${i}, 'o')">Usuń</button></td></tr>`; 
+      });
       document.getElementById('oList').innerHTML = hO;
     }
+
     window.onload = () => { if(sessionStorage.getItem('l')) show(); };
   </script>
 </body>
