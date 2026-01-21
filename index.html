@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>CANDYSHOP | Future Store</title>
+  <title>CANDYSHOP | Kup Swoje Breinroty</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
   
@@ -17,35 +17,35 @@
       --transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    /* CUSTOM SCROLLBAR */
+    /* --- NOWOCZESNY NEONOWY SCROLLBAR --- */
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: #000; }
     ::-webkit-scrollbar-thumb { background: linear-gradient(var(--color-2), var(--color-1)); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--color-1); }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background-color: var(--bg-color); color: #fff; font-family: 'Outfit', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
 
-    /* BACKGROUND ANIMATION */
+    /* --- TŁO AURORA --- */
     .background-blobs { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: #000; overflow: hidden; }
     .blob { position: absolute; filter: blur(100px); opacity: 0.4; border-radius: 50%; }
     .blob-1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: var(--color-2); }
     .blob-2 { bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: var(--color-1); }
 
-    /* HEADER */
+    /* --- NAGŁÓWEK --- */
     .header {
       display: flex; align-items: center; justify-content: space-between;
       padding: 15px 8%; position: sticky; top: 0; z-index: 1000;
       background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--card-border);
     }
-    .logo img { height: 45px; width: auto; }
-    .logo-text { font-weight: 900; font-size: 1.5rem; letter-spacing: 2px; color: var(--color-1); }
+    .logo img { height: 60px; width: auto; transition: 0.3s; }
     .nav a { color: #888; text-decoration: none; margin-left: 30px; font-weight: 500; font-size: 0.85rem; text-transform: uppercase; transition: 0.3s; }
     .nav a:hover { color: #fff; text-shadow: 0 0 10px var(--color-1); }
 
-    /* HERO SECTION - FIXED VISIBILITY */
+    /* --- HERO SECTION --- */
     .hero { min-height: 90vh; display: flex; align-items: center; justify-content: space-between; padding: 0 8%; gap: 50px; }
-    .hero-text h1 { font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; line-height: 1; margin-bottom: 20px; background: linear-gradient(135deg, #fff, var(--color-1)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero-text p { color: #aaa; margin-bottom: 40px; font-size: 1.2rem; max-width: 500px; line-height: 1.6; }
+    .hero-text h1 { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; background: linear-gradient(135deg, #fff, var(--color-1)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-text p { color: #aaa; margin-bottom: 40px; font-size: 1.1rem; max-width: 450px; line-height: 1.6; }
     
     .glow-btn { 
       padding: 18px 45px; border: none; border-radius: 50px; 
@@ -55,10 +55,20 @@
     }
     .glow-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 45px rgba(255, 0, 204, 0.5); }
 
-    .hero-image img { width: 100%; max-width: 500px; animation: floatImg 6s infinite ease-in-out; filter: drop-shadow(0 0 30px rgba(51, 51, 153, 0.3)); }
-    @keyframes floatImg { 0%,100% {transform: translateY(0);} 50% {transform: translateY(-25px);} }
+    /* POPRAWKA DLA OBRAZKA HERO - aby napisy były widoczne */
+    .hero-image { flex: 1; display: flex; justify-content: center; }
+    .hero-image img { 
+      width: 100%; 
+      max-width: 600px; 
+      height: auto;
+      border-radius: 20px;
+      object-fit: contain; /* Zmienione na contain, żeby nie ucinało napisów */
+      animation: floatImg 6s infinite ease-in-out; 
+      filter: drop-shadow(0 0 30px rgba(255, 0, 204, 0.2)); 
+    }
+    @keyframes floatImg { 0%,100% {transform: translateY(0);} 50% {transform: translateY(-20px);} }
 
-    /* PRODUCTS GRID */
+    /* --- PRODUKTY --- */
     #oferta { padding: 80px 8%; }
     .section-title { text-align: center; margin-bottom: 60px; font-size: 3rem; font-weight: 900; }
     .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 35px; }
@@ -68,17 +78,12 @@
       border-radius: 25px; padding: 20px; cursor: pointer; transition: 0.4s; 
       backdrop-filter: blur(15px); text-align: center;
     }
-    .product-card:hover { transform: translateY(-10px); border-color: var(--color-1); }
+    .product-card:hover { transform: translateY(-10px); border-color: var(--color-1); box-shadow: 0 10px 30px rgba(255, 0, 204, 0.1); }
     .product-card img { width: 100%; height: 280px; object-fit: cover; border-radius: 18px; margin-bottom: 15px; }
     .product-card h3 { font-size: 1.3rem; margin-bottom: 8px; }
     .product-card p { color: var(--color-3); font-weight: 900; font-size: 1.4rem; }
 
-    /* CONTACT FORM */
-    .contact-box { max-width: 600px; margin: 40px auto; padding: 40px; background: rgba(10,10,10,0.8); border-radius: 35px; border: 1px solid var(--card-border); backdrop-filter: blur(30px); }
-    input, textarea { width: 100%; padding: 16px; margin-bottom: 18px; background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: #fff; border-radius: 12px; font-family: inherit; }
-    input:focus { outline: none; border-color: var(--color-1); }
-
-    /* REVEAL SYSTEM */
+    /* --- ANIMACJE REVEAL --- */
     .reveal { opacity: 0; transform: translateY(50px); filter: blur(10px); transition: var(--transition); }
     .reveal.active { opacity: 1; transform: translateY(0); filter: blur(0); }
 
@@ -97,62 +102,51 @@
 <header class="header">
   <div class="logo">
     <img src="images/logo.png" alt="CANDYSHOP" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-    <div class="logo-text" style="display:none;">CANDY<span>SHOP</span></div>
+    <div style="display:none; font-weight:900; color:var(--color-1);">CANDYSHOP</div>
   </div>
   <nav class="nav">
-    <a href="#">Start</a>
-    <a href="#oferta">Drop</a>
-    <a href="#kontakt">Zamów</a>
+    <a href="#">Home</a>
+    <a href="#oferta">Sklep</a>
+    <a href="admin.html">Panel</a>
   </nav>
 </header>
 
 <section class="hero">
   <div class="hero-text reveal active">
-    <h1>CANDY<br>SHOP</h1>
-    <p>Limitowane kolekcje streetwearu. Projektowane z myślą o przyszłości. Najwyższa jakość, unikalny drop.</p>
-    <a href="#oferta" class="glow-btn">Sprawdź kolekcję</a>
+    <h1>KUP SWOJE<br>BREINROTY</h1>
+    <p>Odkryj unikalny styl CANDYSHOP. Najlepsze dropy, najwyższa jakość i klimat, którego nie znajdziesz nigdzie indziej.</p>
+    <a href="#oferta" class="glow-btn">Sprawdź Drop</a>
   </div>
   <div class="hero-image reveal active">
-    <img src="images/hero.png" alt="Hero" id="heroImg" onerror="this.src='https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop'">
+    <img src="images/Hero.png" alt="Hero Image" id="heroImg" onerror="this.src='https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop'">
   </div>
 </section>
 
 <section id="oferta">
-  <h2 class="section-title reveal">Aktualny Drop</h2>
+  <h2 class="section-title reveal">Nowości</h2>
   <div class="products-grid" id="grid"></div>
 </section>
 
-<section id="kontakt" class="reveal">
-  <div class="contact-box">
-    <h2 style="text-align:center; margin-bottom:25px;">Formularz Zamówienia</h2>
-    <input type="text" id="selectedItem" readonly placeholder="Wybierz produkt z oferty...">
-    <input type="text" id="userName" placeholder="Twoje Imię / Nick">
-    <textarea id="userMessage" rows="4" placeholder="Adres dostawy..."></textarea>
-    <button class="glow-btn" style="width:100%" onclick="sendOrder()">Potwierdź zamówienie</button>
-  </div>
-</section>
-
-<footer>&copy; 2026 CANDYSHOP Store. Wszystkie prawa zastrzeżone.</footer>
+<footer>&copy; 2026 CANDYSHOP Store | Created by Capek & Sisi</footer>
 
 <script>
-  // --- PARALLAX ---
+  // --- PARALLAX EFFECT ---
   window.addEventListener('scroll', () => {
     const s = window.pageYOffset;
     document.getElementById('b1').style.transform = `translate(${s * 0.05}px, ${s * 0.1}px)`;
     document.getElementById('b2').style.transform = `translate(-${s * 0.05}px, -${s * 0.1}px)`;
   });
 
-  // --- AUTO-SEED & LOAD ---
+  // --- ŁADOWANIE PRODUKTÓW ---
   function load() {
     const grid = document.getElementById('grid');
     let items = JSON.parse(localStorage.getItem('candyProducts')) || [];
     
-    // Jeśli sklep jest pusty (pierwsze wejście na Vercel), dodaj produkty demo
+    // Demo jeśli pusto
     if (items.length === 0) {
       items = [
-        { name: "Aurora Hoodie", price: "249 PLN", img: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=400&auto=format&fit=crop", desc: "Premium cotton." },
-        { name: "Cyber Shades", price: "129 PLN", img: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=400&auto=format&fit=crop", desc: "UV Protection." },
-        { name: "Neon Cap", price: "89 PLN", img: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=400&auto=format&fit=crop", desc: "Limited edition." }
+        { name: "Neon Hoodie", price: "249 PLN", img: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=400&auto=format&fit=crop" },
+        { name: "Cyber Cap", price: "119 PLN", img: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=400&auto=format&fit=crop" }
       ];
       localStorage.setItem('candyProducts', JSON.stringify(items));
     }
@@ -175,29 +169,6 @@
       entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-  }
-
-  function sendOrder() {
-    const item = document.getElementById('selectedItem').value;
-    const name = document.getElementById('userName').value;
-    const msg = document.getElementById('userMessage').value;
-
-    if(!name || !item) return alert("Wybierz produkt i podaj dane!");
-    
-    const orders = JSON.parse(localStorage.getItem('candyOrders')) || [];
-    orders.push({ customer: name, product: item, message: msg, date: new Date().toLocaleString() });
-    localStorage.setItem('candyOrders', JSON.stringify(orders));
-    
-    alert("Zamówienie wysłane do administratora!");
-    document.getElementById('userName').value = "";
-    document.getElementById('userMessage').value = "";
-  }
-
-  // Obsługa powrotu ze strony produktu
-  const params = new URLSearchParams(window.location.search);
-  if(params.has('order')) {
-    document.getElementById('selectedItem').value = params.get('order');
-    setTimeout(() => { document.getElementById('kontakt').scrollIntoView({ behavior: 'smooth' }); }, 500);
   }
 
   window.onload = load;
