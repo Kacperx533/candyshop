@@ -2,257 +2,107 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>ADMIN | Zaawansowany Panel Sterowania</title>
+  <title>CANDY ADMIN | Zarządzanie</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-color: #050505;
-      --card-glass: rgba(255, 255, 255, 0.03);
-      --card-border: rgba(255, 255, 255, 0.1);
-      --color-pink: #ff00cc;
-      --color-cyan: #00dbde;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: var(--bg-color); color: #fff; font-family: 'Outfit', sans-serif; padding: 20px; }
-
-    /* --- LOGIN --- */
-    #loginOverlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: var(--bg-color); z-index: 9999;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .login-box {
-      background: var(--card-glass); border: 1px solid var(--card-border);
-      padding: 40px; border-radius: 20px; text-align: center; width: 100%; max-width: 400px;
-      backdrop-filter: blur(20px);
-    }
-
-    /* --- LAYOUT --- */
+    :root { --bg: #050505; --card: rgba(255,255,255,0.03); --pink: #ff00cc; --cyan: #00dbde; --border: rgba(255,255,255,0.1); }
+    body { background: var(--bg); color: #fff; font-family: 'Outfit', sans-serif; padding: 20px; }
+    #loginOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; }
+    .box { background: var(--card); border: 1px solid var(--border); padding: 30px; border-radius: 20px; backdrop-filter: blur(20px); }
     #adminContent { display: none; max-width: 1200px; margin: 0 auto; }
-    .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
-    .stat-card { background: var(--card-glass); border: 1px solid var(--card-border); padding: 20px; border-radius: 15px; text-align: center; }
-    .stat-card h3 { font-size: 0.8rem; color: #888; text-transform: uppercase; }
-    .stat-card p { font-size: 2rem; font-weight: 900; color: var(--color-cyan); }
-
-    .grid-admin { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; }
-    .admin-card { background: var(--card-glass); border: 1px solid var(--card-border); border-radius: 20px; padding: 25px; backdrop-filter: blur(20px); }
-
-    h1 { font-size: 2rem; margin-bottom: 20px; font-weight: 900; background: linear-gradient(to right, #fff, var(--color-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    h2 { margin-bottom: 15px; font-size: 1.2rem; color: var(--color-pink); }
-
-    input, textarea, select { 
-      width: 100%; padding: 12px; margin-bottom: 15px; 
-      background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); 
-      border-radius: 10px; color: #fff; font-family: inherit; 
-    }
-    
-    .btn { padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; width: 100%; }
-    .btn-pink { background: var(--color-pink); color: white; }
-    .btn-pink:hover { box-shadow: 0 0 20px rgba(255, 0, 204, 0.4); }
-    .btn-outline { background: transparent; border: 1px solid #444; color: #888; margin-top: 10px; }
-
-    /* --- TABELE --- */
-    .table-container { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th { text-align: left; padding: 12px; border-bottom: 2px solid var(--card-border); color: #888; font-size: 0.75rem; text-transform: uppercase; }
-    td { padding: 12px; border-bottom: 1px solid var(--card-border); font-size: 0.85rem; }
-
-    .img-preview { width: 40px; height: 40px; border-radius: 5px; object-fit: cover; }
-    .btn-del { color: #ff4d4d; background: none; border: none; cursor: pointer; font-weight: bold; }
-    .btn-edit { color: var(--color-cyan); background: none; border: none; cursor: pointer; font-weight: bold; margin-right: 10px; }
-
-    @media (max-width: 900px) { .grid-admin { grid-template-columns: 1fr; } }
+    .grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+    .card { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 15px; }
+    input, textarea { width: 100%; padding: 10px; margin-bottom: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; color: #fff; }
+    .btn { padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; width: 100%; transition: 0.3s; }
+    .btn-pink { background: var(--pink); color: #fff; }
+    .btn-outline { background: transparent; border: 1px solid #444; color: #888; margin-top: 5px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    th { text-align: left; padding: 10px; border-bottom: 2px solid var(--border); color: #888; }
+    td { padding: 10px; border-bottom: 1px solid var(--border); }
+    .img-p { width: 35px; height: 35px; border-radius: 5px; object-fit: cover; }
+    .stats { display: flex; gap: 15px; margin-bottom: 20px; }
+    .stat { flex: 1; background: var(--card); padding: 15px; border-radius: 10px; text-align: center; border: 1px solid var(--border); }
+    .search-box { margin-bottom: 20px; width: 100%; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-
-  <div id="loginOverlay">
-    <div class="login-box">
-      <h1>CANDY ADMIN</h1>
-      <input type="password" id="adminPass" placeholder="Hasło dostępu">
-      <button class="btn btn-pink" onclick="checkLogin()">Zaloguj</button>
-      <p id="errorMsg" style="color: #ff4d4d; margin-top: 10px; display: none;">Błędne hasło!</p>
-    </div>
-  </div>
-
+  <div id="loginOverlay"><div class="box"><h2>ADMIN LOGIN</h2><input type="password" id="p" placeholder="Hasło"><button class="btn btn-pink" onclick="login()">Zaloguj</button></div></div>
   <div id="adminContent">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-      <a href="index.html" style="color: #888; text-decoration: none;">← SKLEP</a>
-      <button onclick="logout()" class="btn btn-outline" style="width: auto; margin: 0;">Wyloguj</button>
+    <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+      <h1>Zarządzanie Sklepem</h1>
+      <div><button class="btn btn-outline" style="width:auto;" onclick="exportData()">💾 Kopia</button><button class="btn btn-outline" style="width:auto;" onclick="logout()">Wyloguj</button></div>
     </div>
-
-    <h1>Panel Zarządzania</h1>
-
-    <div class="stats-bar">
-      <div class="stat-card"><h3>Produkty</h3><p id="stat-prods">0</p></div>
-      <div class="stat-card"><h3>Zamówienia</h3><p id="stat-orders">0</p></div>
-    </div>
-
-    <div class="grid-admin">
-      <div class="admin-card">
-        <h2 id="formTitle">Dodaj Produkt</h2>
-        <input type="hidden" id="editIndex" value="-1">
-        <input type="text" id="pName" placeholder="Nazwa przedmiotu">
-        <input type="text" id="pPrice" placeholder="Cena (np. 111.31 PLN)">
-        <textarea id="pDesc" rows="3" placeholder="Opis przedmiotu..."></textarea>
-        <label style="font-size: 0.7rem; color: #888;">URL Obrazka (lub wklej link):</label>
-        <input type="text" id="pImgUrl" placeholder="https://...">
-        <button class="btn btn-pink" id="saveBtn" onclick="handleSave()">Dodaj do bazy</button>
-        <button class="btn btn-outline" id="cancelBtn" style="display:none;" onclick="resetForm()">Anuluj edycję</button>
+    <div class="stats"><div class="stat"><small>Produkty</small><div id="s1" style="font-size:1.5rem; font-weight:900;">0</div></div><div class="stat"><small>Zamówienia</small><div id="s2" style="font-size:1.5rem; font-weight:900; color:var(--pink);">0</div></div></div>
+    <input type="text" class="search-box" id="search" placeholder="Szukaj zamówienia lub produktu..." onkeyup="render()">
+    <div class="grid">
+      <div class="card">
+        <h3 id="formT">Dodaj Produkt</h3>
+        <input type="hidden" id="editIdx" value="-1">
+        <input type="text" id="pN" placeholder="Nazwa">
+        <input type="text" id="pP" placeholder="Cena">
+        <textarea id="pD" placeholder="Opis..."></textarea>
+        <input type="text" id="pI" placeholder="URL Zdjęcia">
+        <button class="btn btn-pink" onclick="save()">Zapisz</button>
       </div>
-
-      <div class="admin-card">
-        <h2>Twoja Oferta</h2>
-        <div class="table-container">
-          <table>
-            <thead><tr><th>Foto</th><th>Nazwa</th><th>Cena</th><th>Akcja</th></tr></thead>
-            <tbody id="productList"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="admin-card" style="grid-column: 1 / -1;">
-        <h2>Nowe Zgłoszenia / Wiadomości</h2>
-        <div class="table-container">
-          <table>
-            <thead><tr><th>Data</th><th>Klient</th><th>Produkt</th><th>Wiadomość</th><th>Akcja</th></tr></thead>
-            <tbody id="orderList"></tbody>
-          </table>
-        </div>
-      </div>
+      <div class="card"><h3>Lista Produktów</h3><div style="overflow-x:auto;"><table><thead><tr><th>Foto</th><th>Nazwa</th><th>Opcje</th></tr></thead><tbody id="pList"></tbody></table></div></div>
+      <div class="card" style="grid-column: 1 / -1;"><h3>Zamówienia</h3><div style="overflow-x:auto;"><table><thead><tr><th>Data</th><th>Klient</th><th>Produkt</th><th>Wiadomość</th><th>Akcja</th></tr></thead><tbody id="oList"></tbody></table></div></div>
     </div>
   </div>
-
   <script>
-    const CORRECT_PASSWORD = "admin"; // <--- ZMIEŃ HASŁO TUTAJ
-
-    function checkLogin() {
-      if(document.getElementById('adminPass').value === CORRECT_PASSWORD) {
-        sessionStorage.setItem('candyLogged', 'true');
-        showPanel();
-      } else {
-        document.getElementById('errorMsg').style.display = 'block';
-      }
-    }
-
-    function showPanel() {
-      document.getElementById('loginOverlay').style.display = 'none';
-      document.getElementById('adminContent').style.display = 'block';
-      renderAll();
-    }
-
-    function logout() {
-      sessionStorage.removeItem('candyLogged');
+    const PASS = "admin"; // Hasło
+    function login() { if(document.getElementById('p').value === PASS) { sessionStorage.setItem('l', '1'); show(); } }
+    function logout() { sessionStorage.removeItem('l'); location.reload(); }
+    function show() { document.getElementById('loginOverlay').style.display='none'; document.getElementById('adminContent').style.display='block'; render(); }
+    
+    function save() {
+      const idx = document.getElementById('editIdx').value;
+      const p = { name: document.getElementById('pN').value, price: document.getElementById('pP').value, desc: document.getElementById('pD').value, img: document.getElementById('pI').value };
+      let items = JSON.parse(localStorage.getItem('candyProducts')) || [];
+      if(idx == -1) items.push(p); else items[idx] = p;
+      localStorage.setItem('candyProducts', JSON.stringify(items));
       location.reload();
     }
 
-    // --- LOGIKA BAZY DANYCH ---
-
-    function handleSave() {
-      const name = document.getElementById('pName').value;
-      const price = document.getElementById('pPrice').value;
-      const desc = document.getElementById('pDesc').value;
-      const img = document.getElementById('pImgUrl').value || "https://via.placeholder.com/150";
-      const editIndex = parseInt(document.getElementById('editIndex').value);
-
-      if(!name || !price) return alert("Nazwa i cena są wymagane!");
-
-      let products = JSON.parse(localStorage.getItem('candyProducts')) || [];
-
-      if(editIndex > -1) {
-        products[editIndex] = { name, price, desc, img }; // Edycja
-      } else {
-        products.push({ name, price, desc, img }); // Nowy
-      }
-
-      localStorage.setItem('candyProducts', JSON.stringify(products));
-      resetForm();
-      renderAll();
+    function edit(i) {
+      const items = JSON.parse(localStorage.getItem('candyProducts'));
+      document.getElementById('editIdx').value = i;
+      document.getElementById('pN').value = items[i].name;
+      document.getElementById('pP').value = items[i].price;
+      document.getElementById('pD').value = items[i].desc;
+      document.getElementById('pI').value = items[i].img;
+      document.getElementById('formT').innerText = "Edytuj";
     }
 
-    function editProduct(index) {
-      const products = JSON.parse(localStorage.getItem('candyProducts'));
-      const p = products[index];
+    function del(i, type) {
+      let k = type == 'p' ? 'candyProducts' : 'candyOrders';
+      let items = JSON.parse(localStorage.getItem(k));
+      items.splice(i, 1);
+      localStorage.setItem(k, JSON.stringify(items));
+      render();
+    }
+
+    function exportData() {
+      const data = { p: localStorage.getItem('candyProducts'), o: localStorage.getItem('candyOrders') };
+      const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'backup.json'; a.click();
+    }
+
+    function render() {
+      const q = document.getElementById('search').value.toLowerCase();
+      const ps = JSON.parse(localStorage.getItem('candyProducts')) || [];
+      const os = JSON.parse(localStorage.getItem('candyOrders')) || [];
+      document.getElementById('s1').innerText = ps.length;
+      document.getElementById('s2').innerText = os.length;
       
-      document.getElementById('pName').value = p.name;
-      document.getElementById('pPrice').value = p.price;
-      document.getElementById('pDesc').value = p.desc;
-      document.getElementById('pImgUrl').value = p.img;
-      document.getElementById('editIndex').value = index;
-      
-      document.getElementById('formTitle').innerText = "Edytuj Produkt";
-      document.getElementById('saveBtn').innerText = "Zaktualizuj";
-      document.getElementById('cancelBtn').style.display = "block";
+      let hP = ""; ps.forEach((p, i) => { if(p.name.toLowerCase().includes(q)) hP += `<tr><td><img src="${p.img}" class="img-p"></td><td>${p.name}</td><td><button onclick="edit(${i})">✏️</button> <button onclick="del(${i}, 'p')">🗑️</button></td></tr>`; });
+      document.getElementById('pList').innerHTML = hP;
+
+      let hO = ""; os.forEach((o, i) => { if(o.customer.toLowerCase().includes(q) || o.product.toLowerCase().includes(q)) hO += `<tr><td>${o.date}</td><td style="color:var(--pink); cursor:pointer;" onclick="navigator.clipboard.writeText('${o.customer}')">📋 ${o.customer}</td><td>${o.product}</td><td>${o.message}</td><td><button onclick="del(${i}, 'o')">Usuń</button></td></tr>`; });
+      document.getElementById('oList').innerHTML = hO;
     }
-
-    function resetForm() {
-      document.getElementById('pName').value = "";
-      document.getElementById('pPrice').value = "";
-      document.getElementById('pDesc').value = "";
-      document.getElementById('pImgUrl').value = "";
-      document.getElementById('editIndex').value = "-1";
-      document.getElementById('formTitle').innerText = "Dodaj Produkt";
-      document.getElementById('saveBtn').innerText = "Dodaj do bazy";
-      document.getElementById('cancelBtn').style.display = "none";
-    }
-
-    function deleteProduct(index) {
-      if(confirm("Usunąć ten produkt?")) {
-        let products = JSON.parse(localStorage.getItem('candyProducts'));
-        products.splice(index, 1);
-        localStorage.setItem('candyProducts', JSON.stringify(products));
-        renderAll();
-      }
-    }
-
-    function deleteOrder(index) {
-      let orders = JSON.parse(localStorage.getItem('candyOrders'));
-      orders.splice(index, 1);
-      localStorage.setItem('candyOrders', JSON.stringify(orders));
-      renderAll();
-    }
-
-    function renderAll() {
-      // Produkty
-      const products = JSON.parse(localStorage.getItem('candyProducts')) || [];
-      const pList = document.getElementById('productList');
-      pList.innerHTML = "";
-      products.forEach((p, i) => {
-        pList.innerHTML += `<tr>
-          <td><img src="${p.img}" class="img-preview"></td>
-          <td>${p.name}</td>
-          <td>${p.price}</td>
-          <td>
-            <button class="btn-edit" onclick="editProduct(${i})">EDYCJA</button>
-            <button class="btn-del" onclick="deleteProduct(${i})">USUŃ</button>
-          </td>
-        </tr>`;
-      });
-
-      // Zamówienia
-      const orders = JSON.parse(localStorage.getItem('candyOrders')) || [];
-      const oList = document.getElementById('orderList');
-      oList.innerHTML = "";
-      orders.forEach((o, i) => {
-        oList.innerHTML += `<tr>
-          <td>${o.date}</td>
-          <td>${o.customer}</td>
-          <td style="color:var(--color-cyan)">${o.product}</td>
-          <td>${o.message}</td>
-          <td><button class="btn-del" onclick="deleteOrder(${i})">Usuń</button></td>
-        </tr>`;
-      });
-
-      // Statystyki
-      document.getElementById('stat-prods').innerText = products.length;
-      document.getElementById('stat-orders').innerText = orders.length;
-    }
-
-    window.onload = () => {
-      if(sessionStorage.getItem('candyLogged') === 'true') showPanel();
-    };
+    window.onload = () => { if(sessionStorage.getItem('l')) show(); };
   </script>
 </body>
 </html>
