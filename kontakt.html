@@ -2,93 +2,187 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>CANDYSHOP | Kontakt</title>
+  <title>CANDYSHOP | Kontakt & Zamówienie</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-color: #050505;
       --card-glass: rgba(255, 255, 255, 0.03);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --color-1: #ff00cc;
-      --color-2: #333399;
-      --transition: all 0.4s ease;
+      --card-border: rgba(255, 255, 255, 0.1);
+      --color-pink: #ff00cc;
+      --color-cyan: #00dbde;
+      --color-blue: #333399;
     }
-    body { background: var(--bg-color); color: #fff; font-family: 'Outfit', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
-    
-    .contact-container {
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      background: var(--bg-color); 
+      color: #fff; 
+      font-family: 'Outfit', sans-serif; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* --- TŁO --- */
+    .bg-glow {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(255,0,204,0.15) 0%, rgba(0,0,0,0) 70%);
+      z-index: -1;
+    }
+
+    .contact-box {
       background: var(--card-glass);
-      backdrop-filter: blur(20px);
       border: 1px solid var(--card-border);
       padding: 40px;
       border-radius: 30px;
-      width: 90%;
+      width: 100%;
       max-width: 500px;
-      text-align: center;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     }
 
-    h1 { font-size: 2.5rem; margin-bottom: 10px; background: linear-gradient(135deg, #fff, var(--color-1)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    p { color: #888; margin-bottom: 30px; }
+    h1 { 
+      font-size: 2.2rem; 
+      font-weight: 900; 
+      margin-bottom: 10px; 
+      text-align: center;
+      background: linear-gradient(to right, #fff, var(--color-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.subtitle { text-align: center; color: #888; margin-bottom: 30px; font-size: 0.9rem; }
+
+    .form-group { margin-bottom: 20px; }
+    label { display: block; color: var(--color-cyan); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 700; }
 
     input, textarea {
       width: 100%;
-      padding: 15px;
-      margin-bottom: 15px;
+      padding: 14px;
       background: rgba(255,255,255,0.05);
       border: 1px solid var(--card-border);
       border-radius: 12px;
       color: #fff;
-      font-family: inherit;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--color-pink);
+      background: rgba(255,255,255,0.08);
     }
 
     .send-btn {
       width: 100%;
-      padding: 15px;
+      padding: 16px;
       border: none;
       border-radius: 50px;
-      background: linear-gradient(90deg, var(--color-2), var(--color-1));
+      background: linear-gradient(90deg, var(--color-blue), var(--color-pink));
       color: #fff;
-      font-weight: bold;
+      font-weight: 900;
       text-transform: uppercase;
+      letter-spacing: 1px;
       cursor: pointer;
-      transition: var(--transition);
+      transition: 0.4s;
+      margin-top: 10px;
     }
-    .send-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 0, 204, 0.3); }
-    
-    .back-link { display: block; margin-top: 20px; color: #555; text-decoration: none; font-size: 0.9rem; }
-    .back-link:hover { color: #fff; }
+
+    .send-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(255, 0, 204, 0.4);
+    }
+
+    .back-btn {
+      display: block;
+      text-align: center;
+      margin-top: 25px;
+      color: #555;
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: 0.3s;
+    }
+
+    .back-btn:hover { color: #fff; }
+
+    /* Notyfikacja sukcesu */
+    #success-msg {
+      display: none;
+      text-align: center;
+      color: #00ff88;
+      background: rgba(0, 255, 136, 0.1);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
 
-<div class="contact-container">
-  <h1>Napisz do nas</h1>
-  <p>Złóż zamówienie lub zadaj pytanie</p>
-  
-  <input type="text" id="custName" placeholder="Twoja nazwa (np. Discord/Roblox ID)">
-  <input type="text" id="prodName" placeholder="Jaki produkt Cię interesuje?">
-  <textarea id="custMsg" rows="4" placeholder="Twoja wiadomość..."></textarea>
-  
-  <button class="send-btn" onclick="sendToAdmin()">Wyślij wiadomość</button>
-  
-  <a href="index.html" class="back-link">← Wróć do sklepu</a>
+<div class="bg-glow"></div>
+
+<div class="contact-box">
+  <h1>KONTAKT</h1>
+  <p class="subtitle">Wypełnij formularz, aby sfinalizować zamówienie</p>
+
+  <div id="success-msg">Wiadomość została wysłana do admina!</div>
+
+  <div class="form-group">
+    <label>Twoja Nazwa / Discord ID</label>
+    <input type="text" id="custName" placeholder="Np. Janek#1234">
+  </div>
+
+  <div class="form-group">
+    <label>Przedmiot</label>
+    <input type="text" id="prodName" placeholder="Nazwa przedmiotu">
+  </div>
+
+  <div class="form-group">
+    <label>Twoja Wiadomość</label>
+    <textarea id="custMsg" rows="4" placeholder="Opisz szczegóły zamówienia..."></textarea>
+  </div>
+
+  <button class="send-btn" onclick="sendToAdmin()">Wyślij zgłoszenie</button>
+
+  <a href="index.html" class="back-btn">← Wróć do sklepu</a>
 </div>
 
 <script>
+  // --- AUTO-WYPEŁNIANIE NAZWY PRODUKTU ---
+  // Pobieramy parametr 'prod' z adresu URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const productName = urlParams.get('prod');
+  
+  if (productName) {
+    document.getElementById('prodName').value = decodeURIComponent(productName);
+  }
+
+  // --- WYSYŁANIE DO ADMINA ---
   function sendToAdmin() {
     const customer = document.getElementById('custName').value;
     const product = document.getElementById('prodName').value;
     const message = document.getElementById('custMsg').value;
-    const date = new Date().toLocaleString();
+    const date = new Date().toLocaleString('pl-PL');
 
     if(!customer || !message) {
-      return alert("Proszę podać przynajmniej nazwę i wiadomość!");
+      alert("Proszę podać nazwę użytkownika i wiadomość!");
+      return;
     }
 
-    // Pobieramy obecne zamówienia
+    // Pobieramy bazę zamówień z localStorage
     let orders = JSON.parse(localStorage.getItem('candyOrders')) || [];
     
-    // Dodajemy nowe
+    // Dodajemy nowe zgłoszenie
     orders.push({
       date: date,
       customer: customer,
@@ -96,11 +190,16 @@
       message: message
     });
 
-    // Zapisujemy
+    // Zapisujemy z powrotem
     localStorage.setItem('candyOrders', JSON.stringify(orders));
 
-    alert("Wiadomość została wysłana! Admin sprawdzi ją wkrótce.");
-    window.location.href = "index.html";
+    // Animacja sukcesu
+    document.getElementById('success-msg').style.display = 'block';
+    
+    // Przekierowanie po 2 sekundach
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 2000);
   }
 </script>
 
