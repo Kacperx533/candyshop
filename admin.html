@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>ADMIN | Przesyłanie Plików</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #050505;
+      --card-glass: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --color-pink: #ff00cc;
+      --color-cyan: #00dbde;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg-color); color: #fff; font-family: 'Outfit', sans-serif; padding: 40px 5%; }
+
+    h1 { font-size: 2.5rem; margin-bottom: 30px; font-weight: 900; background: linear-gradient(to right, #fff, var(--color-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h2 { margin-bottom: 20px; font-weight: 700; color: var(--color-cyan); text-transform: uppercase; }
+
+    .grid-admin { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .admin-card { background: var(--card-glass); border: 1px solid var(--card-border); border-radius: 20px; padding: 30px; backdrop-filter: blur(20px); }
+
+    /* STYLIZACJA INPUTÓW */
+    input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); border-radius: 10px; color: #fff; font-family: inherit; }
+    
+    /* STYLIZACJA WYBORU PLIKU */
+    input[type="file"] { padding: 10px; cursor: pointer; border: 1px dashed var(--color-cyan); }
+    input[type="file"]::-webkit-file-upload-button {
+      background: var(--color-cyan); border: none; padding: 5px 15px; border-radius: 5px; color: #000; font-weight: bold; cursor: pointer; margin-right: 10px;
+    }
+
+    .btn { padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; width: 100%; margin-top: 10px; }
+    .btn-add { background: var(--color-pink); color: white; }
+    .btn-add:hover { box-shadow: 0 0 20px rgba(255, 0, 204, 0.4); transform: translateY(-2px); }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th { text-align: left; padding: 12px; border-bottom: 2px solid var(--card-border); color: #888; font-size: 0.8rem; }
+    td { padding: 12px; border-bottom: 1px solid var(--card-border); font-size: 0.9rem; }
+
+    .btn-del { background: #ff4d4d; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; }
+    .img-preview { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; border: 1px solid var(--card-border); }
+
+    .nav-back { margin-bottom: 20px; display: inline-block; color: #888; text-decoration: none; }
+    
+    @media (max-width: 1000px) { .grid-admin { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="nav-back">← WRÓĆ DO SKLEPU</a>
+  <h1>Panel Sterowania Admina</h1>
+
+  <div class="grid-admin">
+    
+    <div class="admin-card">
+      <h2>Dodaj Nowy Produkt</h2>
+      <input type="text" id="pName" placeholder="Nazwa produktu">
+      <input type="text" id="pPrice" placeholder="Cena (np. 150 PLN)">
+      
+      <label style="font-size: 0.8rem; color: #888; display: block; margin-bottom: 5px;">Wybierz zdjęcie z urządzenia:</label>
+      <input type="file" id="pImageFile" accept="image/*">
+      
+      <textarea id="pDesc" rows="3" placeholder="Opis produktu..."></textarea>
+      <button class="btn btn-add" id="addBtn">Dodaj produkt do sklepu</button>
+    </div>
+
+    <div class="admin-card">
+      <h2>Produkty w Sklepie</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Foto</th>
+            <th>Nazwa</th>
+            <th>Cena</th>
+            <th>Akcja</th>
+          </tr>
+        </thead>
+        <tbody id="productList"></tbody>
+      </table>
+    </div>
+
+    <div class="admin-card" style="grid-column: 1 / -1;">
+      <h2>Zamówienia od klientów</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Klient</th>
+            <th>Produkt</th>
+            <th>Wiadomość</th>
+            <th>Akcja</th>
+          </tr>
+        </thead>
+        <tbody id="orderList"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <script>
+    // Obsługa dodawania produktu z plikiem
+    document.getElementById('addBtn').addEventListener('click', function() {
+      const name = document.getElementById('pName').value;
+      const price = document.getElementById('pPrice').value;
+      const desc = document.getElementById('pDesc').value;
+      const fileInput = document.getElementById('pImageFile');
+      const file = fileInput.files[0];
+
+      if(!name || !price) return alert("Podaj nazwę i cenę!");
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const base64Image = e.target.result; // To jest zakodowane zdjęcie
+          saveProduct(name, price, base64Image, desc);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        // Jeśli nie wybrano pliku, dodaj bez zdjęcia lub z placeholderem
+        saveProduct(name, price, "https://via.placeholder.com/500", desc);
+      }
+    });
+
+    function saveProduct(name, price, img, desc) {
+      let products = JSON.parse(localStorage.getItem('candyProducts')) || [];
+      products.push({ name, price, img, desc });
+      localStorage.setItem('candyProducts', JSON.stringify(products));
+      alert("Dodano!");
+      renderAll();
+      
+      // Czyścimy formularz
+      document.getElementById('pName').value = "";
+      document.getElementById('pPrice').value = "";
+      document.getElementById('pDesc').value = "";
+      document.getElementById('pImageFile').value = "";
+    }
+
+    function deleteProduct(index) {
+      let products = JSON.parse(localStorage.getItem('candyProducts')) || [];
+      products.splice(index, 1);
+      localStorage.setItem('candyProducts', JSON.stringify(products));
+      renderAll();
+    }
+
+    function deleteOrder(index) {
+      let orders = JSON.parse(localStorage.getItem('candyOrders')) || [];
+      orders.splice(index, 1);
+      localStorage.setItem('candyOrders', JSON.stringify(orders));
+      renderAll();
+    }
+
+    function renderAll() {
+      // Produkty
+      const pList = document.getElementById('productList');
+      const products = JSON.parse(localStorage.getItem('candyProducts')) || [];
+      pList.innerHTML = "";
+      products.forEach((p, i) => {
+        pList.innerHTML += `
+          <tr>
+            <td><img src="${p.img}" class="img-preview"></td>
+            <td>${p.name}</td>
+            <td>${p.price}</td>
+            <td><button class="btn-del" onclick="deleteProduct(${i})">Usuń</button></td>
+          </tr>
+        `;
+      });
+
+      // Zamówienia
+      const oList = document.getElementById('orderList');
+      const orders = JSON.parse(localStorage.getItem('candyOrders')) || [];
+      oList.innerHTML = "";
+      orders.forEach((o, i) => {
+        oList.innerHTML += `
+          <tr>
+            <td style="color:#666">${o.date}</td>
+            <td><b>${o.customer}</b></td>
+            <td style="color:var(--color-cyan)">${o.product}</td>
+            <td>${o.message}</td>
+            <td><button class="btn-del" onclick="deleteOrder(${i})">Usuń</button></td>
+          </tr>
+        `;
+      });
+    }
+
+    window.onload = renderAll;
+  </script>
+</body>
+</html>
