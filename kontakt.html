@@ -7,19 +7,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
   <style>
     body { background: #050505; color: #fff; font-family: 'Outfit', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 30px; width: 100%; max-width: 450px; backdrop-filter: blur(20px); }
-    h1 { margin-bottom: 20px; text-align: center; background: linear-gradient(to right, #fff, #ff00cc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    input, textarea { width: 100%; padding: 15px; margin-bottom: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-family: inherit; }
-    .btn { width: 100%; padding: 15px; border: none; border-radius: 50px; background: linear-gradient(90deg, #333399, #ff00cc); color: white; font-weight: 900; cursor: pointer; }
+    .box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 30px; width: 100%; max-width: 450px; backdrop-filter: blur(20px); box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+    h1 { margin-bottom: 20px; text-align: center; background: linear-gradient(to right, #fff, #ff00cc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
+    label { font-size: 0.75rem; color: #ff00cc; text-transform: uppercase; font-weight: 700; margin-left: 5px; }
+    input, textarea { width: 100%; padding: 15px; margin-bottom: 15px; margin-top: 5px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-family: inherit; }
+    .btn { width: 100%; padding: 18px; border: none; border-radius: 50px; background: linear-gradient(90deg, #333399, #ff00cc); color: white; font-weight: 900; cursor: pointer; transition: 0.3s; }
+    .btn:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(255,0,204,0.4); }
   </style>
 </head>
 <body>
   <div class="box">
-    <h1>KONTAKT</h1>
-    <input type="text" id="custName" placeholder="Twój Nick / Discord">
-    <input type="text" id="prodName" placeholder="Produkt">
-    <textarea id="custMsg" rows="4" placeholder="Twoja wiadomość..."></textarea>
-    <button class="btn" onclick="send()">WYŚLIJ ZAMÓWIENIE</button>
+    <h1>ZAMÓWIENIE</h1>
+    <label>Twój Nick (Discord/Roblox)</label>
+    <input type="text" id="custName" placeholder="Np. Capek#1234">
+    <label>Produkt</label>
+    <input type="text" id="prodName" placeholder="Nazwa przedmiotu">
+    <label>Wiadomość / Pytania</label>
+    <textarea id="custMsg" rows="4" placeholder="Opisz swoje zamówienie..."></textarea>
+    <button class="btn" onclick="send()">WYŚLIJ DO ADMINA</button>
+    <a href="index.html" style="display:block; text-align:center; color:#555; text-decoration:none; margin-top:15px; font-size:0.8rem;">Wróć do sklepu</a>
   </div>
   <script>
     const urlParams = new URLSearchParams(window.location.search);
@@ -27,15 +33,19 @@
     if (prod) document.getElementById('prodName').value = decodeURIComponent(prod);
 
     function send() {
+      const name = document.getElementById('custName').value;
+      const msg = document.getElementById('custMsg').value;
+      if(!name || !msg) return alert("Wypełnij wymagane pola!");
+
       const orders = JSON.parse(localStorage.getItem('candyOrders')) || [];
       orders.push({
         date: new Date().toLocaleString(),
-        customer: document.getElementById('custName').value,
-        product: document.getElementById('prodName').value,
-        message: document.getElementById('custMsg').value
+        customer: name,
+        product: document.getElementById('prodName').value || "Ogólne",
+        message: msg
       });
       localStorage.setItem('candyOrders', JSON.stringify(orders));
-      alert("Wysłano! Admin wkrótce się odezwie.");
+      alert("Zamówienie wysłane! Admin sprawdzi je w panelu.");
       window.location.href = "index.html";
     }
   </script>
