@@ -2,241 +2,204 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Candyshop | Elite Roblox Marketplace</title>
+  <title>Candyshop | Ultimate Marketplace</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
   <style>
     :root { 
-      --bg: #020202; 
-      --pink: #ff00cc; 
-      --cyan: #00dbde; 
-      --violet: #7000ff;
-      --glass: rgba(255, 255, 255, 0.03); 
-      --border: rgba(255, 255, 255, 0.07); 
+      --bg: #020202; --pink: #ff00cc; --cyan: #00dbde; --violet: #7000ff;
+      --glass: rgba(255, 255, 255, 0.03); --border: rgba(255, 255, 255, 0.07); 
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { 
-      background: var(--bg); 
-      color: #fff; 
-      font-family: 'Outfit', sans-serif; 
-      overflow-x: hidden; 
-      scroll-behavior: smooth;
-    }
+    body { background: var(--bg); color: #fff; font-family: 'Outfit', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
 
-    /* --- BACKGROUND ANIMATION --- */
-    .galaxy { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
-    .orb { 
-      position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15; 
-      animation: drift 25s infinite alternate ease-in-out; 
-    }
-    .orb-1 { width: 600px; height: 600px; background: var(--pink); top: -200px; left: -100px; }
-    .orb-2 { width: 500px; height: 500px; background: var(--violet); bottom: -100px; right: -50px; animation-delay: -5s; }
+    /* Tło */
+    .galaxy { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+    .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15; animation: drift 20s infinite alternate; }
+    .orb-1 { width: 500px; height: 500px; background: var(--pink); top: -10%; left: -5%; }
+    .orb-2 { width: 600px; height: 600px; background: var(--violet); bottom: -10%; right: -5%; }
+    @keyframes drift { from { transform: translate(0,0); } to { transform: translate(100px, 100px); } }
 
-    @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(150px, 100px) scale(1.2); } }
-
-    /* --- SCROLL REVEAL CLASS --- */
-    .reveal { opacity: 0; transform: translateY(40px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+    /* Animacje */
+    .reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.2, 1, 0.2, 1); }
     .reveal.active { opacity: 1; transform: translateY(0); }
 
-    /* --- HEADER --- */
-    .header-area { display: flex; flex-direction: column; align-items: center; padding: 40px 0; z-index: 100; position: relative; }
-    .logo-img { width: 150px; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    .logo-img:hover { transform: scale(1.15) rotate(-3deg); filter: drop-shadow(0 0 25px var(--pink)); }
-    
-    .menu { display: flex; gap: 40px; margin-top: 20px; }
-    .menu a { color: #888; text-decoration: none; text-transform: uppercase; font-weight: 800; font-size: 0.75rem; letter-spacing: 4px; transition: 0.3s; }
-    .menu a:hover { color: #fff; text-shadow: 0 0 10px #fff; }
+    /* Header */
+    .header-area { display: flex; flex-direction: column; align-items: center; padding: 40px 0; position: sticky; top: 0; background: rgba(2,2,2,0.8); backdrop-filter: blur(15px); z-index: 1000; border-bottom: 1px solid var(--border); }
+    .logo-img { width: 150px; cursor: pointer; transition: 0.3s; }
+    .menu { display: flex; gap: 30px; margin-top: 15px; }
+    .menu a, .auth-trigger { color: #888; text-decoration: none; font-weight: 800; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+    .menu a:hover, .auth-trigger:hover { color: var(--pink); }
 
-    /* --- HERO SECTION --- */
-    .hero { min-height: 95vh; display: flex; align-items: center; justify-content: space-between; padding: 0 10%; gap: 40px; }
-    .hero-text { flex: 1.3; }
-    .hero-text h1 { 
-      font-size: clamp(4rem, 10vw, 8rem); line-height: 0.8; margin-bottom: 30px; font-weight: 900; 
-      background: linear-gradient(135deg, #fff 40%, var(--pink), var(--cyan));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
-    }
-    .hero-text p { color: #aaa; font-size: 1.4rem; max-width: 600px; line-height: 1.6; margin-bottom: 50px; font-weight: 300; }
-    
-    .cta-container { display: flex; gap: 20px; }
-    .btn-main { 
-      padding: 22px 50px; background: #fff; color: #000; text-decoration: none; 
-      font-weight: 900; border-radius: 100px; transition: 0.4s; text-transform: uppercase; letter-spacing: 1px;
-    }
-    .btn-main:hover { transform: scale(1.05); box-shadow: 0 0 40px rgba(255,255,255,0.3); }
+    /* Hero */
+    .hero { min-height: 90vh; display: flex; align-items: center; justify-content: space-between; padding: 0 10%; gap: 50px; }
+    .hero-text h1 { font-size: clamp(3.5rem, 8vw, 7rem); line-height: 0.9; font-weight: 900; background: linear-gradient(to right, #fff, var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; }
+    .hero-text p { color: #aaa; font-size: 1.2rem; max-width: 500px; margin-bottom: 30px; }
+    .hero-image img { max-width: 100%; filter: drop-shadow(0 0 50px var(--pink)); animation: float 6s infinite ease-in-out; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-    .hero-image { flex: 0.7; position: relative; text-align: right; }
-    .hero-image img { 
-      max-width: 100%; border-radius: 40px;
-      filter: drop-shadow(0 0 60px rgba(255,0,204,0.3)); 
-      animation: heroFloat 8s infinite ease-in-out; 
-    }
+    /* Sklep */
+    .container { padding: 100px 10%; }
+    .section-title { font-size: 2.5rem; font-weight: 900; margin-bottom: 50px; display: flex; align-items: center; gap: 20px; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 40px; }
+    .card { background: var(--glass); border: 1px solid var(--border); border-radius: 35px; padding: 20px; transition: 0.5s; cursor: pointer; }
+    .card:hover { transform: translateY(-15px); border-color: var(--pink); }
+    .card img { width: 100%; height: 350px; object-fit: cover; border-radius: 25px; margin-bottom: 20px; }
 
-    @keyframes heroFloat { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-40px) rotate(3deg); } }
+    /* Nowa Sekcja: Dlaczego My? */
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; padding: 100px 10%; background: rgba(255,255,255,0.01); }
+    .feat-card { padding: 40px; background: var(--glass); border: 1px solid var(--border); border-radius: 30px; text-align: center; }
+    .feat-card h3 { color: var(--cyan); margin-bottom: 15px; }
 
-    /* --- SALES TICKER (New) --- */
-    .ticker { background: var(--glass); padding: 15px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); backdrop-filter: blur(10px); }
-    .ticker-content { display: flex; white-space: nowrap; animation: ticketLoop 30s linear infinite; }
-    .ticker-item { margin: 0 40px; font-size: 0.8rem; font-weight: 800; color: var(--cyan); text-transform: uppercase; }
-    @keyframes ticketLoop { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    /* Właściciele */
+    .owners { padding: 100px 10%; text-align: center; }
+    .owner-grid { display: flex; justify-content: center; gap: 80px; margin-top: 50px; }
+    .owner-img { width: 180px; height: 180px; border-radius: 50%; padding: 5px; background: linear-gradient(45deg, var(--pink), var(--cyan)); margin: 0 auto 20px; }
+    .owner-img img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--bg); }
 
-    /* --- STORE SECTION --- */
-    .container { padding: 120px 8%; }
-    .section-title { font-size: 3rem; font-weight: 900; margin-bottom: 80px; text-align: left; display: flex; align-items: center; gap: 30px; }
-    .section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+    /* Chat Widget */
+    #chat-trigger { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: var(--pink); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 10px 30px rgba(255,0,204,0.4); z-index: 1000; }
+    #chat-box { position: fixed; bottom: 100px; right: 30px; width: 350px; height: 500px; background: #0f0f0f; border: 1px solid var(--border); border-radius: 25px; display: none; flex-direction: column; z-index: 1000; overflow: hidden; }
+    .chat-header { padding: 20px; background: var(--glass); border-bottom: 1px solid var(--border); font-weight: 900; }
+    .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+    .msg { padding: 10px 15px; border-radius: 15px; max-width: 80%; font-size: 0.9rem; }
+    .msg.admin { background: var(--border); align-self: flex-start; }
+    .msg.user { background: var(--pink); align-self: flex-end; }
+    .chat-input { padding: 15px; display: flex; gap: 10px; border-top: 1px solid var(--border); }
+    .chat-input input { flex: 1; background: #000; border: none; padding: 10px; border-radius: 10px; color: #fff; }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 50px; }
-    .card { 
-      background: var(--glass); border: 1px solid var(--border); border-radius: 40px; 
-      padding: 20px; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; position: relative;
-    }
-    .card:hover { transform: translateY(-25px) scale(1.02); border-color: var(--pink); background: rgba(255,255,255,0.06); box-shadow: 0 40px 100px rgba(0,0,0,0.8); }
-    .card img { width: 100%; height: 380px; object-fit: cover; border-radius: 30px; margin-bottom: 25px; transition: 0.5s; }
-    .card:hover img { transform: scale(1.03); }
-
-    /* --- OWNERS SECTION --- */
-    .owners-section { padding: 150px 8%; background: linear-gradient(to bottom, transparent, #08001a); text-align: center; }
-    .owners-grid { display: flex; justify-content: center; gap: 120px; flex-wrap: wrap; margin-top: 100px; }
-    .owner-card { width: 280px; }
-    .owner-img-circle { 
-      width: 250px; height: 250px; border-radius: 50%; padding: 8px; 
-      background: linear-gradient(45deg, var(--pink), var(--violet), var(--cyan)); 
-      margin: 0 auto 30px; position: relative; transition: 0.6s;
-    }
-    .owner-img-circle img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 6px solid var(--bg); }
-    .owner-card:hover .owner-img-circle { transform: scale(1.1) rotate(5deg); box-shadow: 0 0 60px var(--pink); }
-    .owner-card h3 { font-size: 2.5rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 10px; }
-    .owner-card p { color: var(--pink); font-weight: 800; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2px; }
-
-    /* --- FOOTER --- */
-    footer { padding: 120px 8%; border-top: 1px solid var(--border); text-align: center; }
-    .footer-logo { font-size: 2rem; font-weight: 900; margin-bottom: 20px; opacity: 0.5; }
-
-    @media (max-width: 1100px) {
-      .hero { flex-direction: column; text-align: center; padding-top: 80px; }
-      .hero-text h1 { font-size: 5rem; }
-      .hero-text p { margin: 0 auto 40px; }
-      .hero-image { order: -1; margin-bottom: 50px; }
-      .cta-container { justify-content: center; }
-    }
+    /* Modale Auth */
+    .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
+    .modal-content { background: #0f0f0f; padding: 40px; border-radius: 30px; width: 100%; max-width: 400px; border: 1px solid var(--border); }
+    .modal-content h2 { margin-bottom: 20px; }
+    .modal-content input { width: 100%; padding: 15px; margin-bottom: 15px; background: #000; border: 1px solid var(--border); border-radius: 12px; color: #fff; }
+    .btn-auth { width: 100%; padding: 15px; background: var(--pink); border: none; border-radius: 12px; color: #fff; font-weight: 900; cursor: pointer; }
   </style>
 </head>
 <body>
+  <div class="galaxy"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
 
-  <div class="galaxy">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-  </div>
-  
-  <header class="header-area reveal">
+  <header class="header-area">
     <a href="index.html"><img src="images/logo.png" alt="Candyshop" class="logo-img"></a>
     <nav class="menu">
-      <a href="index.html">Marketplace</a>
-      <a href="kontakt.html">Kontakt</a>
+      <a href="index.html">Sklep</a>
+      <span class="auth-trigger" onclick="openAuth()">Logowanie / Rejestracja</span>
       <a href="admin.html">Dostawca</a>
     </nav>
   </header>
 
   <section class="hero">
     <div class="hero-text reveal">
-      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-        <span style="width: 50px; height: 1px; background: var(--pink);"></span>
-        <span style="color: var(--pink); font-weight: 900; letter-spacing: 3px; font-size: 0.8rem;">PREMIUM ROBLOX DEALS</span>
-      </div>
       <h1>CANDY<br>SHOP</h1>
-      <p>Najlepsze przedmioty do Roblox "Steal a Breinrot". Gwarantujemy bezpieczeństwo, ekspresową dostawę i unikalność każdego dropu.</p>
-      <div class="cta-container">
-        <a href="#drop" class="btn-main">Eksploruj Rynek</a>
-      </div>
+      <p>Największy rynek Roblox "Steal a Breinrot". Dołącz do tysięcy zadowolonych kolekcjonerów.</p>
+      <a href="#sklep" style="padding: 18px 40px; background: #fff; color: #000; text-decoration: none; border-radius: 50px; font-weight: 900; display: inline-block;">Kupuj Teraz</a>
     </div>
-    <div class="hero-image reveal">
-      <img src="images/Hero.png" alt="Featured Item">
+    <div class="hero-image reveal"><img src="images/Hero.png"></div>
+  </section>
+
+  <section class="features">
+    <div class="feat-card reveal"><h3>Szybkość</h3><p>Dostawa w mniej niż 15 minut od zakupu.</p></div>
+    <div class="feat-card reveal"><h3>Zaufanie</h3><p>Ponad 2000 pozytywnych opinii na Discord.</p></div>
+    <div class="feat-card reveal"><h3>Wsparcie</h3><p>Czat na żywo z administracją 24/7.</p></div>
+  </section>
+
+  <main class="container" id="sklep">
+    <h2 class="section-title reveal">AKTYWNY DROP</h2>
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <section class="owners">
+    <h2 class="section-title reveal" style="justify-content: center;">ELITE TEAM</h2>
+    <div class="owner-grid">
+      <div class="owner-card reveal"><div class="owner-img"><img src="images/owner1.png"></div><h3>CAPEK</h3><p>Lead Dev</p></div>
+      <div class="owner-card reveal"><div class="owner-img"><img src="images/owner2.png"></div><h3>SISI</h3><p>Manager</p></div>
     </div>
   </section>
 
-  <div class="ticker">
-    <div class="ticker-content">
-      <div class="ticker-item">● Ostatnia sprzedaż: Super Rare Brainrot #442</div>
-      <div class="ticker-item">● Nowy drop już za 2 godziny</div>
-      <div class="ticker-item">● Status serwera: Online</div>
-      <div class="ticker-item">● Szybka dostawa: Aktywna</div>
-      <div class="ticker-item">● Ostatnia sprzedaż: Ultra Rare Capek Skin</div>
-      <div class="ticker-item">● Ostatnia sprzedaż: Super Rare Brainrot #442</div>
-      <div class="ticker-item">● Nowy drop już za 2 godziny</div>
+  <div id="authModal" class="modal">
+    <div class="modal-content">
+      <h2 id="authTitle">LOGOWANIE</h2>
+      <input type="text" placeholder="Nick / Email">
+      <input type="password" placeholder="Hasło">
+      <button class="btn-auth">POTWIERDŹ</button>
+      <p onclick="toggleAuth()" style="margin-top: 15px; font-size: 0.8rem; color: #666; cursor: pointer; text-align: center;">Nie masz konta? Zarejestruj się</p>
+      <button onclick="closeAuth()" style="margin-top: 10px; background: none; border: none; color: #444; width: 100%;">Anuluj</button>
     </div>
   </div>
 
-  <main class="container" id="drop">
-    <h2 class="section-title reveal">AKTYWNE OFERTY</h2>
-    <div class="grid" id="grid">
-      </div>
-  </main>
-
-  <section class="owners-section">
-    <h2 class="reveal" style="font-size: 3.5rem; font-weight: 900;">FOUNDERS</h2>
-    <div class="owners-grid">
-      <div class="owner-card reveal">
-        <div class="owner-img-circle"><img src="images/owner1.png" alt="Capek"></div>
-        <h3>CAPEK</h3>
-        <p>Lead System Architect</p>
-      </div>
-      <div class="owner-card reveal" style="transition-delay: 0.2s;">
-        <div class="owner-img-circle"><img src="images/owner2.png" alt="Sisi"></div>
-        <h3>SISI</h3>
-        <p>Operations Manager</p>
-      </div>
+  <div id="chat-trigger" onclick="toggleChat()">💬</div>
+  <div id="chat-box">
+    <div class="chat-header">Wsparcie Candyshop</div>
+    <div class="chat-messages" id="msgs">
+      <div class="msg admin">Cześć! W czym możemy Ci dzisiaj pomóc?</div>
     </div>
-  </section>
+    <div class="chat-input">
+      <input type="text" id="chatIn" placeholder="Napisz wiadomość...">
+      <button onclick="sendMsg()" style="background: var(--pink); border: none; padding: 5px 15px; border-radius: 8px; color: #fff; cursor: pointer;">></button>
+    </div>
+  </div>
 
   <footer>
-    <div class="footer-logo">CANDYSHOP.</div>
-    <p style="color: #444; font-weight: 600; letter-spacing: 1px;">&copy; 2026 OFFICIAL MARKETPLACE | ALL RIGHTS RESERVED</p>
+    <div style="padding: 80px; text-align: center; border-top: 1px solid var(--border); color: #444;">
+      &copy; 2026 CANDYSHOP ELITE MARKETPLACE
+    </div>
   </footer>
 
   <script>
-    function loadProducts() {
+    // Ładowanie produktów
+    function load() {
       const items = JSON.parse(localStorage.getItem('candyProducts')) || [];
       const grid = document.getElementById('grid');
+      grid.innerHTML = items.map((p, i) => `
+        <div class="card reveal" onclick="location.href='produkt.html?id=${i}'">
+          <img src="${p.img}">
+          <div style="font-size: 0.7rem; color: var(--pink); font-weight: 900;">${p.rarity || 'ELITE'}</div>
+          <h3>${p.name}</h3>
+          <p style="font-size: 1.5rem; font-weight: 900; margin-top: 10px;">${p.price}</p>
+        </div>`).join('');
+      reveal();
+    }
+
+    // Scroll Reveal
+    function reveal() {
+      document.querySelectorAll('.reveal').forEach(el => {
+        if(el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
+      });
+    }
+
+    // Auth Logic
+    function openAuth() { document.getElementById('authModal').style.display = 'flex'; }
+    function closeAuth() { document.getElementById('authModal').style.display = 'none'; }
+    function toggleAuth() {
+      const t = document.getElementById('authTitle');
+      t.innerText = t.innerText === 'LOGOWANIE' ? 'REJESTRACJA' : 'LOGOWANIE';
+    }
+
+    // Chat Logic
+    function toggleChat() { 
+      const b = document.getElementById('chat-box');
+      b.style.display = b.style.display === 'flex' ? 'none' : 'flex';
+    }
+    function sendMsg() {
+      const inp = document.getElementById('chatIn');
+      if(!inp.value) return;
+      const msgs = document.getElementById('msgs');
+      msgs.innerHTML += `<div class="msg user">${inp.value}</div>`;
       
-      if(items.length === 0) {
-        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #333; font-size: 1.5rem; padding: 100px;">Wyczekiwanie na dostawę towaru...</p>';
-        return;
-      }
-
-      grid.innerHTML = '';
-      items.forEach((p, i) => {
-        grid.innerHTML += `
-          <div class="card reveal" onclick="location.href='produkt.html?id=${i}'">
-            <div style="position: absolute; top: 30px; left: 30px; background: #000; padding: 6px 15px; border-radius: 10px; border: 1px solid var(--pink); color: var(--pink); font-size: 0.7rem; font-weight: 900; z-index: 5;">
-              ${p.rarity || 'ELITE'}
-            </div>
-            <img src="${p.img}" alt="${p.name}">
-            <div style="padding: 0 10px;">
-              <h3 style="font-size: 1.8rem; margin-bottom: 15px;">${p.name}</h3>
-              <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-                <div>
-                  <p style="color: #555; font-size: 0.7rem; text-transform: uppercase; font-weight: 800;">Cena rynkowa</p>
-                  <p style="font-size: 2rem; font-weight: 900; color: #fff;">${p.price}</p>
-                </div>
-                <div style="background: var(--pink); padding: 12px 25px; border-radius: 15px; font-weight: 900; font-size: 0.8rem; letter-spacing: 1px;">KUP</div>
-              </div>
-            </div>
-          </div>`;
-      });
-      handleScroll(); 
+      // Automatyczna odpowiedź "Admina" dla efektu
+      setTimeout(() => {
+        msgs.innerHTML += `<div class="msg admin">Dziękujemy za kontakt. Capek lub Sisi odpiszą Ci w przeciągu kilku minut!</div>`;
+        msgs.scrollTop = msgs.scrollHeight;
+      }, 1000);
+      
+      inp.value = '';
+      msgs.scrollTop = msgs.scrollHeight;
     }
 
-    function handleScroll() {
-      const reveals = document.querySelectorAll('.reveal');
-      reveals.forEach(el => {
-        const top = el.getBoundingClientRect().top;
-        if (top < window.innerHeight - 80) el.classList.add('active');
-      });
-    }
-
-    window.addEventListener('scroll', handleScroll);
-    window.onload = loadProducts;
+    window.addEventListener('scroll', reveal);
+    window.onload = load;
   </script>
 </body>
 </html>
