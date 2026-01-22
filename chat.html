@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>CANDY | Chat z Adminem</title>
+    <style>
+        body { background: #050505; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .chat-box { width: 400px; height: 500px; background: #111; border: 1px solid #333; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; }
+        .messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .msg { padding: 10px 15px; border-radius: 15px; max-width: 80%; font-size: 0.9rem; }
+        .msg.admin { background: #333; align-self: flex-start; }
+        .msg.user { background: #ff00cc; align-self: flex-end; }
+        .input-area { padding: 20px; background: #1a1a1a; display: flex; gap: 10px; }
+        input { flex: 1; background: #000; border: 1px solid #333; padding: 10px; color: white; border-radius: 10px; }
+        button { background: #ff00cc; border: none; padding: 10px 20px; color: white; border-radius: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="chat-box">
+        <div style="padding: 15px; background: #1a1a1a; border-bottom: 1px solid #333; font-weight: bold;">CANDY SUPPORT</div>
+        <div class="messages" id="chatMsgs">
+            <div class="msg admin">Witaj! W czym mogę pomóc w sprawie ${sessionStorage.getItem('interestedIn') || 'naszych produktów'}?</div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="mIn" placeholder="Napisz wiadomość...">
+            <button onclick="send()">Wyślij</button>
+        </div>
+    </div>
+
+    <script>
+        function send() {
+            const val = document.getElementById('mIn').value;
+            if(!val) return;
+            const container = document.getElementById('chatMsgs');
+            
+            // Dodaj do widoku
+            container.innerHTML += `<div class="msg user">${val}</div>`;
+            
+            // Zapisz zamówienie/zgłoszenie do bazy admina
+            const orders = JSON.parse(localStorage.getItem('candyOrders')) || [];
+            orders.push({
+                date: new Date().toLocaleString(),
+                customer: localStorage.getItem('candyUser') || 'Gość',
+                product: sessionStorage.getItem('interestedIn') || 'Ogólne zapytanie',
+                msg: val
+            });
+            localStorage.setItem('candyOrders', JSON.stringify(orders));
+            
+            document.getElementById('mIn').value = "";
+            container.scrollTop = container.scrollHeight;
+        }
+    </script>
+</body>
+</html>
