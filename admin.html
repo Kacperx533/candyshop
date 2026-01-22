@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>CANDYSHOP | Professional Admin Panel</title>
+    <title>CANDY ADMIN | Professional Control Panel</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -21,7 +21,7 @@
         .dashboard { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 350px 1fr; gap: 30px; }
         
         .card { background: var(--card); border: 1px solid var(--border); padding: 25px; border-radius: 20px; backdrop-filter: blur(10px); }
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; grid-column: 1 / -1; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
         .stat-box { background: var(--card); padding: 20px; border-radius: 15px; border-left: 4px solid var(--pink); }
         
         input, textarea, select { 
@@ -36,64 +36,60 @@
             text-transform: uppercase; transition: 0.3s; 
         }
         .btn:hover { opacity: 0.8; transform: translateY(-2px); }
-        .btn-delete { background: #ff3333; padding: 5px 10px; font-size: 0.7rem; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th { text-align: left; color: var(--text-dim); font-size: 0.8rem; text-transform: uppercase; padding: 10px; border-bottom: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; color: #666; font-size: 0.7rem; text-transform: uppercase; padding: 10px; border-bottom: 1px solid var(--border); }
         td { padding: 15px 10px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
 
-        .chat-list { max-height: 600px; overflow-y: auto; }
+        .chat-list { max-height: 700px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
         .chat-item { 
-            padding: 15px; border-radius: 12px; background: rgba(255,255,255,0.02); 
-            margin-bottom: 10px; border: 1px solid var(--border); cursor: pointer;
+            padding: 20px; border-radius: 15px; background: rgba(255,255,255,0.02); 
+            border: 1px solid var(--border); transition: 0.3s;
         }
-        .chat-item:hover { background: rgba(255,255,255,0.05); }
-        .chat-item.new { border-left: 4px solid var(--cyan); }
+        .chat-item:hover { background: rgba(255,255,255,0.05); border-color: var(--pink); }
 
         .img-prev { width: 80px; height: 80px; object-fit: cover; border-radius: 12px; margin-bottom: 15px; background: #000; border: 1px solid var(--border); }
         
-        .tab-btn { background: none; border: none; color: #666; font-weight: bold; margin-right: 20px; cursor: pointer; font-size: 1.2rem; }
+        .tab-btn { background: none; border: none; color: #666; font-weight: bold; margin-right: 25px; cursor: pointer; font-size: 1.1rem; padding-bottom: 5px; }
         .tab-btn.active { color: var(--pink); border-bottom: 2px solid var(--pink); }
+        
+        .badge-new { background: var(--cyan); color: #000; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; font-weight: 900; vertical-align: middle; }
     </style>
 </head>
 <body>
 
     <div id="loginOverlay">
         <div class="card" style="width: 350px; text-align: center;">
-            <h2 style="margin-bottom: 20px; letter-spacing: 2px;">CANDY ADMIN</h2>
+            <h2 style="margin-bottom: 20px; letter-spacing: 2px;">CANDY CONTROL</h2>
             <input type="password" id="pass" placeholder="Password">
-            <button class="btn" onclick="login()">Enter System</button>
+            <button class="btn" onclick="login()">Zaloguj</button>
         </div>
     </div>
 
     <div id="adminContent" style="display:none;">
         <div class="stats-grid">
             <div class="stat-box">
-                <div style="font-size: 0.8rem; color: #888;">TOTAL PRODUCTS</div>
-                <div id="stat-p" style="font-size: 2rem; font-weight: 900;">0</div>
+                <div style="font-size: 0.7rem; color: #888;">PRODUKTY</div>
+                <div id="stat-p" style="font-size: 1.8rem; font-weight: 900;">0</div>
             </div>
             <div class="stat-box" style="border-left-color: var(--cyan);">
-                <div style="font-size: 0.8rem; color: #888;">ACTIVE CHATS</div>
-                <div id="stat-c" style="font-size: 2rem; font-weight: 900;">0</div>
+                <div style="font-size: 0.7rem; color: #888;">WIADOMOŚCI</div>
+                <div id="stat-o" style="font-size: 1.8rem; font-weight: 900;">0</div>
             </div>
             <div class="stat-box">
-                <div style="font-size: 0.8rem; color: #888;">TOTAL INQUIRIES</div>
-                <div id="stat-o" style="font-size: 2rem; font-weight: 900;">0</div>
+                <div style="font-size: 0.7rem; color: #888;">SESJA</div>
+                <div style="font-size: 1.8rem; font-weight: 900; color: var(--pink);">ACTIVE</div>
             </div>
         </div>
 
         <div class="dashboard">
             <div class="card">
-                <h3 id="formT" style="margin-bottom: 20px;">DODAJ NOWY DROP</h3>
+                <h3 id="formT" style="margin-bottom: 20px;">EDYCJA ITEMU</h3>
                 <input type="hidden" id="editIdx" value="-1">
-                
-                <label style="font-size: 0.7rem; color: #666;">PODGLĄD OBRAZU</label>
                 <img id="pPreview" class="img-prev" src="https://via.placeholder.com/80">
                 <input type="file" id="pFile" accept="image/*" onchange="convert()">
-                
-                <input type="text" id="pN" placeholder="Nazwa przedmiotu">
-                <input type="text" id="pP" placeholder="Cena (np. 50,000 R$)">
-                
+                <input type="text" id="pN" placeholder="Nazwa">
+                <input type="text" id="pP" placeholder="Cena (np. 150k R$)">
                 <select id="pR">
                     <option value="COMMON">COMMON</option>
                     <option value="RARE">RARE</option>
@@ -101,30 +97,25 @@
                     <option value="MYTHICAL">MYTHICAL</option>
                     <option value="GODLY">GODLY</option>
                 </select>
-
-                <input type="text" id="pT" placeholder="Kategoria (np. Hat, Face)">
-                <input type="text" id="pDel" placeholder="Czas dostawy (np. 5-15 min)">
-                <textarea id="pD" rows="4" placeholder="Szczegółowy opis przedmiotu..."></textarea>
-                
-                <button class="btn" onclick="save()">Zapisz i Publikuj</button>
-                <button class="btn" onclick="location.reload()" style="background:none; margin-top:10px;">Anuluj</button>
+                <input type="text" id="pT" placeholder="Typ">
+                <textarea id="pD" rows="3" placeholder="Opis..."></textarea>
+                <button class="btn" onclick="save()">Zapisz Produkt</button>
             </div>
 
             <div>
-                <div style="margin-bottom: 20px;">
+                <div style="margin-bottom: 30px;">
                     <button class="tab-btn active" onclick="switchTab('products')">Inventory</button>
-                    <button class="tab-btn" onclick="switchTab('chats')">Messages & Orders</button>
+                    <button class="tab-btn" onclick="switchTab('chats')">Live Chats & Orders</button>
                 </div>
 
-                <div id="tab-products" class="card">
-                    <h3>Aktywne Oferty</h3>
-                    <table id="pList"></table>
+                <div id="tab-products">
+                    <div class="card">
+                        <table id="pList"></table>
+                    </div>
                 </div>
 
-                <div id="tab-chats" class="card" style="display: none;">
-                    <h3>Wiadomości od Klientów</h3>
-                    <div class="chat-list" id="chatList">
-                        </div>
+                <div id="tab-chats" style="display: none;">
+                    <div class="chat-list" id="chatList"></div>
                 </div>
             </div>
         </div>
@@ -150,78 +141,69 @@
 
         function convert() {
             const reader = new FileReader();
-            reader.onload = e => { 
-                currentImg = e.target.result; 
-                document.getElementById('pPreview').src = currentImg; 
-            };
+            reader.onload = e => { currentImg = e.target.result; document.getElementById('pPreview').src = currentImg; };
             reader.readAsDataURL(document.getElementById('pFile').files[0]);
         }
 
         function save() {
             const idx = document.getElementById('editIdx').value;
             let items = JSON.parse(localStorage.getItem('candyProducts')) || [];
-            
             const data = { 
-                name: document.getElementById('pN').value,
+                name: document.getElementById('pN').value, 
                 price: document.getElementById('pP').value,
                 rarity: document.getElementById('pR').value,
                 type: document.getElementById('pT').value,
-                delivery: document.getElementById('pDel').value,
                 desc: document.getElementById('pD').value,
                 img: currentImg || (idx != -1 ? items[idx].img : "")
             };
-
             if(idx == -1) items.push(data); else items[idx] = data;
             localStorage.setItem('candyProducts', JSON.stringify(items));
             render();
-            resetForm();
-        }
-
-        function resetForm() {
-            document.getElementById('editIdx').value = "-1";
-            document.getElementById('pN').value = "";
-            document.getElementById('pPreview').src = "https://via.placeholder.com/80";
-            document.getElementById('formT').innerText = "DODAJ NOWY DROP";
+            location.reload();
         }
 
         function render() {
-            // Produkty
             const ps = JSON.parse(localStorage.getItem('candyProducts')) || [];
             document.getElementById('stat-p').innerText = ps.length;
-            let hP = "<tr><th>Foto</th><th>Nazwa</th><th>Cena</th><th>Rarity</th><th>Akcja</th></tr>";
+            let hP = "<tr><th>Foto</th><th>Nazwa</th><th>Cena</th><th>Akcja</th></tr>";
             ps.forEach((p, i) => {
                 hP += `<tr>
                     <td><img src="${p.img}" style="width:40px; border-radius:5px;"></td>
                     <td><b>${p.name}</b></td>
                     <td style="color:var(--cyan)">${p.price}</td>
-                    <td><span style="font-size:0.7rem; border:1px solid var(--pink); padding:2px 5px; border-radius:5px;">${p.rarity}</span></td>
-                    <td>
-                        <button onclick="edit(${i})" style="cursor:pointer">✏️</button>
-                        <button onclick="del(${i},'p')" class="btn-delete" style="cursor:pointer">🗑️</button>
-                    </td>
+                    <td><button onclick="edit(${i})">✏️</button> <button onclick="del(${i},'p')" style="color:red">🗑️</button></td>
                 </tr>`;
             });
             document.getElementById('pList').innerHTML = hP;
 
-            // Czaty / Zamówienia (zapisywane w chat.html)
             const os = JSON.parse(localStorage.getItem('candyOrders')) || [];
             document.getElementById('stat-o').innerText = os.length;
-            document.getElementById('stat-c').innerText = [...new Set(os.map(o => o.customer))].length;
-            
             let hO = "";
             os.reverse().forEach((o, i) => {
                 hO += `
                 <div class="chat-item">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                        <span style="color:var(--pink); font-weight:bold;">${o.customer}</span>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <span><b style="color:var(--pink)">${o.customer}</b> <span class="badge-new">KLIENT</span></span>
                         <span style="font-size:0.7rem; color:#555;">${o.date}</span>
                     </div>
-                    <div style="font-size:0.8rem; color:#aaa; margin-bottom:5px;">Dotyczy: <b style="color:#fff">${o.product}</b></div>
-                    <div style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; font-size:0.85rem;">${o.msg}</div>
-                    <button onclick="del(${i}, 'o')" style="margin-top:10px; background:none; border:none; color:#ff3333; cursor:pointer; font-size:0.7rem;">USUŃ ZGŁOSZENIE</button>
+                    <div style="font-size:0.8rem; margin-bottom:10px; color:#888;">Produkt: <b style="color:#fff">${o.product}</b></div>
+                    <div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:10px; font-size:0.9rem; border-left:3px solid var(--pink);">${o.msg}</div>
+                    <div style="margin-top:15px; display:flex; gap:10px;">
+                        <button onclick="reply('${o.customer}')" style="background:var(--cyan); border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:bold;">ODPISZ</button>
+                        <button onclick="del(${i}, 'o')" style="background:none; border:none; color:#ff3333; cursor:pointer; font-size:0.8rem;">USUŃ</button>
+                    </div>
                 </div>`;
             });
-            document.getElementById('chatList').innerHTML = hO || "<p style='color:#444; text-align:center;'>Brak nowych wiadomości.</p>";
+            document.getElementById('chatList').innerHTML = hO || "Brak wiadomości.";
+        }
+
+        function reply(customerNick) {
+            const msg = prompt(`Twoja odpowiedź do ${customerNick}:`);
+            if (!msg) return;
+            const replies = JSON.parse(localStorage.getItem('candyReplies')) || [];
+            replies.push({ to: customerNick, date: new Date().toLocaleString(), msg: msg, read: false });
+            localStorage.setItem('candyReplies', JSON.stringify(replies));
+            alert("Wysłano odpowiedź!");
         }
 
         function edit(i) {
@@ -230,17 +212,12 @@
             document.getElementById('editIdx').value = i;
             document.getElementById('pN').value = p.name;
             document.getElementById('pP').value = p.price;
-            document.getElementById('pR').value = p.rarity;
-            document.getElementById('pT').value = p.type;
-            document.getElementById('pDel').value = p.delivery;
             document.getElementById('pD').value = p.desc;
             document.getElementById('pPreview').src = p.img;
             document.getElementById('formT').innerText = "EDYCJA: " + p.name;
-            window.scrollTo(0,0);
         }
 
         function del(i, t) {
-            if(!confirm("Na pewno usunąć?")) return;
             let k = t == 'p' ? 'candyProducts' : 'candyOrders';
             let items = JSON.parse(localStorage.getItem(k));
             items.splice(i, 1);
