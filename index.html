@@ -2,171 +2,173 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>CANDYSHOP | Ultimate Roblox Luxury Marketplace</title>
+    <title>CANDYSHOP | Ultimate Luxury Marketplace</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- CORE CONFIG --- */
         :root { 
             --bg: #050505; 
-            --card-bg: rgba(15, 15, 15, 0.7);
             --pink: #ff00cc; 
             --cyan: #00dbde; 
             --violet: #7000ff;
-            --glass: rgba(255, 255, 255, 0.03); 
             --border: rgba(255, 255, 255, 0.08);
             --accent-gradient: linear-gradient(135deg, var(--pink), var(--violet));
-            --text-main: #ffffff;
-            --text-dim: #a0a0a0;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--pink); }
-
         body { 
             background: var(--bg); 
-            color: var(--text-main); 
+            color: #fff; 
             font-family: 'Outfit', sans-serif; 
             overflow-x: hidden;
-            line-height: 1.6;
         }
 
-        /* --- BACKGROUND ENGINE --- */
+        /* --- BACKGROUND --- */
         #bg-canvas {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at center, #0d001a 0%, #030303 100%);
+            background: radial-gradient(circle at 50% 50%, #0d001a 0%, #050505 100%);
         }
 
-        /* --- NAVIGATION --- */
+        /* --- NAV & LOGO --- */
         .nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 8%;
+            padding: 30px 8%;
             position: fixed;
             width: 100%; top: 0;
-            background: rgba(5, 5, 5, 0.8);
-            backdrop-filter: blur(30px);
             z-index: 10000;
+            background: rgba(5, 5, 5, 0.6);
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
         }
 
         .logo {
             font-family: 'Syncopate', sans-serif;
-            font-weight: 700; font-size: 1.5rem;
-            background: var(--accent-gradient);
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: -2px;
+            text-decoration: none;
+            background: linear-gradient(to right, #fff, var(--pink), var(--cyan));
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-decoration: none;
-            letter-spacing: -1px;
+            animation: logoGradient 4s linear infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 0, 204, 0.3));
+        }
+
+        @keyframes logoGradient {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
         }
 
         .nav-links { display: flex; gap: 40px; }
         .nav-links a {
-            color: var(--text-dim); text-decoration: none;
-            font-weight: 600; font-size: 0.8rem;
-            text-transform: uppercase; letter-spacing: 2px;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             transition: 0.3s;
         }
         .nav-links a:hover { color: #fff; text-shadow: 0 0 15px var(--pink); }
 
-        .btn-contact-nav {
-            background: var(--accent-gradient);
-            border: none; padding: 12px 25px;
-            border-radius: 12px; color: #fff;
-            font-weight: 800; cursor: pointer;
-            transition: 0.4s; text-transform: uppercase;
-            font-size: 0.75rem;
-        }
-
         /* --- HERO SECTION --- */
         .hero {
             height: 100vh;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            text-align: center; padding: 0 15%;
-        }
-
-        .hero-badge {
-            background: rgba(255,255,255,0.05);
-            padding: 8px 20px; border-radius: 100px;
-            border: 1px solid var(--border);
-            font-size: 0.7rem; color: var(--pink);
-            letter-spacing: 4px; text-transform: uppercase;
-            margin-bottom: 30px;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 10vw, 8rem);
-            font-family: 'Syncopate', sans-serif;
-            line-height: 0.9; margin-bottom: 30px;
-            background: linear-gradient(to bottom, #fff 40%, rgba(255,255,255,0.2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* --- STORE SECTION --- */
-        .section { padding: 100px 8%; }
-        
-        .search-bar {
-            width: 100%; max-width: 600px;
-            margin: 0 auto 60px auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 10%;
             position: relative;
         }
 
-        #searchInput {
-            width: 100%; background: var(--glass);
+        .hero-badge {
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border);
-            padding: 20px 30px; border-radius: 20px;
-            color: #fff; font-size: 1rem;
-            backdrop-filter: blur(10px);
+            padding: 10px 25px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            color: var(--cyan);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease-out;
         }
 
+        .hero h1 {
+            font-family: 'Syncopate', sans-serif;
+            font-weight: 700;
+            font-size: clamp(3.5rem, 12vw, 9rem);
+            line-height: 0.8;
+            margin-bottom: 30px;
+            background: linear-gradient(to bottom, #fff 30%, rgba(255,255,255,0.1) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.5);
+            max-width: 650px;
+            margin-bottom: 40px;
+            animation: fadeInUp 1.4s ease-out;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+            animation: fadeInUp 1.6s ease-out;
+        }
+
+        .btn-main {
+            background: var(--accent-gradient);
+            padding: 20px 45px;
+            border-radius: 15px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 15px 35px rgba(255, 0, 204, 0.3);
+            transition: 0.4s;
+        }
+        .btn-main:hover { transform: translateY(-5px); box-shadow: 0 20px 45px rgba(255, 0, 204, 0.5); }
+
+        /* --- CARDS & GRID --- */
+        .section { padding: 100px 8%; }
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 40px;
         }
 
         .card {
-            background: var(--card-bg);
+            background: rgba(15, 15, 15, 0.7);
             border: 1px solid var(--border);
-            border-radius: 30px; padding: 20px;
-            transition: border-color 0.4s;
-            cursor: pointer; backdrop-filter: blur(10px);
-            transform-style: preserve-3d;
-            perspective: 1000px;
+            border-radius: 35px;
+            padding: 25px;
+            transition: 0.4s;
+            cursor: pointer;
+            backdrop-filter: blur(15px);
         }
-
-        .card:hover { border-color: var(--pink); }
-
-        .card img {
-            width: 100%; height: 280px;
-            object-fit: cover; border-radius: 20px;
-            margin-bottom: 20px; transform: translateZ(20px);
-        }
-
-        .card-tag { font-size: 0.6rem; font-weight: 900; color: var(--pink); margin-bottom: 5px; }
-        .card-price { font-size: 1.6rem; font-weight: 800; color: var(--cyan); margin-top: 10px; }
-
-        /* --- REVIEWS SLIDER --- */
-        .reviews-wrap { overflow: hidden; padding: 40px 0; width: 100%; }
-        .reviews-track { display: flex; gap: 30px; animation: scroll 40s linear infinite; width: max-content; }
-        .rev-card { width: 350px; background: var(--glass); padding: 30px; border-radius: 25px; border: 1px solid var(--border); }
-
-        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .card:hover { border-color: var(--pink); transform: translateY(-10px); }
+        .card img { width: 100%; border-radius: 25px; margin-bottom: 20px; }
+        .card-price { color: var(--cyan); font-weight: 900; font-size: 1.5rem; }
 
         /* --- ANIMATIONS --- */
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
 
-        footer { padding: 60px 8%; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
@@ -180,54 +182,36 @@
             <a href="#reviews">Opinie</a>
             <a href="chat.html">Kontakt</a>
         </div>
-        <button class="btn-contact-nav" onclick="window.location.href='chat.html'">Live Chat</button>
+        <a href="chat.html" class="btn-main" style="padding: 12px 25px; font-size: 0.7rem;">Live Support</a>
     </nav>
 
     <section class="hero">
-        <div class="hero-badge reveal">Luxury Marketplace</div>
-        <h1 class="reveal">RARE<br>ASSETS</h1>
-        <p class="reveal" style="color: var(--text-dim); max-width: 600px;">Najbardziej pożądane przedmioty w jednym bezpiecznym miejscu. Wybierz swój styl.</p>
+        <div class="hero-badge">The Future of Virtual Assets</div>
+        <h1>UNMATCHED<br>QUALITY</h1>
+        <p>Najbardziej ekskluzywny rynek przedmiotów kolekcjonerskich. Zapewniamy bezpieczeństwo, szybkość i prestiż, na który zasługujesz.</p>
+        <div class="hero-btns">
+            <a href="#store" class="btn-main">Eksploruj Drop</a>
+        </div>
     </section>
 
     <section class="section" id="store">
-        <div class="search-bar reveal">
-            <input type="text" id="searchInput" placeholder="Szukaj przedmiotu..." onkeyup="filterItems()">
-        </div>
         <div class="grid" id="productGrid">
             </div>
     </section>
-
-    <section class="section" id="reviews">
-        <h2 style="font-family: 'Syncopate'; text-align: center; margin-bottom: 50px;">ELITE FEEDBACK</h2>
-        <div class="reviews-wrap">
-            <div class="reviews-track" id="reviewsTrack">
-                </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="logo" style="margin-bottom: 20px; font-size: 1rem;">CANDYSHOP</div>
-        <p>&copy; 2026 CANDYSHOP PREMIUM. ALL RIGHTS RESERVED.</p>
-    </footer>
 
     <script>
         /* --- SILNIK TŁA --- */
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
-
-        function initCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
+        function initCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
                 this.size = Math.random() * 1.5 + 0.5;
-                this.speedX = Math.random() * 0.4 - 0.2;
-                this.speedY = Math.random() * 0.4 - 0.2;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
             }
             update() {
                 this.x += this.speedX; this.y += this.speedY;
@@ -235,82 +219,35 @@
                 if(this.y > canvas.height) this.y = 0; else if(this.y < 0) this.y = canvas.height;
             }
             draw() {
-                ctx.fillStyle = 'rgba(255, 0, 204, 0.4)';
+                ctx.fillStyle = 'rgba(255, 0, 204, 0.3)';
                 ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
             }
         }
-
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animate);
         }
 
-        /* --- LOGIKA PRODUKTÓW I 3D TILT --- */
+        /* --- LOGIKA PRODUKTÓW --- */
         function loadProducts() {
             const grid = document.getElementById('productGrid');
             const items = JSON.parse(localStorage.getItem('candyProducts')) || [];
-            
-            if(items.length === 0) {
-                grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center;'>Brak produktów w bazie. Dodaj je w Panelu Admina.</p>";
-                return;
-            }
-
             grid.innerHTML = items.map((p, i) => `
-                <div class="card reveal" onclick="window.location.href='produkt.html?id=${i}'" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                <div class="card reveal" onclick="window.location.href='produkt.html?id=${i}'">
                     <img src="${p.img}">
-                    <div class="card-tag">${p.rarity || 'LIMITED'}</div>
-                    <h3>${p.name}</h3>
+                    <div style="font-size: 0.6rem; color: var(--pink); font-weight: 900; letter-spacing: 2px;">${p.rarity}</div>
+                    <h3 style="margin: 10px 0;">${p.name}</h3>
                     <div class="card-price">${p.price}</div>
                 </div>
             `).join('');
         }
 
-        function tilt(e, card) {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const xr = (y - rect.height/2) / 10;
-            const yr = (rect.width/2 - x) / 10;
-            card.style.transform = `perspective(1000px) rotateX(${xr}deg) rotateY(${yr}deg) translateY(-5px)`;
-        }
-
-        function resetTilt(card) {
-            card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) translateY(0)`;
-        }
-
-        function filterItems() {
-            const val = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('.card').forEach(c => {
-                c.style.display = c.innerText.toLowerCase().includes(val) ? 'block' : 'none';
-            });
-        }
-
-        /* --- OPINIE --- */
-        function loadReviews() {
-            const track = document.getElementById('reviewsTrack');
-            const revs = [
-                {u: "Vibe", m: "Mega szybko i bezpiecznie!"},
-                {u: "Trader77", m: "Najlepszy sklep z rzadkimi itemami."},
-                {u: "Xenon", m: "Kontakt z adminem na najwyższym poziomie."},
-                {u: "RobloxKing", m: "Polecam, itemy są legit."}
-            ];
-            const content = revs.map(r => `
-                <div class="rev-card">
-                    <div style="color: var(--pink); font-weight: 800; margin-bottom: 10px;">@${r.u}</div>
-                    <p style="font-size: 0.9rem; color: var(--text-dim);">"${r.m}"</p>
-                </div>
-            `).join('');
-            track.innerHTML = content + content; // Podwójnie dla pętli
-        }
-
-        /* --- INITIALIZE --- */
         window.onload = () => {
             initCanvas();
-            for(let i=0; i<70; i++) particles.push(new Particle());
+            for(let i=0; i<80; i++) particles.push(new Particle());
             animate();
             loadProducts();
-            loadReviews();
             
             window.addEventListener('scroll', () => {
                 document.querySelectorAll('.reveal').forEach(r => {
