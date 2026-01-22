@@ -2,13 +2,14 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Candyshop | Ultimate Luxury Marketplace</title>
+    <title>CANDYSHOP | Ultimate Roblox Luxury Marketplace</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
+        /* --- CORE CONFIG --- */
         :root { 
-            --bg: #030303; 
+            --bg: #050505; 
             --card-bg: rgba(15, 15, 15, 0.7);
             --pink: #ff00cc; 
             --cyan: #00dbde; 
@@ -21,15 +22,20 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--pink); }
+
         body { 
             background: var(--bg); 
             color: var(--text-main); 
             font-family: 'Outfit', sans-serif; 
             overflow-x: hidden;
-            scroll-behavior: smooth;
+            line-height: 1.6;
         }
 
-        /* --- BACKGROUND ENGINE (CANVAS) --- */
+        /* --- BACKGROUND ENGINE --- */
         #bg-canvas {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -37,29 +43,23 @@
             background: radial-gradient(circle at center, #0d001a 0%, #030303 100%);
         }
 
-        /* --- SCROLLBAR --- */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--pink); }
-
         /* --- NAVIGATION --- */
         .nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 25px 8%;
+            padding: 20px 8%;
             position: fixed;
             width: 100%; top: 0;
-            background: rgba(3, 3, 3, 0.7);
-            backdrop-filter: blur(25px);
-            z-index: 1000;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(30px);
+            z-index: 10000;
             border-bottom: 1px solid var(--border);
         }
 
         .logo {
             font-family: 'Syncopate', sans-serif;
-            font-weight: 700; font-size: 1.6rem;
+            font-weight: 700; font-size: 1.5rem;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -74,112 +74,99 @@
             text-transform: uppercase; letter-spacing: 2px;
             transition: 0.3s;
         }
-        .nav-links a:hover { color: #fff; text-shadow: 0 0 10px var(--pink); }
+        .nav-links a:hover { color: #fff; text-shadow: 0 0 15px var(--pink); }
+
+        .btn-contact-nav {
+            background: var(--accent-gradient);
+            border: none; padding: 12px 25px;
+            border-radius: 12px; color: #fff;
+            font-weight: 800; cursor: pointer;
+            transition: 0.4s; text-transform: uppercase;
+            font-size: 0.75rem;
+        }
 
         /* --- HERO SECTION --- */
         .hero {
             height: 100vh;
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            text-align: center; padding: 0 10%;
+            text-align: center; padding: 0 15%;
         }
 
         .hero-badge {
             background: rgba(255,255,255,0.05);
-            padding: 10px 25px; border-radius: 100px;
+            padding: 8px 20px; border-radius: 100px;
             border: 1px solid var(--border);
-            font-size: 0.7rem; color: var(--cyan);
-            letter-spacing: 5px; text-transform: uppercase;
-            margin-bottom: 25px;
-            animation: fadeInDown 1s ease forwards;
+            font-size: 0.7rem; color: var(--pink);
+            letter-spacing: 4px; text-transform: uppercase;
+            margin-bottom: 30px;
         }
 
         .hero h1 {
-            font-size: clamp(3rem, 10vw, 9rem);
+            font-size: clamp(3rem, 10vw, 8rem);
             font-family: 'Syncopate', sans-serif;
-            line-height: 0.85; margin-bottom: 30px;
-            background: linear-gradient(to bottom, #fff, #555);
+            line-height: 0.9; margin-bottom: 30px;
+            background: linear-gradient(to bottom, #fff 40%, rgba(255,255,255,0.2));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .btn-premium {
-            background: var(--accent-gradient);
-            border: none; padding: 18px 40px;
-            border-radius: 15px; color: #fff;
-            font-weight: 800; text-transform: uppercase;
-            cursor: pointer; transition: 0.4s;
-            box-shadow: 0 10px 30px rgba(255, 0, 204, 0.3);
+        /* --- STORE SECTION --- */
+        .section { padding: 100px 8%; }
+        
+        .search-bar {
+            width: 100%; max-width: 600px;
+            margin: 0 auto 60px auto;
+            position: relative;
         }
-        .btn-premium:hover { transform: scale(1.05); box-shadow: 0 15px 40px rgba(255, 0, 204, 0.5); }
 
-        /* --- GRID & CARDS (3D TILT) --- */
-        .section { padding: 120px 8%; }
+        #searchInput {
+            width: 100%; background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 20px 30px; border-radius: 20px;
+            color: #fff; font-size: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 40px; margin-top: 60px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
         }
 
         .card {
             background: var(--card-bg);
-            border-radius: 35px; padding: 25px;
             border: 1px solid var(--border);
-            backdrop-filter: blur(15px);
-            transition: transform 0.1s ease-out, border-color 0.4s;
+            border-radius: 30px; padding: 20px;
+            transition: border-color 0.4s;
+            cursor: pointer; backdrop-filter: blur(10px);
             transform-style: preserve-3d;
-            cursor: pointer;
+            perspective: 1000px;
         }
+
         .card:hover { border-color: var(--pink); }
 
         .card img {
-            width: 100%; border-radius: 25px;
-            transform: translateZ(30px);
-            margin-bottom: 20px;
+            width: 100%; height: 280px;
+            object-fit: cover; border-radius: 20px;
+            margin-bottom: 20px; transform: translateZ(20px);
         }
 
-        .card h3 { font-size: 1.5rem; margin-bottom: 10px; transform: translateZ(20px); }
-        .card-price { color: var(--cyan); font-weight: 800; font-size: 1.8rem; transform: translateZ(25px); }
+        .card-tag { font-size: 0.6rem; font-weight: 900; color: var(--pink); margin-bottom: 5px; }
+        .card-price { font-size: 1.6rem; font-weight: 800; color: var(--cyan); margin-top: 10px; }
 
-        /* --- ANIMATED REVIEWS --- */
-        .reviews-container {
-            width: 100%; overflow: hidden;
-            padding: 50px 0; position: relative;
-        }
-        .reviews-track {
-            display: flex; gap: 30px;
-            width: calc(400px * 10);
-            animation: scrollReviews 30s linear infinite;
-        }
-        .review-card {
-            width: 400px; background: var(--glass);
-            padding: 40px; border-radius: 30px;
-            border: 1px solid var(--border);
-            flex-shrink: 0;
-        }
+        /* --- REVIEWS SLIDER --- */
+        .reviews-wrap { overflow: hidden; padding: 40px 0; width: 100%; }
+        .reviews-track { display: flex; gap: 30px; animation: scroll 40s linear infinite; width: max-content; }
+        .rev-card { width: 350px; background: var(--glass); padding: 30px; border-radius: 25px; border: 1px solid var(--border); }
 
-        @keyframes scrollReviews {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-400px * 5)); }
-        }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        /* --- SHOPPING CART (SIDE BAR) --- */
-        .cart-sidebar {
-            position: fixed; right: -400px; top: 0;
-            width: 400px; height: 100vh;
-            background: rgba(5,5,5,0.95);
-            backdrop-filter: blur(30px);
-            z-index: 2000; padding: 40px;
-            transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            border-left: 1px solid var(--border);
-        }
-        .cart-sidebar.active { right: 0; }
-
-        /* --- REVEAL ANIMATIONS --- */
-        .reveal { opacity: 0; transform: translateY(50px); transition: 1s ease-out; }
+        /* --- ANIMATIONS --- */
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        footer { padding: 60px 8%; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); }
     </style>
 </head>
 <body>
@@ -189,179 +176,148 @@
     <nav class="nav">
         <a href="#" class="logo">CANDYSHOP</a>
         <div class="nav-links">
-            <a href="#store">Store</a>
-            <a href="#reviews">Reviews</a>
-            <a href="#about">About</a>
+            <a href="#store">Kolekcja</a>
+            <a href="#reviews">Opinie</a>
+            <a href="chat.html">Kontakt</a>
         </div>
-        <button class="btn-premium" onclick="toggleCart()">Cart (0)</button>
+        <button class="btn-contact-nav" onclick="window.location.href='chat.html'">Live Chat</button>
     </nav>
 
     <section class="hero">
-        <div class="hero-badge">Verified Luxury Marketplace</div>
-        <h1>UNMATCHED<br>ELEGANCE</h1>
-        <p style="color: var(--text-dim); margin-bottom: 40px; max-width: 600px;">
-            The world's most exclusive collection of digital assets. Secure, fast, and prestigious.
-        </p>
-        <button class="btn-premium" onclick="window.scrollTo(0, 1000)">Explore Collection</button>
+        <div class="hero-badge reveal">Luxury Marketplace</div>
+        <h1 class="reveal">RARE<br>ASSETS</h1>
+        <p class="reveal" style="color: var(--text-dim); max-width: 600px;">Najbardziej pożądane przedmioty w jednym bezpiecznym miejscu. Wybierz swój styl.</p>
     </section>
 
     <section class="section" id="store">
-        <div style="text-align: center;" class="reveal">
-            <h2 style="font-family: 'Syncopate'; font-size: 3rem;">LATEST DROPS</h2>
-            <div style="width: 80px; height: 4px; background: var(--pink); margin: 20px auto;"></div>
+        <div class="search-bar reveal">
+            <input type="text" id="searchInput" placeholder="Szukaj przedmiotu..." onkeyup="filterItems()">
         </div>
-
-        <div class="grid" id="product-grid">
+        <div class="grid" id="productGrid">
             </div>
     </section>
 
-    <section class="section" id="reviews" style="background: rgba(255,0,204,0.02);">
+    <section class="section" id="reviews">
         <h2 style="font-family: 'Syncopate'; text-align: center; margin-bottom: 50px;">ELITE FEEDBACK</h2>
-        <div class="reviews-container">
-            <div class="reviews-track" id="reviews-track">
+        <div class="reviews-wrap">
+            <div class="reviews-track" id="reviewsTrack">
                 </div>
         </div>
     </section>
 
-    <div class="cart-sidebar" id="cart-sidebar">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
-            <h2 style="font-family: 'Syncopate';">CART</h2>
-            <button onclick="toggleCart()" style="background: none; border: none; color: #fff; cursor: pointer; font-size: 1.5rem;">&times;</button>
-        </div>
-        <div id="cart-items" style="color: var(--text-dim);">Your cart is empty.</div>
-        <div style="position: absolute; bottom: 40px; width: calc(100% - 80px);">
-            <div style="display: flex; justify-content: space-between; font-size: 1.2rem; margin-bottom: 20px;">
-                <span>Total:</span>
-                <span id="cart-total" style="color: var(--cyan); font-weight: 800;">0 R$</span>
-            </div>
-            <button class="btn-premium" style="width: 100%;">Checkout Now</button>
-        </div>
-    </div>
+    <footer>
+        <div class="logo" style="margin-bottom: 20px; font-size: 1rem;">CANDYSHOP</div>
+        <p>&copy; 2026 CANDYSHOP PREMIUM. ALL RIGHTS RESERVED.</p>
+    </footer>
 
     <script>
-        /* --- DANE PRODUKTÓW --- */
-        const products = [
-            { name: "Super Happy Face", price: 125000, img: "https://i.ibb.co/L5fRMMn/face.png", tag: "Limited" },
-            { name: "Dominus Astra", price: 2500000, img: "https://i.ibb.co/3WfT88S/astra.png", tag: "Mythical" },
-            { name: "Ice Valkyrie", price: 45000, img: "https://i.ibb.co/r7HqD6y/valk.png", tag: "Rare" },
-            { name: "Sparkle Fedora", price: 180000, img: "https://i.ibb.co/L5fRMMn/face.png", tag: "Legendary" },
-            { name: "Void Star", price: 95000, img: "https://i.ibb.co/3WfT88S/astra.png", tag: "Exotic" },
-            { name: "Headless", price: 31000, img: "https://i.ibb.co/r7HqD6y/valk.png", tag: "Special" }
-        ];
-
-        const reviews = [
-            { user: "@VibeCollector", text: "Instant delivery. Best support I've ever dealt with." },
-            { user: "@LuxuryLover", text: "Candyshop is the only marketplace I trust with my assets." },
-            { user: "@TraderPro", text: "Quality is insane. The animations on this site are fire." },
-            { user: "@RichDev", text: "Smooth transaction, definitely coming back for more." },
-            { user: "@RobloxWhale", text: "Verified items only. Peace of mind is worth every penny." }
-        ];
-
-        /* --- SILNIK CZĄSTECZKOWY (Canvas API) --- */
+        /* --- SILNIK TŁA --- */
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
 
-        function resize() {
+        function initCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
-        window.addEventListener('resize', resize);
-        resize();
 
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 1;
-                this.speedX = (Math.random() - 0.5) * 0.5;
-                this.speedY = (Math.random() - 0.5) * 0.5;
-                this.opacity = Math.random();
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedX = Math.random() * 0.4 - 0.2;
+                this.speedY = Math.random() * 0.4 - 0.2;
             }
             update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.y < 0) this.y = canvas.height;
+                this.x += this.speedX; this.y += this.speedY;
+                if(this.x > canvas.width) this.x = 0; else if(this.x < 0) this.x = canvas.width;
+                if(this.y > canvas.height) this.y = 0; else if(this.y < 0) this.y = canvas.height;
             }
             draw() {
-                ctx.fillStyle = `rgba(255, 0, 204, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.fillStyle = 'rgba(255, 0, 204, 0.4)';
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
             }
         }
-
-        for (let i = 0; i < 80; i++) particles.push(new Particle());
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animate);
         }
-        animate();
 
-        /* --- RENDER PRODUKTÓW --- */
-        const grid = document.getElementById('product-grid');
-        products.forEach(p => {
-            const el = document.createElement('div');
-            el.className = 'card reveal';
-            el.innerHTML = `
-                <div class="hero-badge" style="letter-spacing: 2px; font-size: 0.6rem;">${p.tag}</div>
-                <img src="${p.img}" alt="${p.name}">
-                <h3>${p.name}</h3>
-                <div class="card-price">${p.price.toLocaleString()} R$</div>
-            `;
-            el.addEventListener('mousemove', (e) => handleTilt(e, el));
-            el.addEventListener('mouseleave', () => resetTilt(el));
-            grid.appendChild(el);
-        });
+        /* --- LOGIKA PRODUKTÓW I 3D TILT --- */
+        function loadProducts() {
+            const grid = document.getElementById('productGrid');
+            const items = JSON.parse(localStorage.getItem('candyProducts')) || [];
+            
+            if(items.length === 0) {
+                grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center;'>Brak produktów w bazie. Dodaj je w Panelu Admina.</p>";
+                return;
+            }
 
-        /* --- 3D TILT EFFECT --- */
-        function handleTilt(e, card) {
+            grid.innerHTML = items.map((p, i) => `
+                <div class="card reveal" onclick="window.location.href='produkt.html?id=${i}'" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                    <img src="${p.img}">
+                    <div class="card-tag">${p.rarity || 'LIMITED'}</div>
+                    <h3>${p.name}</h3>
+                    <div class="card-price">${p.price}</div>
+                </div>
+            `).join('');
+        }
+
+        function tilt(e, card) {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = (y - centerY) / 10;
-            const rotateY = (centerX - x) / 10;
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            const xr = (y - rect.height/2) / 10;
+            const yr = (rect.width/2 - x) / 10;
+            card.style.transform = `perspective(1000px) rotateX(${xr}deg) rotateY(${yr}deg) translateY(-5px)`;
         }
 
         function resetTilt(card) {
-            card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
+            card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) translateY(0)`;
         }
 
-        /* --- RENDER OPINII (INFINITE LOOP) --- */
-        const track = document.getElementById('reviews-track');
-        const allReviews = [...reviews, ...reviews]; // Duplicate for loop
-        allReviews.forEach(r => {
-            const el = document.createElement('div');
-            el.className = 'review-card';
-            el.innerHTML = `
-                <div style="color: var(--pink); font-weight: 800; margin-bottom: 15px;">${r.user}</div>
-                <p style="font-style: italic; color: var(--text-dim);">"${r.text}"</p>
-                <div style="margin-top: 15px; color: gold;">★★★★★</div>
-            `;
-            track.appendChild(el);
-        });
-
-        /* --- LOGIKA KOSZYKA --- */
-        function toggleCart() {
-            document.getElementById('cart-sidebar').classList.toggle('active');
-        }
-
-        /* --- REVEAL ON SCROLL --- */
-        window.addEventListener('scroll', () => {
-            const reveals = document.querySelectorAll('.reveal');
-            reveals.forEach(r => {
-                const top = r.getBoundingClientRect().top;
-                if (top < window.innerHeight - 100) r.classList.add('active');
+        function filterItems() {
+            const val = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.card').forEach(c => {
+                c.style.display = c.innerText.toLowerCase().includes(val) ? 'block' : 'none';
             });
-        });
+        }
+
+        /* --- OPINIE --- */
+        function loadReviews() {
+            const track = document.getElementById('reviewsTrack');
+            const revs = [
+                {u: "Vibe", m: "Mega szybko i bezpiecznie!"},
+                {u: "Trader77", m: "Najlepszy sklep z rzadkimi itemami."},
+                {u: "Xenon", m: "Kontakt z adminem na najwyższym poziomie."},
+                {u: "RobloxKing", m: "Polecam, itemy są legit."}
+            ];
+            const content = revs.map(r => `
+                <div class="rev-card">
+                    <div style="color: var(--pink); font-weight: 800; margin-bottom: 10px;">@${r.u}</div>
+                    <p style="font-size: 0.9rem; color: var(--text-dim);">"${r.m}"</p>
+                </div>
+            `).join('');
+            track.innerHTML = content + content; // Podwójnie dla pętli
+        }
+
+        /* --- INITIALIZE --- */
+        window.onload = () => {
+            initCanvas();
+            for(let i=0; i<70; i++) particles.push(new Particle());
+            animate();
+            loadProducts();
+            loadReviews();
+            
+            window.addEventListener('scroll', () => {
+                document.querySelectorAll('.reveal').forEach(r => {
+                    if(r.getBoundingClientRect().top < window.innerHeight - 50) r.classList.add('active');
+                });
+            });
+        };
     </script>
 </body>
 </html>
