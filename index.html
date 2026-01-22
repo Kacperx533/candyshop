@@ -2,206 +2,208 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Candyshop | Premium Roblox Experience</title>
+  <title>Candyshop | Elite Roblox Marketplace</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
   <style>
     :root { 
-      --bg: #050505; 
-      --pink: #ff00cc; 
-      --cyan: #00dbde; 
-      --violet: #7000ff;
-      --glass: rgba(255, 255, 255, 0.03); 
-      --border: rgba(255, 255, 255, 0.1); 
+      --bg: #020202; --pink: #ff00cc; --cyan: #00dbde; --violet: #7000ff;
+      --glass: rgba(255, 255, 255, 0.03); --border: rgba(255, 255, 255, 0.08); 
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
     body { background: var(--bg); color: #fff; font-family: 'Outfit', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
 
-    /* --- TŁO ANIMOWANE --- */
-    .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-    .glow { position: absolute; border-radius: 50%; filter: blur(150px); opacity: 0.2; animation: move 20s infinite alternate; }
-    .g1 { width: 400px; height: 400px; background: var(--pink); top: -100px; left: -100px; }
-    .g2 { width: 500px; height: 500px; background: var(--cyan); bottom: -150px; right: -100px; animation-delay: -5s; }
-    @keyframes move { from { transform: translate(0,0); } to { transform: translate(200px, 100px); } }
+    /* Background */
+    .galaxy { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+    .orb { position: absolute; border-radius: 50%; filter: blur(150px); opacity: 0.15; animation: drift 20s infinite alternate; }
+    .orb-1 { width: 600px; height: 600px; background: var(--pink); top: -10%; left: -5%; }
+    .orb-2 { width: 500px; height: 500px; background: var(--violet); bottom: 10%; right: -5%; }
 
-    /* --- NAVBAR --- */
-    .nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 8%; position: sticky; top: 0; backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); z-index: 1000; }
-    .nav img { width: 140px; cursor: pointer; transition: 0.3s; }
-    .nav img:hover { filter: drop-shadow(0 0 10px var(--pink)); transform: scale(1.05); }
-    .nav-links { display: flex; gap: 30px; align-items: center; }
-    .nav-links a { color: #888; text-decoration: none; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
-    .nav-links a:hover { color: #fff; }
-    .btn-login { background: var(--pink); color: #fff; padding: 12px 25px; border-radius: 12px; font-weight: 900; cursor: pointer; border: none; box-shadow: 0 5px 20px rgba(255,0,204,0.3); transition: 0.3s; }
-    .btn-login:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255,0,204,0.5); }
+    @keyframes drift { from { transform: translate(0,0); } to { transform: translate(100px, 150px); } }
 
-    /* --- HERO --- */
-    .hero { min-height: 85vh; display: flex; align-items: center; padding: 0 10%; gap: 50px; }
-    .hero-content { flex: 1.2; }
-    .hero-content h1 { font-size: clamp(4rem, 8vw, 7.5rem); line-height: 0.85; font-weight: 900; background: linear-gradient(to right, #fff, var(--pink), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 25px; }
-    .hero-content p { color: #aaa; font-size: 1.2rem; max-width: 550px; line-height: 1.6; margin-bottom: 35px; }
-    .hero-image { flex: 0.8; display: flex; justify-content: flex-end; }
-    .hero-image img { width: 100%; max-width: 500px; filter: drop-shadow(0 0 50px rgba(255,0,204,0.3)); animation: float 6s infinite ease-in-out; }
-    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
-
-    /* --- LOGIN MODAL (PIĘKNIEJSZY) --- */
-    .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(10px); }
-    .modal-box { background: #0f0f0f; border: 1px solid var(--border); padding: 50px; border-radius: 40px; width: 450px; position: relative; box-shadow: 0 0 100px rgba(0,0,0,1); text-align: center; }
-    .modal-box h2 { font-size: 2.5rem; margin-bottom: 30px; font-weight: 900; }
-    .modal-box input { width: 100%; padding: 18px; margin-bottom: 20px; background: #1a1a1a; border: 1px solid var(--border); border-radius: 15px; color: #fff; font-family: inherit; font-size: 1rem; transition: 0.3s; }
-    .modal-box input:focus { border-color: var(--pink); box-shadow: 0 0 15px rgba(255,0,204,0.2); }
-    .modal-submit { width: 100%; padding: 18px; background: var(--pink); border: none; border-radius: 15px; color: #fff; font-weight: 900; font-size: 1.1rem; cursor: pointer; margin-top: 10px; }
-    .close-modal { position: absolute; top: 25px; right: 25px; cursor: pointer; color: #444; font-size: 1.5rem; }
-
-    /* --- CHAT (STYL MESSENGER) --- */
-    #chat-btn { position: fixed; bottom: 40px; right: 40px; width: 70px; height: 70px; background: var(--pink); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 10px 40px rgba(255,0,204,0.4); z-index: 1000; transition: 0.3s; font-size: 1.5rem; }
-    #chat-window { position: fixed; bottom: 120px; right: 40px; width: 380px; height: 550px; background: #0d0d0d; border: 1px solid var(--border); border-radius: 30px; display: none; flex-direction: column; z-index: 1001; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.8); }
-    .chat-head { padding: 25px; background: var(--glass); border-bottom: 1px solid var(--border); font-weight: 900; display: flex; align-items: center; gap: 10px; }
-    .chat-head::before { content: ''; width: 12px; height: 12px; background: #00ff00; border-radius: 50%; box-shadow: 0 0 10px #00ff00; }
-    .chat-msgs { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-    .bubble { padding: 12px 18px; border-radius: 20px; max-width: 80%; line-height: 1.4; font-size: 0.95rem; }
-    .admin { background: var(--border); align-self: flex-start; border-bottom-left-radius: 5px; }
-    .user { background: var(--pink); align-self: flex-end; border-bottom-right-radius: 5px; }
-    .chat-in { padding: 20px; display: flex; gap: 10px; background: #080808; }
-    .chat-in input { flex: 1; background: #151515; border: none; padding: 12px; border-radius: 12px; color: #fff; }
-
-    /* --- SEKTY SKLEPU --- */
-    .section { padding: 100px 10%; }
-    .reveal { opacity: 0; transform: translateY(30px); transition: 1s; }
+    /* Reveal Animation */
+    .reveal { opacity: 0; transform: translateY(50px); transition: 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
     .reveal.active { opacity: 1; transform: translateY(0); }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 40px; margin-top: 50px; }
-    .card { background: var(--glass); border: 1px solid var(--border); border-radius: 35px; padding: 20px; transition: 0.5s; cursor: pointer; }
-    .card:hover { transform: translateY(-15px); border-color: var(--pink); box-shadow: 0 20px 40px rgba(255,0,204,0.1); }
-    .card img { width: 100%; height: 350px; object-fit: cover; border-radius: 25px; }
+
+    /* Nav */
+    .nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 8%; position: sticky; top: 0; background: rgba(2,2,2,0.8); backdrop-filter: blur(20px); z-index: 1000; border-bottom: 1px solid var(--border); }
+    .nav img { width: 150px; cursor: pointer; }
+    .nav-links { display: flex; gap: 30px; align-items: center; }
+    .nav-links a { color: #888; text-decoration: none; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+    .nav-links a:hover { color: var(--pink); }
+
+    /* Hero */
+    .hero { min-height: 100vh; display: flex; align-items: center; padding: 0 10%; gap: 40px; }
+    .hero-text h1 { font-size: clamp(4rem, 10vw, 8rem); line-height: 0.8; font-weight: 900; background: linear-gradient(to right, #fff, var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; }
+    .hero-text p { color: #888; font-size: 1.4rem; max-width: 600px; margin-bottom: 40px; }
+
+    /* Stats Bar */
+    .stats-container { display: flex; justify-content: space-around; padding: 80px 10%; background: var(--glass); border-top: 1px solid var(--border); }
+    .stat-card h2 { font-size: 3rem; color: var(--cyan); font-weight: 900; }
+    .stat-card p { color: #555; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
+
+    /* Grid Sklepu */
+    .section { padding: 120px 10%; }
+    .section-title { font-size: 3.5rem; font-weight: 900; margin-bottom: 60px; display: flex; align-items: center; gap: 20px; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; }
+    .card { background: var(--glass); border: 1px solid var(--border); border-radius: 40px; padding: 25px; transition: 0.5s; cursor: pointer; }
+    .card:hover { transform: translateY(-20px); border-color: var(--pink); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+    .card img { width: 100%; height: 400px; object-fit: cover; border-radius: 30px; margin-bottom: 20px; }
+
+    /* Opinie (Testimonials) */
+    .reviews { background: #050505; padding: 120px 10%; }
+    .review-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+    .review-card { background: #0a0a0a; padding: 40px; border-radius: 30px; border: 1px solid var(--border); }
+    .review-card p { font-style: italic; color: #aaa; margin-bottom: 20px; }
+    .review-card b { color: var(--pink); letter-spacing: 1px; }
+
+    /* FAQ */
+    .faq-container { max-width: 800px; margin: 0 auto; }
+    .faq-item { background: var(--glass); margin-bottom: 15px; border-radius: 20px; border: 1px solid var(--border); overflow: hidden; }
+    .faq-q { padding: 25px; cursor: pointer; font-weight: 800; display: flex; justify-content: space-between; }
+    .faq-a { padding: 0 25px 25px; color: #777; display: none; }
+
+    /* Footer */
+    footer { padding: 100px 10%; border-top: 1px solid var(--border); text-align: center; }
+    .socials { display: flex; justify-content: center; gap: 30px; margin-bottom: 40px; }
+    .socials a { color: #fff; text-decoration: none; font-weight: 900; font-size: 1.2rem; }
+
+    /* Modale */
+    .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(15px); }
+    .modal-content { background: #0f0f0f; padding: 50px; border-radius: 40px; width: 450px; border: 1px solid var(--border); text-align: center; }
+    .modal-content input { width: 100%; padding: 18px; margin-bottom: 20px; background: #000; border: 1px solid var(--border); border-radius: 15px; color: #fff; }
+    .btn-pink { width: 100%; padding: 18px; background: var(--pink); border: none; border-radius: 15px; color: #fff; font-weight: 900; cursor: pointer; }
   </style>
 </head>
 <body>
 
-  <div class="bg-animation">
-    <div class="glow g1"></div>
-    <div class="glow g2"></div>
-  </div>
+  <div class="galaxy"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
 
   <nav class="nav">
-    <img src="images/logo.png" alt="Candyshop" onclick="window.location.reload()">
+    <img src="images/logo.png" alt="Logo">
     <div class="nav-links">
-      <a href="#store">Sklep</a>
+      <a href="#sklep">Drop</a>
+      <a href="#opinie">Opinie</a>
+      <a href="#faq">FAQ</a>
       <a href="kontakt.html">Kontakt</a>
-      <button class="btn-login" onclick="openModal()">Zaloguj się</button>
+      <button onclick="openModal()" style="background: var(--pink); border:none; padding:10px 25px; border-radius:10px; color:#fff; font-weight:900; cursor:pointer;">KONTO</button>
     </div>
   </nav>
 
   <section class="hero">
-    <div class="hero-content">
-      <h1>CANDY<br>SHOP</h1>
-      <p>Odkryj najbardziej unikalne przedmioty w Roblox. Szybka dostawa, pełne bezpieczeństwo i elitarny towar tylko u nas.</p>
-      <a href="#store" style="text-decoration: none; padding: 20px 45px; background: #fff; color: #000; border-radius: 15px; font-weight: 900; display: inline-block;">ZOBACZ DROP</a>
+    <div class="hero-text reveal">
+      <h1>CANDY<br>SHOP.</h1>
+      <p>Twoje elitarne źródło najrzadszych przedmiotów. Dołącz do społeczności premium.</p>
+      <a href="#sklep" style="display:inline-block; padding:20px 50px; background:#fff; color:#000; text-decoration:none; border-radius:50px; font-weight:900;">PRZEGLĄDAJ SKLEP</a>
     </div>
-    <div class="hero-image">
-      <img src="images/Hero.png" alt="Hero">
+    <div class="hero-image reveal">
+      <img src="images/Hero.png" style="width:100%; filter: drop-shadow(0 0 50px var(--pink));">
     </div>
   </section>
 
-  <section class="section" id="store">
-    <h2 style="font-size: 3rem; font-weight: 900;">LIVE MARKET</h2>
+  <section class="stats-container reveal">
+    <div class="stat-card"><h2>2k+</h2><p>Sprzedaży</p></div>
+    <div class="stat-card"><h2>15m</h2><p>Średni Czas</p></div>
+    <div class="stat-card"><h2>99%</h2><p>Zadowolenia</p></div>
+  </section>
+
+  <section class="section" id="sklep">
+    <h2 class="section-title reveal">NAJNOWSZY DROP</h2>
     <div class="grid" id="grid"></div>
   </section>
 
-  <div class="modal" id="loginModal">
-    <div class="modal-box">
-      <span class="close-modal" onclick="closeModal()">&times;</span>
-      <h2 id="modalTitle">LOGOWANIE</h2>
-      <input type="text" id="username" placeholder="Twoja nazwa / Email">
-      <input type="password" id="password" placeholder="Twoje hasło">
-      <button class="modal-submit" onclick="handleAuth()">KONTYNUUJ</button>
-      <p id="toggleText" onclick="toggleAuth()" style="margin-top: 25px; font-size: 0.9rem; color: #666; cursor: pointer;">Nie masz konta? <span style="color: var(--pink);">Zarejestruj się</span></p>
+  <section class="reviews" id="opinie">
+    <h2 class="section-title reveal">CO MÓWIĄ INNI</h2>
+    <div class="review-grid">
+      <div class="review-card reveal">
+        <p>"Najlepszy sklep, dostałem item w 5 minut. Polecam Capka!"</p>
+        <b>@Mati_RBX</b>
+      </div>
+      <div class="review-card reveal">
+        <p>"Sisi bardzo pomocna na czacie. Wszystko bezpiecznie i legit."</p>
+        <b>@Koxu22</b>
+      </div>
+      <div class="review-card reveal">
+        <p>"Brałem już 3 razy, nigdy się nie zawiodłem. Candyshop to marka."</p>
+        <b>@User_99</b>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div id="chat-btn" onclick="toggleChat()">💬</div>
-  <div id="chat-window">
-    <div class="chat-head">Czat z Adminem</div>
-    <div class="chat-msgs" id="chatMsgs">
-      <div class="bubble admin">Cześć! Capek i Sisi są online. W czym możemy pomóc?</div>
+  <section class="section" id="faq">
+    <h2 class="section-title reveal">CZĘSTE PYTANIA</h2>
+    <div class="faq-container reveal">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Czy to jest bezpieczne? <span>+</span></div>
+        <div class="faq-a">Tak, każda transakcja jest monitorowana przez naszą administrację. Posiadamy setki dowodów sprzedaży (vouches).</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Jak długo czekam na item? <span>+</span></div>
+        <div class="faq-a">Zazwyczaj dostawa zajmuje od 10 do 30 minut po zaksięgowaniu wpłaty.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Jakie metody płatności przyjmujecie? <span>+</span></div>
+        <div class="faq-a">Wszystkie szczegóły znajdziesz w formularzu zakupu po kliknięciu "Kup teraz".</div>
+      </div>
     </div>
-    <div class="chat-in">
-      <input type="text" id="chatInput" placeholder="Napisz do nas...">
-      <button onclick="send()" style="background: var(--pink); border: none; padding: 10px 15px; border-radius: 10px; color: #fff; font-weight: 900;">></button>
+  </section>
+
+  <footer>
+    <div class="socials">
+      <a href="#">DISCORD</a>
+      <a href="#">TIKTOK</a>
+      <a href="#">INSTAGRAM</a>
+    </div>
+    <p style="color:#333; font-weight:900; letter-spacing:5px;">CANDYSHOP ELITE &copy; 2026</p>
+  </footer>
+
+  <div class="modal" id="authModal">
+    <div class="modal-content">
+      <h2 id="mTitle">LOGOWANIE</h2>
+      <input type="text" placeholder="Nick">
+      <input type="password" placeholder="Hasło">
+      <button class="btn-pink" onclick="closeModal()">WEJDŹ</button>
+      <p onclick="toggleM()" style="margin-top:20px; color:#555; cursor:pointer;">Zmień na Rejestrację</p>
+      <p onclick="closeModal()" style="margin-top:10px; color:red; cursor:pointer;">Zamknij</p>
     </div>
   </div>
 
   <script>
-    // --- SKLEP ---
-    function loadProducts() {
+    function load() {
       const items = JSON.parse(localStorage.getItem('candyProducts')) || [];
       const grid = document.getElementById('grid');
       grid.innerHTML = items.map((p, i) => `
         <div class="card reveal" onclick="location.href='produkt.html?id=${i}'">
           <img src="${p.img}">
-          <h3 style="margin-top:20px; font-size: 1.5rem;">${p.name}</h3>
-          <p style="color: var(--cyan); font-weight: 900; font-size: 1.3rem; margin-top: 5px;">${p.price}</p>
+          <div style="font-size:0.7rem; color:var(--pink); font-weight:900;">${p.rarity || 'LEGENDARY'}</div>
+          <h3 style="font-size:1.8rem;">${p.name}</h3>
+          <p style="font-size:1.5rem; font-weight:900; color:var(--cyan);">${p.price}</p>
         </div>`).join('');
-      scrollReveal();
+      reveal();
     }
 
-    // --- LOGOWANIE (FRONTEND) ---
-    function openModal() { document.getElementById('loginModal').style.display = 'flex'; }
-    function closeModal() { document.getElementById('loginModal').style.display = 'none'; }
-    
-    let isLogin = true;
-    function toggleAuth() {
-      isLogin = !isLogin;
-      document.getElementById('modalTitle').innerText = isLogin ? 'LOGOWANIE' : 'REJESTRACJA';
-      document.getElementById('toggleText').innerHTML = isLogin ? 'Nie masz konta? <span style="color:var(--pink)">Zarejestruj się</span>' : 'Masz już konto? <span style="color:var(--pink)">Zaloguj się</span>';
-    }
-
-    function handleAuth() {
-      const user = document.getElementById('username').value;
-      if(!user) { alert("Podaj nazwę użytkownika!"); return; }
-      
-      // Symulacja bazy danych:
-      localStorage.setItem('currentUser', user);
-      alert(isLogin ? "Zalogowano pomyślnie jako " + user : "Konto utworzone dla " + user);
-      closeModal();
-      document.querySelector('.btn-login').innerText = user.toUpperCase();
-    }
-
-    // --- CZAT ---
-    function toggleChat() {
-      const chat = document.getElementById('chat-window');
-      chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex';
-    }
-
-    function send() {
-      const input = document.getElementById('chatInput');
-      const box = document.getElementById('chatMsgs');
-      if(!input.value) return;
-
-      box.innerHTML += `<div class="bubble user">${input.value}</div>`;
-      const userText = input.value.toLowerCase();
-      input.value = '';
-
-      // Prosta AI/Admin Bot
-      setTimeout(() => {
-        let reply = "Poczekaj chwilę, sprawdzam to dla Ciebie...";
-        if(userText.includes("cena")) reply = "Ceny są podane przy produktach, ale przy większych zamówieniach dajemy zniżki!";
-        if(userText.includes("dostawa")) reply = "Dostarczamy zwykle w 15-30 minut!";
-        
-        box.innerHTML += `<div class="bubble admin">${reply}</div>`;
-        box.scrollTop = box.scrollHeight;
-      }, 1000);
-    }
-
-    // --- ANIMACJE ---
-    function scrollReveal() {
-      const reveals = document.querySelectorAll('.reveal');
-      reveals.forEach(el => {
+    function reveal() {
+      document.querySelectorAll('.reveal').forEach(el => {
         if(el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
       });
     }
 
-    window.addEventListener('scroll', scrollReveal);
-    window.onload = loadProducts;
+    function toggleFaq(el) {
+      const ans = el.nextElementSibling;
+      ans.style.display = ans.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function openModal() { document.getElementById('authModal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('authModal').style.display = 'none'; }
+    function toggleM() {
+      const t = document.getElementById('mTitle');
+      t.innerText = t.innerText === 'LOGOWANIE' ? 'REJESTRACJA' : 'LOGOWANIE';
+    }
+
+    window.addEventListener('scroll', reveal);
+    window.onload = load;
   </script>
 </body>
 </html>
