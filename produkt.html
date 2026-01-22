@@ -1,54 +1,50 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>CANDY | Chat z Adminem</title>
-    <style>
-        body { background: #050505; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .chat-box { width: 400px; height: 500px; background: #111; border: 1px solid #333; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; }
-        .messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-        .msg { padding: 10px 15px; border-radius: 15px; max-width: 80%; font-size: 0.9rem; }
-        .msg.admin { background: #333; align-self: flex-start; }
-        .msg.user { background: #ff00cc; align-self: flex-end; }
-        .input-area { padding: 20px; background: #1a1a1a; display: flex; gap: 10px; }
-        input { flex: 1; background: #000; border: 1px solid #333; padding: 10px; color: white; border-radius: 10px; }
-        button { background: #ff00cc; border: none; padding: 10px 20px; color: white; border-radius: 10px; cursor: pointer; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Candyshop | Produkt</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { background: #030303; color: #fff; font-family: 'Outfit', sans-serif; }
+    .header-area { display: flex; justify-content: center; padding: 30px 0; }
+    .logo-img { width: 150px; }
+    .content { max-width: 1100px; margin: 40px auto; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; padding: 0 20px; }
+    .img-box img { width: 100%; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); }
+    .info-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 30px; padding: 40px; }
+    .spec { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #888; }
+    .spec b { color: #fff; }
+    .price { font-size: 3rem; font-weight: 900; color: #ff00cc; margin: 30px 0; text-align: center; }
+    .buy-btn { display: block; width: 100%; padding: 20px; background: #ff00cc; color: #fff; text-decoration: none; text-align: center; border-radius: 15px; font-weight: 900; }
+    @media (max-width: 800px) { .content { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
-    <div class="chat-box">
-        <div style="padding: 15px; background: #1a1a1a; border-bottom: 1px solid #333; font-weight: bold;">CANDY SUPPORT</div>
-        <div class="messages" id="chatMsgs">
-            <div class="msg admin">Witaj! W czym mogę pomóc w sprawie ${sessionStorage.getItem('interestedIn') || 'naszych produktów'}?</div>
-        </div>
-        <div class="input-area">
-            <input type="text" id="mIn" placeholder="Napisz wiadomość...">
-            <button onclick="send()">Wyślij</button>
-        </div>
+  <header class="header-area"><a href="index.html"><img src="images/logo.png" class="logo-img"></a></header>
+  <div class="content">
+    <div class="img-box"><img id="dImg" src=""></div>
+    <div class="info-box">
+      <h1 id="dName" style="font-size: 2.5rem; margin-bottom: 20px;"></h1>
+      <div class="spec"><span>Typ</span><b id="dType"></b></div>
+      <div class="spec"><span>Rarity</span><b id="dRarity" style="color:#ffae00"></b></div>
+      <div class="spec"><span>Dostawa</span><b id="dDel"></b></div>
+      <p id="dDesc" style="margin-top: 20px; color: #888; line-height: 1.6;"></p>
+      <div class="price" id="dPrice"></div>
+      <a href="#" id="cBtn" class="buy-btn">KUP TERAZ</a>
     </div>
-
-    <script>
-        function send() {
-            const val = document.getElementById('mIn').value;
-            if(!val) return;
-            const container = document.getElementById('chatMsgs');
-            
-            // Dodaj do widoku
-            container.innerHTML += `<div class="msg user">${val}</div>`;
-            
-            // Zapisz zamówienie/zgłoszenie do bazy admina
-            const orders = JSON.parse(localStorage.getItem('candyOrders')) || [];
-            orders.push({
-                date: new Date().toLocaleString(),
-                customer: localStorage.getItem('candyUser') || 'Gość',
-                product: sessionStorage.getItem('interestedIn') || 'Ogólne zapytanie',
-                msg: val
-            });
-            localStorage.setItem('candyOrders', JSON.stringify(orders));
-            
-            document.getElementById('mIn').value = "";
-            container.scrollTop = container.scrollHeight;
-        }
-    </script>
+  </div>
+  <script>
+    const id = new URLSearchParams(window.location.search).get('id');
+    const item = (JSON.parse(localStorage.getItem('candyProducts')) || [])[id];
+    if(item) {
+      document.getElementById('dName').innerText = item.name;
+      document.getElementById('dImg').src = item.img;
+      document.getElementById('dPrice').innerText = item.price;
+      document.getElementById('dDesc').innerText = item.desc;
+      document.getElementById('dType').innerText = item.type || "Brainrot";
+      document.getElementById('dRarity').innerText = item.rarity || "Secret";
+      document.getElementById('dDel').innerText = item.delivery || "~20 min";
+      document.getElementById('cBtn').href = `kontakt.html?prod=${encodeURIComponent(item.name)}`;
+    }
+  </script>
 </body>
 </html>
