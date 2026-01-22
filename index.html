@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Candyshop | Elite Roblox Marketplace</title>
+  <title>Candyshop | Luxury Roblox Marketplace</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
   <style>
@@ -14,67 +14,59 @@
     * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
     body { background: var(--bg); color: #fff; font-family: 'Outfit', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
 
-    /* Background */
-    .galaxy { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-    .orb { position: absolute; border-radius: 50%; filter: blur(150px); opacity: 0.15; animation: drift 20s infinite alternate; }
-    .orb-1 { width: 600px; height: 600px; background: var(--pink); top: -10%; left: -5%; }
-    .orb-2 { width: 500px; height: 500px; background: var(--violet); bottom: 10%; right: -5%; }
+    /* Animowane tło */
+    .galaxy { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 50% 50%, #0a0015 0%, #020202 100%); }
+    .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.2; animation: drift 15s infinite alternate ease-in-out; }
+    .orb-1 { width: 500px; height: 500px; background: var(--pink); top: -5%; left: -5%; }
+    .orb-2 { width: 600px; height: 600px; background: var(--violet); bottom: -5%; right: -5%; }
+    @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(80px, 80px) scale(1.1); } }
 
-    @keyframes drift { from { transform: translate(0,0); } to { transform: translate(100px, 150px); } }
-
-    /* Reveal Animation */
-    .reveal { opacity: 0; transform: translateY(50px); transition: 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(40px); transition: 1s cubic-bezier(0.2, 1, 0.2, 1); }
     .reveal.active { opacity: 1; transform: translateY(0); }
 
     /* Nav */
-    .nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 8%; position: sticky; top: 0; background: rgba(2,2,2,0.8); backdrop-filter: blur(20px); z-index: 1000; border-bottom: 1px solid var(--border); }
-    .nav img { width: 150px; cursor: pointer; }
+    .nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 8%; position: sticky; top: 0; background: rgba(2,2,2,0.7); backdrop-filter: blur(25px); z-index: 1000; border-bottom: 1px solid var(--border); }
+    .nav img { width: 140px; filter: drop-shadow(0 0 5px var(--pink)); transition: 0.4s; }
+    .nav img:hover { transform: rotate(-3deg) scale(1.1); }
     .nav-links { display: flex; gap: 30px; align-items: center; }
-    .nav-links a { color: #888; text-decoration: none; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
-    .nav-links a:hover { color: var(--pink); }
+    .nav-links a { color: #888; text-decoration: none; font-weight: 800; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; }
+    .nav-links a:hover { color: #fff; text-shadow: 0 0 10px var(--pink); }
+    .btn-user { background: linear-gradient(45deg, var(--pink), var(--violet)); border: none; padding: 12px 25px; border-radius: 12px; color: #fff; font-weight: 900; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(255,0,204,0.3); }
 
     /* Hero */
-    .hero { min-height: 100vh; display: flex; align-items: center; padding: 0 10%; gap: 40px; }
-    .hero-text h1 { font-size: clamp(4rem, 10vw, 8rem); line-height: 0.8; font-weight: 900; background: linear-gradient(to right, #fff, var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; }
-    .hero-text p { color: #888; font-size: 1.4rem; max-width: 600px; margin-bottom: 40px; }
+    .hero { min-height: 95vh; display: flex; align-items: center; padding: 0 10%; gap: 60px; }
+    .hero-text h1 { font-size: clamp(4rem, 10vw, 8.5rem); line-height: 0.8; font-weight: 900; background: linear-gradient(to bottom, #fff 50%, #666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 25px; }
+    .hero-text p { color: #aaa; font-size: 1.3rem; max-width: 550px; line-height: 1.6; }
 
-    /* Stats Bar */
-    .stats-container { display: flex; justify-content: space-around; padding: 80px 10%; background: var(--glass); border-top: 1px solid var(--border); }
-    .stat-card h2 { font-size: 3rem; color: var(--cyan); font-weight: 900; }
-    .stat-card p { color: #555; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
-
-    /* Grid Sklepu */
+    /* Sekcje */
     .section { padding: 120px 10%; }
-    .section-title { font-size: 3.5rem; font-weight: 900; margin-bottom: 60px; display: flex; align-items: center; gap: 20px; }
-    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px; }
-    .card { background: var(--glass); border: 1px solid var(--border); border-radius: 40px; padding: 25px; transition: 0.5s; cursor: pointer; }
-    .card:hover { transform: translateY(-20px); border-color: var(--pink); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
-    .card img { width: 100%; height: 400px; object-fit: cover; border-radius: 30px; margin-bottom: 20px; }
+    .section-title { font-size: 3rem; font-weight: 900; margin-bottom: 60px; display: flex; align-items: center; gap: 25px; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
 
-    /* Opinie (Testimonials) */
-    .reviews { background: #050505; padding: 120px 10%; }
-    .review-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-    .review-card { background: #0a0a0a; padding: 40px; border-radius: 30px; border: 1px solid var(--border); }
-    .review-card p { font-style: italic; color: #aaa; margin-bottom: 20px; }
-    .review-card b { color: var(--pink); letter-spacing: 1px; }
+    /* Karty Sklepu */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 40px; }
+    .card { background: var(--glass); border: 1px solid var(--border); border-radius: 40px; padding: 25px; transition: 0.5s; cursor: pointer; position: relative; overflow: hidden; }
+    .card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); transition: 0.5s; }
+    .card:hover::before { left: 100%; }
+    .card:hover { transform: translateY(-15px); border-color: var(--pink); box-shadow: 0 25px 50px rgba(0,0,0,0.6); }
+    .card img { width: 100%; height: 380px; object-fit: cover; border-radius: 30px; margin-bottom: 20px; }
 
-    /* FAQ */
-    .faq-container { max-width: 800px; margin: 0 auto; }
-    .faq-item { background: var(--glass); margin-bottom: 15px; border-radius: 20px; border: 1px solid var(--border); overflow: hidden; }
-    .faq-q { padding: 25px; cursor: pointer; font-weight: 800; display: flex; justify-content: space-between; }
-    .faq-a { padding: 0 25px 25px; color: #777; display: none; }
+    /* System Opinii */
+    .opinions-container { background: #050505; padding: 100px 10%; border-radius: 60px 60px 0 0; border-top: 1px solid var(--border); }
+    .opinion-card { background: var(--glass); padding: 30px; border-radius: 25px; border: 1px solid var(--border); margin-bottom: 20px; }
+    .opinion-card b { color: var(--pink); display: block; margin-bottom: 10px; font-size: 1.1rem; }
+    .opinion-card p { color: #888; line-height: 1.5; }
 
-    /* Footer */
-    footer { padding: 100px 10%; border-top: 1px solid var(--border); text-align: center; }
-    .socials { display: flex; justify-content: center; gap: 30px; margin-bottom: 40px; }
-    .socials a { color: #fff; text-decoration: none; font-weight: 900; font-size: 1.2rem; }
+    .add-opinion { margin-top: 50px; background: var(--glass); padding: 40px; border-radius: 35px; border: 2px dashed var(--border); display: none; }
+    .add-opinion textarea { width: 100%; background: #000; border: 1px solid var(--border); border-radius: 15px; padding: 20px; color: #fff; font-family: inherit; margin-bottom: 20px; resize: none; }
 
-    /* Modale */
-    .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(15px); }
-    .modal-content { background: #0f0f0f; padding: 50px; border-radius: 40px; width: 450px; border: 1px solid var(--border); text-align: center; }
-    .modal-content input { width: 100%; padding: 18px; margin-bottom: 20px; background: #000; border: 1px solid var(--border); border-radius: 15px; color: #fff; }
-    .btn-pink { width: 100%; padding: 18px; background: var(--pink); border: none; border-radius: 15px; color: #fff; font-weight: 900; cursor: pointer; }
+    /* Login Modal */
+    .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(10px); }
+    .modal-content { background: #0d0d0d; padding: 50px; border-radius: 40px; width: 450px; border: 1px solid var(--border); text-align: center; }
+    .modal-content input { width: 100%; padding: 18px; margin-bottom: 15px; background: #151515; border: 1px solid var(--border); border-radius: 15px; color: #fff; }
+
+    footer { padding: 100px 10%; text-align: center; border-top: 1px solid var(--border); }
   </style>
 </head>
 <body>
@@ -84,125 +76,126 @@
   <nav class="nav">
     <img src="images/logo.png" alt="Logo">
     <div class="nav-links">
-      <a href="#sklep">Drop</a>
-      <a href="#opinie">Opinie</a>
-      <a href="#faq">FAQ</a>
-      <a href="kontakt.html">Kontakt</a>
-      <button onclick="openModal()" style="background: var(--pink); border:none; padding:10px 25px; border-radius:10px; color:#fff; font-weight:900; cursor:pointer;">KONTO</button>
+      <a href="#store">Market</a>
+      <a href="#opinions">Opinie</a>
+      <button class="btn-user" id="userBtn" onclick="openLogin()">ZALOGUJ SIĘ</button>
     </div>
   </nav>
 
   <section class="hero">
     <div class="hero-text reveal">
-      <h1>CANDY<br>SHOP.</h1>
-      <p>Twoje elitarne źródło najrzadszych przedmiotów. Dołącz do społeczności premium.</p>
-      <a href="#sklep" style="display:inline-block; padding:20px 50px; background:#fff; color:#000; text-decoration:none; border-radius:50px; font-weight:900;">PRZEGLĄDAJ SKLEP</a>
+      <div style="color: var(--pink); font-weight: 900; letter-spacing: 5px; margin-bottom: 10px;">PREMIUM ACCESS</div>
+      <h1>CANDY<br>SHOP</h1>
+      <p>Najbardziej pożądane przedmioty Roblox w jednym miejscu. Dołącz do elity kolekcjonerów.</p>
     </div>
     <div class="hero-image reveal">
-      <img src="images/Hero.png" style="width:100%; filter: drop-shadow(0 0 50px var(--pink));">
+      <img src="images/Hero.png" style="width: 100%; filter: drop-shadow(0 0 40px var(--pink)); animation: float 6s infinite ease-in-out;">
     </div>
   </section>
 
-  <section class="stats-container reveal">
-    <div class="stat-card"><h2>2k+</h2><p>Sprzedaży</p></div>
-    <div class="stat-card"><h2>15m</h2><p>Średni Czas</p></div>
-    <div class="stat-card"><h2>99%</h2><p>Zadowolenia</p></div>
-  </section>
-
-  <section class="section" id="sklep">
-    <h2 class="section-title reveal">NAJNOWSZY DROP</h2>
+  <section class="section" id="store">
+    <h2 class="section-title reveal">AKTYWNE OFERTY</h2>
     <div class="grid" id="grid"></div>
   </section>
 
-  <section class="reviews" id="opinie">
-    <h2 class="section-title reveal">CO MÓWIĄ INNI</h2>
-    <div class="review-grid">
-      <div class="review-card reveal">
-        <p>"Najlepszy sklep, dostałem item w 5 minut. Polecam Capka!"</p>
-        <b>@Mati_RBX</b>
-      </div>
-      <div class="review-card reveal">
-        <p>"Sisi bardzo pomocna na czacie. Wszystko bezpiecznie i legit."</p>
-        <b>@Koxu22</b>
-      </div>
-      <div class="review-card reveal">
-        <p>"Brałem już 3 razy, nigdy się nie zawiodłem. Candyshop to marka."</p>
-        <b>@User_99</b>
-      </div>
+  <section class="opinions-container" id="opinions">
+    <h2 class="section-title reveal">OPINIE KLIENTÓW</h2>
+    <div id="opinionsList">
+      <div class="opinion-card reveal"><b>@Capek_Fan</b><p>Kupiłem Brainrota i dostałem go w 3 minuty. Mega polecam ten sklep!</p></div>
+      <div class="opinion-card reveal"><b>@Sisi_Manager</b><p>Najlepsza obsługa klienta na jaką trafiłem w Robloxie.</p></div>
+    </div>
+
+    <div id="opinionForm" class="add-opinion reveal">
+      <h3>DODAJ SWOJĄ OPINIĘ</h3>
+      <p style="color: #555; margin-bottom: 20px;">Jesteś zalogowany jako <span id="loggedAs" style="color: var(--cyan);"></span></p>
+      <textarea id="opinionText" rows="4" placeholder="Napisz co sądzisz o naszym sklepie..."></textarea>
+      <button class="btn-user" onclick="postOpinion()">OPUBLIKUJ OPINIĘ</button>
+    </div>
+    
+    <div id="loginReminder" style="text-align: center; margin-top: 40px; color: #444;">
+      <p>Musisz być zalogowany, aby dodać opinię.</p>
     </div>
   </section>
 
-  <section class="section" id="faq">
-    <h2 class="section-title reveal">CZĘSTE PYTANIA</h2>
-    <div class="faq-container reveal">
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Czy to jest bezpieczne? <span>+</span></div>
-        <div class="faq-a">Tak, każda transakcja jest monitorowana przez naszą administrację. Posiadamy setki dowodów sprzedaży (vouches).</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Jak długo czekam na item? <span>+</span></div>
-        <div class="faq-a">Zazwyczaj dostawa zajmuje od 10 do 30 minut po zaksięgowaniu wpłaty.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Jakie metody płatności przyjmujecie? <span>+</span></div>
-        <div class="faq-a">Wszystkie szczegóły znajdziesz w formularzu zakupu po kliknięciu "Kup teraz".</div>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="socials">
-      <a href="#">DISCORD</a>
-      <a href="#">TIKTOK</a>
-      <a href="#">INSTAGRAM</a>
-    </div>
-    <p style="color:#333; font-weight:900; letter-spacing:5px;">CANDYSHOP ELITE &copy; 2026</p>
-  </footer>
-
-  <div class="modal" id="authModal">
+  <div class="modal" id="loginModal">
     <div class="modal-content">
-      <h2 id="mTitle">LOGOWANIE</h2>
-      <input type="text" placeholder="Nick">
+      <h2 style="margin-bottom: 30px;">DOŁĄCZ DO NAS</h2>
+      <input type="text" id="nickInput" placeholder="Twój nick z Roblox">
       <input type="password" placeholder="Hasło">
-      <button class="btn-pink" onclick="closeModal()">WEJDŹ</button>
-      <p onclick="toggleM()" style="margin-top:20px; color:#555; cursor:pointer;">Zmień na Rejestrację</p>
-      <p onclick="closeModal()" style="margin-top:10px; color:red; cursor:pointer;">Zamknij</p>
+      <button class="btn-user" style="width: 100%;" onclick="login()">ZALOGUJ SIĘ</button>
+      <p onclick="closeLogin()" style="margin-top: 20px; color: #444; cursor: pointer;">Zamknij</p>
     </div>
   </div>
 
+  <footer>
+    <p style="color: #222; font-weight: 900; letter-spacing: 10px;">CANDYSHOP &copy; 2026</p>
+  </footer>
+
   <script>
+    // --- SKLEP ---
     function load() {
       const items = JSON.parse(localStorage.getItem('candyProducts')) || [];
       const grid = document.getElementById('grid');
       grid.innerHTML = items.map((p, i) => `
         <div class="card reveal" onclick="location.href='produkt.html?id=${i}'">
           <img src="${p.img}">
-          <div style="font-size:0.7rem; color:var(--pink); font-weight:900;">${p.rarity || 'LEGENDARY'}</div>
-          <h3 style="font-size:1.8rem;">${p.name}</h3>
-          <p style="font-size:1.5rem; font-weight:900; color:var(--cyan);">${p.price}</p>
+          <div style="font-size: 0.7rem; color: var(--pink); font-weight: 900; letter-spacing: 2px;">${p.rarity || 'SECRET'}</div>
+          <h3 style="font-size: 2rem; margin: 10px 0;">${p.name}</h3>
+          <p style="font-size: 1.6rem; font-weight: 900; color: var(--cyan);">${p.price}</p>
         </div>`).join('');
-      reveal();
+      checkLoginStatus();
+      scrollReveal();
     }
 
-    function reveal() {
+    // --- LOGOWANIE ---
+    function openLogin() { document.getElementById('loginModal').style.display = 'flex'; }
+    function closeLogin() { document.getElementById('loginModal').style.display = 'none'; }
+
+    function login() {
+      const nick = document.getElementById('nickInput').value;
+      if(!nick) return alert("Wpisz swój nick!");
+      
+      localStorage.setItem('candyUser', nick);
+      closeLogin();
+      checkLoginStatus();
+    }
+
+    function checkLoginStatus() {
+      const user = localStorage.getItem('candyUser');
+      if(user) {
+        document.getElementById('userBtn').innerText = user.toUpperCase();
+        document.getElementById('opinionForm').style.display = 'block';
+        document.getElementById('loginReminder').style.display = 'none';
+        document.getElementById('loggedAs').innerText = "@" + user;
+      }
+    }
+
+    // --- OPINIE ---
+    function postOpinion() {
+      const text = document.getElementById('opinionText').value;
+      const user = localStorage.getItem('candyUser');
+      if(!text) return;
+
+      const list = document.getElementById('opinionsList');
+      const newOp = document.createElement('div');
+      newOp.className = 'opinion-card active';
+      newOp.innerHTML = `<b>@${user}</b><p>${text}</p>`;
+      
+      list.prepend(newOp); // Dodaje na górę listy
+      document.getElementById('opinionText').value = '';
+      alert("Twoja opinia została dodana!");
+    }
+
+    // --- ANIMACJE ---
+    function scrollReveal() {
       document.querySelectorAll('.reveal').forEach(el => {
         if(el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
       });
     }
 
-    function toggleFaq(el) {
-      const ans = el.nextElementSibling;
-      ans.style.display = ans.style.display === 'block' ? 'none' : 'block';
-    }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-    function openModal() { document.getElementById('authModal').style.display = 'flex'; }
-    function closeModal() { document.getElementById('authModal').style.display = 'none'; }
-    function toggleM() {
-      const t = document.getElementById('mTitle');
-      t.innerText = t.innerText === 'LOGOWANIE' ? 'REJESTRACJA' : 'LOGOWANIE';
-    }
-
-    window.addEventListener('scroll', reveal);
+    window.addEventListener('scroll', scrollReveal);
     window.onload = load;
   </script>
 </body>
