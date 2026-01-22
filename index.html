@@ -2,50 +2,53 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Candyshop | Najlepsze Breinroty</title>
+  <title>Candyshop | Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root { --bg: #030303; --pink: #ff00cc; --cyan: #00dbde; --glass: rgba(255, 255, 255, 0.02); --border: rgba(255, 255, 255, 0.1); }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: var(--bg); color: #fff; font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+    body { background: var(--bg); color: #fff; font-family: 'Outfit', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
     
     .galaxy { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 50% 50%, #1a0033 0%, #030303 100%); }
-    
+
+    /* Nagłówek i Logo */
     .header-area { display: flex; flex-direction: column; align-items: center; padding: 30px 0; gap: 15px; }
     .logo-img { width: 150px; height: auto; transition: 0.3s; cursor: pointer; }
-    .logo-img:hover { transform: scale(1.05); filter: drop-shadow(0 0 10px var(--pink)); }
-    
+    .logo-img:hover { transform: scale(1.05); filter: drop-shadow(0 0 15px var(--pink)); }
     .menu { display: flex; gap: 30px; }
     .menu a { color: #666; text-decoration: none; text-transform: uppercase; font-weight: 700; font-size: 0.8rem; letter-spacing: 2px; transition: 0.3s; }
     .menu a:hover { color: #fff; }
 
-    .hero { 
-      min-height: 70vh; 
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between; 
-      padding: 0 10%; 
-      gap: 50px;
-    }
-    .hero-text { flex: 1; text-align: left; animation: slideIn 1s ease; }
-    .hero-image { flex: 1; display: flex; justify-content: flex-end; animation: fadeIn 1.5s ease; }
-    .hero-image img { max-width: 100%; height: auto; filter: drop-shadow(0 0 30px rgba(255,0,204,0.2)); animation: float 6s infinite ease-in-out; }
+    /* Hero: Tekst LEWO, Obrazek PRAWO */
+    .hero { min-height: 80vh; display: flex; align-items: center; justify-content: space-between; padding: 0 10%; gap: 50px; }
+    .hero-text { flex: 1.2; text-align: left; }
+    .hero-text h1 { font-size: 6rem; line-height: 0.9; margin-bottom: 25px; font-weight: 900; background: linear-gradient(to right, #fff, #666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-text p { color: #888; font-size: 1.2rem; max-width: 500px; line-height: 1.6; margin-bottom: 30px; }
+    .hero-image { flex: 0.8; display: flex; justify-content: flex-end; }
+    .hero-image img { max-width: 100%; height: auto; filter: drop-shadow(0 0 30px rgba(255,0,204,0.3)); animation: float 6s infinite ease-in-out; }
 
-    .hero-text h1 { font-size: 5.5rem; line-height: 0.9; margin-bottom: 25px; background: linear-gradient(to right, #fff, #666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
-    .hero-text p { color: #888; font-size: 1.2rem; max-width: 500px; line-height: 1.6; }
-
-    .container { padding: 80px 8%; }
+    /* Sklep */
+    .container { padding: 50px 8%; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 40px; }
     .card { background: var(--glass); border: 1px solid var(--border); border-radius: 30px; padding: 15px; transition: 0.5s; cursor: pointer; backdrop-filter: blur(10px); }
     .card:hover { transform: translateY(-15px); border-color: var(--pink); box-shadow: 0 20px 50px rgba(255, 0, 204, 0.2); }
-    .card img { width: 100%; height: 300px; object-fit: cover; border-radius: 22px; }
+    .card img { width: 100%; height: 320px; object-fit: cover; border-radius: 22px; }
     .card h3 { margin: 20px 10px 5px; font-size: 1.5rem; }
     .card .price { margin: 0 10px 10px; color: var(--cyan); font-weight: 900; font-size: 1.4rem; }
 
+    /* Właściciele */
+    .owners-section { padding: 100px 8%; text-align: center; border-top: 1px solid var(--border); }
+    .owners-grid { display: flex; justify-content: center; gap: 80px; flex-wrap: wrap; margin-top: 50px; }
+    .owner-card { transition: 0.4s; }
+    .owner-img { width: 200px; height: 200px; border-radius: 50%; padding: 5px; background: linear-gradient(45deg, var(--pink), var(--cyan)); margin-bottom: 20px; box-shadow: 0 0 30px rgba(255, 0, 204, 0.2); }
+    .owner-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 4px solid var(--bg); }
+    .owner-card h3 { font-size: 1.8rem; font-weight: 900; margin-bottom: 5px; }
+    .owner-card p { color: var(--pink); font-size: 0.8rem; text-transform: uppercase; font-weight: 700; }
+    .owner-card:hover { transform: translateY(-10px); }
+
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-    @keyframes slideIn { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @media (max-width: 900px) { .hero { flex-direction: column; text-align: center; padding-top: 50px; } .hero-text { text-align: center; } .hero-text p { margin: 0 auto 30px; } .hero-image { justify-content: center; } }
   </style>
 </head>
 <body>
@@ -63,16 +66,36 @@
   <section class="hero">
     <div class="hero-text">
       <h1>CANDY<br>SHOP</h1>
-      <p>Najlepsze przedmioty do Roblox "Steal a Breinrot". Kupuj szybko i bezpiecznie.</p>
+      <p>Najlepsze przedmioty do Roblox "Steal a Breinrot". Kupuj szybko i bezpiecznie u sprawdzonych dostawców.</p>
     </div>
     <div class="hero-image">
-      <img src="images/Hero.png" alt="Hero Image">
+      <img src="images/Hero.png" alt="Hero">
     </div>
   </section>
 
   <main class="container">
     <div class="grid" id="grid"></div>
   </main>
+
+  <section class="owners-section">
+    <h2 style="font-size: 3rem; font-weight: 900;">WŁAŚCICIELE</h2>
+    <div class="owners-grid">
+      <div class="owner-card">
+        <div class="owner-img"><img src="images/owner1.png" alt="Capek"></div>
+        <h3>CAPEK</h3>
+        <p>Founder & Developer</p>
+      </div>
+      <div class="owner-card">
+        <div class="owner-img"><img src="images/owner2.png" alt="Sisi"></div>
+        <h3>SISI</h3>
+        <p>Founder & Manager</p>
+      </div>
+    </div>
+  </section>
+
+  <footer style="padding: 50px; text-align: center; color: #444; font-size: 0.8rem; border-top: 1px solid var(--border);">
+    &copy; 2026 CANDYSHOP | Digital Goods Marketplace
+  </footer>
 
   <script>
     function load() {
@@ -92,4 +115,3 @@
   </script>
 </body>
 </html>
-
