@@ -10,7 +10,7 @@
         /* --- ZMIENNE I RESET --- */
         :root { 
             --bg: #050505; 
-            --card-bg: rgba(20, 20, 20, 0.6);
+            --card-bg: rgba(20, 20, 20, 0.7);
             --pink: #ff00cc; 
             --cyan: #00dbde; 
             --violet: #7000ff;
@@ -40,28 +40,17 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
-            overflow: hidden;
             background: radial-gradient(circle at 50% 50%, #0d001a 0%, #050505 100%);
         }
 
-        .orb {
+        canvas {
             position: absolute;
-            border-radius: 50%;
-            filter: blur(140px);
-            opacity: 0.15;
-            animation: drift 20s infinite alternate ease-in-out;
-        }
-        .orb-1 { width: 600px; height: 600px; background: var(--pink); top: -10%; left: -10%; }
-        .orb-2 { width: 700px; height: 700px; background: var(--violet); bottom: -10%; right: -10%; animation-delay: -5s; }
-        .orb-3 { width: 400px; height: 400px; background: var(--cyan); top: 40%; left: 40%; opacity: 0.08; }
-
-        @keyframes drift {
-            0% { transform: translate(0,0) scale(1); }
-            100% { transform: translate(100px, 100px) scale(1.2); }
+            top: 0; left: 0;
+            opacity: 0.4;
         }
 
         /* --- ANIMACJE REVEAL --- */
-        .reveal { opacity: 0; transform: translateY(50px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         /* --- NAWIGACJA --- */
@@ -142,7 +131,7 @@
         }
 
         .hero h1 {
-            font-size: clamp(3rem, 12vw, 10rem);
+            font-size: clamp(3rem, 10vw, 8rem);
             font-family: 'Syncopate', sans-serif;
             font-weight: 700;
             line-height: 0.9;
@@ -153,198 +142,133 @@
         }
 
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--text-dim);
-            max-width: 700px;
+            max-width: 600px;
             margin-bottom: 40px;
         }
 
-        /* --- STATYSTYKI --- */
-        .stats-bar {
+        /* --- SKLEP I SZUKAJKA --- */
+        .section { padding: 100px 8%; }
+        
+        .search-container {
+            margin-bottom: 50px;
             display: flex;
-            gap: 60px;
-            margin-top: 50px;
+            justify-content: center;
         }
-        .stat-item b { font-size: 2rem; display: block; color: #fff; }
-        .stat-item span { color: var(--text-dim); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* --- SKLEP (GRID) --- */
-        .section { padding: 120px 8%; }
-        .section-header { margin-bottom: 80px; }
-        .section-header h2 { font-size: 3.5rem; font-family: 'Syncopate', sans-serif; }
+        
+        #searchInput {
+            width: 100%;
+            max-width: 500px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 18px 25px;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+        #searchInput:focus { border-color: var(--pink); box-shadow: 0 0 20px rgba(255, 0, 204, 0.1); }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 30px;
         }
 
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 35px;
+            border-radius: 30px;
             padding: 20px;
-            transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative;
-            overflow: hidden;
+            transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
             backdrop-filter: blur(10px);
+            perspective: 1000px;
         }
 
         .card:hover {
-            transform: translateY(-15px) scale(1.02);
+            transform: translateY(-10px);
             border-color: var(--pink);
-            background: rgba(30, 30, 30, 0.8);
+            background: rgba(30, 30, 30, 0.9);
         }
 
         .card img {
             width: 100%;
-            height: 320px;
+            height: 280px;
             object-fit: cover;
-            border-radius: 25px;
+            border-radius: 20px;
             margin-bottom: 20px;
             transition: 0.5s;
         }
 
-        .card-info { padding: 10px; }
+        .card:hover img { transform: scale(1.05); }
+
         .card-tag { 
-            font-size: 0.65rem; 
+            font-size: 0.6rem; 
             font-weight: 900; 
             letter-spacing: 2px; 
-            text-transform: uppercase; 
             color: var(--pink); 
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
 
         .card-price {
             margin-top: 15px;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 800;
             color: var(--cyan);
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
-        /* --- OPINIE --- */
-        .opinions-wrapper {
-            background: linear-gradient(to bottom, transparent, #080808);
-            border-radius: 80px 80px 0 0;
-            border-top: 1px solid var(--border);
-        }
-
-        .opinion-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 20px;
-        }
-
-        .opinion-card {
-            background: var(--glass);
-            padding: 40px;
-            border-radius: 30px;
-            border: 1px solid var(--border);
-            transition: 0.3s;
-        }
-        .opinion-card:hover { background: rgba(255,255,255,0.05); }
-        .opinion-user { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .user-avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--accent-gradient); }
-        .opinion-user b { color: #fff; font-size: 1.1rem; }
-
-        /* --- MODALE --- */
+        /* --- MODAL --- */
         .modal {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.95);
+            background: rgba(0,0,0,0.9);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 20000;
             backdrop-filter: blur(20px);
-            padding: 20px;
         }
 
         .modal-content {
             background: #111;
-            padding: 60px;
-            border-radius: 40px;
-            width: 100%;
-            max-width: 500px;
+            padding: 50px;
+            border-radius: 30px;
+            width: 90%;
+            max-width: 450px;
             border: 1px solid var(--border);
-            position: relative;
             text-align: center;
         }
 
-        .modal-content h2 { font-size: 2.5rem; margin-bottom: 15px; font-family: 'Syncopate'; }
-        .modal-content input {
-            width: 100%;
-            background: #1a1a1a;
-            border: 1px solid var(--border);
-            padding: 18px 25px;
-            border-radius: 15px;
-            color: #fff;
-            margin-bottom: 15px;
-            font-size: 1rem;
-            transition: 0.3s;
-        }
-        .modal-content input:focus { border-color: var(--pink); background: #222; }
-
-        /* --- TOAST NOTIFICATIONS --- */
-        #toast-container {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 99999;
-        }
-
+        /* --- TOAST --- */
+        #toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 99999; }
         .toast {
-            background: #fff;
-            color: #000;
-            padding: 16px 30px;
-            border-radius: 12px;
-            font-weight: 700;
-            margin-top: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            animation: slideIn 0.5s forwards;
+            background: #fff; color: #000; padding: 15px 25px;
+            border-radius: 12px; font-weight: 700; margin-top: 10px;
+            animation: slideIn 0.4s forwards;
         }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
+        footer { padding: 80px 8%; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); }
 
-        /* --- FOOTER --- */
-        footer {
-            padding: 100px 8%;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--text-dim);
-        }
-
-        /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .hero h1 { font-size: 4rem; }
-            .opinion-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 3.5rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="background-engine">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
+    <div class="background-engine" id="bgEngine"></div>
 
     <nav class="nav">
         <a href="#" class="logo">CANDYSHOP</a>
         <div class="nav-links">
             <a href="#hero">Start</a>
             <a href="#store">Eksploruj</a>
-            <a href="#opinions">Referencje</a>
-            <a href="#about">O nas</a>
+            <a href="#opinions">Opinie</a>
         </div>
         <button class="btn-premium" id="userBtn" onclick="openLogin()">Zaloguj się</button>
     </nav>
@@ -352,207 +276,155 @@
     <section class="hero" id="hero">
         <div class="hero-badge reveal">Luxury Marketplace</div>
         <h1 class="reveal">UNMATCHED<br>QUALITY</h1>
-        <p class="reveal">Zdobądź dostęp do najbardziej limitowanych przedmiotów w ekosystemie Roblox. Bezpieczeństwo, szybkość i prestiż, na który zasługujesz.</p>
-        
-        <div class="stats-bar reveal">
-            <div class="stat-item"><b>12k+</b><span>Sprzedaży</span></div>
-            <div class="stat-item"><b>4.9/5</b><span>Ocena</span></div>
-            <div class="stat-item"><b>24/7</b><span>Support</span></div>
-        </div>
-
-        <div style="margin-top: 50px;" class="reveal">
-            <button class="btn-premium" onclick="document.getElementById('store').scrollIntoView()">Przeglądaj Sklep</button>
-        </div>
+        <p class="reveal">Ekskluzywne przedmioty Roblox. Bezpieczeństwo i prestiż w jednym miejscu.</p>
+        <button class="btn-premium reveal" onclick="document.getElementById('store').scrollIntoView({behavior: 'smooth'})">Przeglądaj Drop</button>
     </section>
 
     <section class="section" id="store">
-        <div class="section-header reveal">
-            <div class="card-tag">Current Drops</div>
-            <h2>OSTATNIE OFERTY</h2>
+        <div class="search-container reveal">
+            <input type="text" id="searchInput" placeholder="Szukaj przedmiotu (np. Valk, Dominus)..." onkeyup="filterProducts()">
         </div>
 
         <div class="grid" id="productGrid">
             </div>
     </section>
 
-    <section class="section opinions-wrapper" id="opinions">
-        <div class="section-header reveal">
-            <div class="card-tag">Testimonials</div>
-            <h2>CO MÓWIĄ ELITY</h2>
-        </div>
-
-        <div class="opinion-grid" id="opinionsList">
-            <div class="opinion-card reveal">
-                <div class="opinion-user">
-                    <div class="user-avatar"></div>
-                    <div><b>@RobloxWhale</b><br><small>Verified Collector</small></div>
-                </div>
-                <p>"Najlepszy serwis w branży. Transakcje przebiegają błyskawicznie, a support zawsze służy pomocą."</p>
-            </div>
-            <div class="opinion-card reveal">
-                <div class="opinion-user">
-                    <div class="user-avatar" style="background: var(--cyan)"></div>
-                    <div><b>@Limitless_Dev</b><br><small>Power Seller</small></div>
-                </div>
-                <p>"Candyshop to standard, do którego inni tylko dążą. Profesjonalizm w każdym calu."</p>
-            </div>
-        </div>
-
-        <div id="opinionForm" style="display: none; margin-top: 60px;" class="reveal">
-            <div class="card" style="max-width: 600px; margin: 0 auto;">
-                <h3>Dodaj swoją opinię</h3>
-                <textarea id="opinionText" style="width:100%; height: 120px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 15px; color: #fff; padding: 20px; margin: 20px 0; font-family: inherit; resize: none;" placeholder="Twoja wiadomość..."></textarea>
-                <button class="btn-premium" onclick="postOpinion()">Wyślij opinię</button>
-            </div>
-        </div>
-    </section>
-
     <div class="modal" id="loginModal">
         <div class="modal-content">
-            <button onclick="closeLogin()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: #555; cursor: pointer; font-size: 1.5rem;">&times;</button>
-            <h2>WITAJ PONOWNIE</h2>
-            <p style="color: var(--text-dim); margin-bottom: 30px;">Zaloguj się do swojego konta kolekcjonera</p>
-            <input type="text" id="nickInput" placeholder="Nick z Roblox">
-            <input type="password" placeholder="Klucz dostępu">
-            <button class="btn-premium" style="width: 100%; margin-top: 10px;" onclick="login()">Zautoryzuj</button>
+            <h2 style="font-family: 'Syncopate'; margin-bottom: 20px;">AUTORYZACJA</h2>
+            <input type="text" id="nickInput" placeholder="Twój Nick" style="width:100%; padding:15px; margin-bottom:15px; border-radius:10px; background:#222; border:1px solid #333; color:white;">
+            <button class="btn-premium" style="width: 100%;" onclick="login()">Zaloguj</button>
+            <p onclick="closeLogin()" style="margin-top:20px; cursor:pointer; color:var(--text-dim); font-size:0.8rem;">Anuluj</p>
         </div>
     </div>
 
     <div id="toast-container"></div>
 
     <footer>
-        <div class="logo">CANDYSHOP</div>
-        <p>&copy; 2026 CANDYSHOP LUXURY MARKETPLACE. ALL RIGHTS RESERVED.</p>
-        <div class="nav-links" style="display: flex;">
-            <a href="#">Discord</a>
-            <a href="#">Twitter</a>
-        </div>
-    </footer>
+        <div class="logo" style="margin-bottom: 20px;">CANDYSHOP</div>
+        <p>&copy; 2026 CANDYSHOP LUXURY. WSZELKIE PRAWA ZASTRZEŻONE.</p>
+    </footer >
 
     <script>
-        /* --- DANE PRODUKTÓW (TYMCZASOWE) --- */
-        const MOCK_PRODUCTS = [
-            { name: "Super Super Happy Face", price: "120,000 R$", img: "https://via.placeholder.com/400x400/1a1a1a/ff00cc?text=SSHF", rarity: "GODLY" },
+        /* --- DANE --- */
+        const PRODUCTS = [
+            { name: "Super Super Happy Face", price: "125,000 R$", img: "https://via.placeholder.com/400x400/1a1a1a/ff00cc?text=SSHF", rarity: "GODLY" },
             { name: "Dominus Astra", price: "2,500,000 R$", img: "https://via.placeholder.com/400x400/1a1a1a/7000ff?text=ASTRA", rarity: "MYTHICAL" },
-            { name: "Ice Valkyrie", price: "45,000 R$", img: "https://via.placeholder.com/400x400/1a1a1a/00dbde?text=VALK", rarity: "LEGENDARY" },
-            { name: "Sparkle Time Fedora", price: "180,000 R$", img: "https://via.placeholder.com/400x400/1a1a1a/ff00cc?text=FEDORA", rarity: "GODLY" },
+            { name: "Ice Valkyrie", price: "48,000 R$", img: "https://via.placeholder.com/400x400/1a1a1a/00dbde?text=VALK", rarity: "LEGENDARY" },
+            { name: "Sparkle Time Fedora", price: "190,000 R$", img: "https://via.placeholder.com/400x400/1a1a1a/ff00cc?text=FEDORA", rarity: "GODLY" },
             { name: "Headless Horseman", price: "31,000 R$", img: "https://via.placeholder.com/400x400/1a1a1a/7000ff?text=HEADLESS", rarity: "LIMITED" },
-            { name: "Void Star", price: "95,000 R$", img: "https://via.placeholder.com/400x400/1a1a1a/00dbde?text=VOID", rarity: "LEGENDARY" }
+            { name: "Void Star", price: "98,000 R$", img: "https://via.placeholder.com/400x400/1a1a1a/00dbde?text=VOID", rarity: "LEGENDARY" }
         ];
 
-        /* --- INICJALIZACJA --- */
+        /* --- SILNIK CZĄSTECZEK --- */
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        document.getElementById('bgEngine').appendChild(canvas);
+
+        let particles = [];
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                else if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                else if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(255, 0, 204, 0.3)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        /* --- LOGIKA STRONY --- */
         window.onload = () => {
+            initCanvas();
+            for(let i=0; i<60; i++) particles.push(new Particle());
+            animate();
             renderProducts();
-            checkUser();
             scrollReveal();
-            createToast("Witamy w Candyshop Luxury!");
+            checkUser();
         };
 
-        /* --- RENDEROWANIE SKLEPU --- */
         function renderProducts() {
             const grid = document.getElementById('productGrid');
-            const data = JSON.parse(localStorage.getItem('candyProducts')) || MOCK_PRODUCTS;
-            
-            grid.innerHTML = data.map((p, i) => `
-                <div class="card reveal" onclick="showProductDetails(${i})">
+            grid.innerHTML = PRODUCTS.map((p, i) => `
+                <div class="card reveal" onclick="buyItem('${p.name}')">
                     <img src="${p.img}" alt="${p.name}">
-                    <div class="card-info">
-                        <div class="card-tag">${p.rarity}</div>
-                        <h3>${p.name}</h3>
-                        <div class="card-price">
-                            <span style="font-size: 1rem; color: #555;">Price:</span>
-                            ${p.price}
-                        </div>
-                    </div>
+                    <div class="card-tag">${p.rarity}</div>
+                    <h3>${p.name}</h3>
+                    <div class="card-price">${p.price}</div>
                 </div>
             `).join('');
         }
 
-        /* --- OBSŁUGA LOGOWANIA --- */
-        function openLogin() { 
-            document.getElementById('loginModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+        function filterProducts() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const name = card.querySelector('h3').innerText.toLowerCase();
+                card.style.display = name.includes(term) ? 'block' : 'none';
+            });
         }
 
-        function closeLogin() { 
-            document.getElementById('loginModal').style.display = 'none'; 
-            document.body.style.overflow = 'auto';
+        function buyItem(name) {
+            createToast(`Przekierowanie do zakupu: ${name}...`);
         }
+
+        function openLogin() { document.getElementById('loginModal').style.display = 'flex'; }
+        function closeLogin() { document.getElementById('loginModal').style.display = 'none'; }
 
         function login() {
             const nick = document.getElementById('nickInput').value;
-            if(nick.length < 3) return createToast("Nick jest za krótki!");
-            
+            if(nick.length < 3) return createToast("Nick za krótki!");
             localStorage.setItem('candyUser', nick);
-            createToast(`Witaj ponownie, ${nick}!`);
-            closeLogin();
-            checkUser();
+            location.reload();
         }
 
         function checkUser() {
             const user = localStorage.getItem('candyUser');
-            if(user) {
-                document.getElementById('userBtn').innerText = user.toUpperCase();
-                document.getElementById('opinionForm').style.display = 'block';
-            }
+            if(user) document.getElementById('userBtn').innerText = user.toUpperCase();
         }
 
-        /* --- SYSTEM OPINII --- */
-        function postOpinion() {
-            const text = document.getElementById('opinionText').value;
-            const user = localStorage.getItem('candyUser');
-            
-            if(!text) return createToast("Wpisz treść opinii!");
-
-            const list = document.getElementById('opinionsList');
-            const opCard = document.createElement('div');
-            opCard.className = 'opinion-card active';
-            opCard.innerHTML = `
-                <div class="opinion-user">
-                    <div class="user-avatar" style="background: var(--pink)"></div>
-                    <div><b>@${user}</b><br><small>New Buyer</small></div>
-                </div>
-                <p>${text}</p>
-            `;
-            
-            list.prepend(opCard);
-            document.getElementById('opinionText').value = '';
-            createToast("Opinia została opublikowana!");
-        }
-
-        /* --- POWIADOMIENIA TOAST --- */
         function createToast(msg) {
             const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.innerText = msg;
-            container.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                setTimeout(() => toast.remove(), 500);
-            }, 3000);
+            const t = document.createElement('div');
+            t.className = 'toast';
+            t.innerText = msg;
+            container.appendChild(t);
+            setTimeout(() => t.remove(), 3000);
         }
 
-        /* --- ANIMACJE SCROLLA --- */
         function scrollReveal() {
             const reveals = document.querySelectorAll('.reveal');
             reveals.forEach(el => {
-                const windowHeight = window.innerHeight;
-                const elementTop = el.getBoundingClientRect().top;
-                if (elementTop < windowHeight - 100) {
-                    el.classList.add('active');
-                }
+                if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active');
             });
         }
 
         window.addEventListener('scroll', scrollReveal);
-
-        /* --- FUNKCJA SYMULACYJNA SZCZEGÓŁÓW --- */
-        function showProductDetails(id) {
-            createToast("Przekierowywanie do bezpiecznej płatności...");
-            // Tu można dodać nawigację: window.location.href = `product.html?id=${id}`;
-        }
+        window.addEventListener('resize', initCanvas);
     </script>
 </body>
 </html>
